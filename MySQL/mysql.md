@@ -194,15 +194,91 @@ FROM books;
 SELECT CONCAT_WS('-', title, author_name, author_lname) FROM books;
 ```
 
-- 
+- Work with parts of strings
+```
+SELECT SUBSTRING('Hello World', 1, 4);
+SELECT SUBSTR('Hello World', 1, 4);
+SELECT SUBSTRING('Hello World', 7);
+SELECT SUBSTRING('Hello World', -3);
+SELECT SUBSTRING(title, 1, 10) FROM books;
+SELECT CONCAT(SUBSTRING(title, 1, 10), '...') AS 'short title' FROM books;
+```
 
+- To replace parts of strings
+```
+SELECT REPLACE('Hello World', 'Hell', '####');
+SELECT REPLACE(title, 'e', '3') FROM books;
+SELECT SUBSTRING(REPLACE(title, 'e', '3'), 1, 10) FROM books;
+```
+- To reverse
+```
+SELECT REVERSE('Hello World');
+SELECT REVERSE(author_fname) FROM books;
+SELECT CONCAT(author_fname, REVERSE(author_fname)) FROM books;
+```
 
+- To count characters in a string
+```
+SELECT CHAR_LENGTH('Hello World');
+SELECT author_lname, CHAR_LENGTH(author_lname) AS 'length' FROM books;
+SELECT CONCAT(author_lname, ' is ', CHAR_LENGTH(author_lanme), ' characters long') FROM books;
+```
 
+- You can also use SQL formatter
 
+- To change a string's case
+```
+SELECT UPPER('Hello World');
+SELECT LOWER('Hello World');
+SELECT UPPER(title) FROM books;
+SELECT CONCAT('My favourite book is the ', UPPER(title)) FROM books;
+```
 
+- To get distinct values
+```
+SELECT DISTINCT author_lname FROM books;
+SELECT DISTINCT CONCAT(author_fname, ' ', author_lname) FROM books;
+SELECT DISTINCT author_fname, author_lname FROM books;
+```
 
+- To sort results
+```
+SELECT author_lname FROM books ORDER BY author_lname; (ascending (ASC) by default)
+SELECT author_lname FROM books ORDER BY author_lname DESC;
+SELECT title, released_year, pages FROM books ORDER BY released_year;
+SELECT title, author_fname, author_lname FROM books ORDER BY 2;
+SELECT author_fname, author_lname FROM books ORDER BY author_lname, author_fname;
+```
 
+- To limit results 
+```
+SELECT title FROM books LIMIT 3;
+SELECT title, released_year FROM books ORDER BY released_year DESC LIMIT 5;
+SELECT title, released_year FROM books ORDER BY released_year DESC LIMIT 0,5; (first index and how many to go from there)
+SELECT title FROM books LIMIT 5, 15461561651321651; (gigantic number to have from 5 to the end)
+```
 
+- To search better
+```
+SELECT title, author_fname FROM books WHERE author_fname LIKE '%da%';
+SELECT title FROM books WHERE title LIKE '%the%';
+SELECT title FROM books WHERE title LIKE '%\%the%';
+SELECT title FROM books WHERE stock_quantity LIKE '____';
+```
+
+- The count function
+```
+SELECT COUNT(*) FROM books;
+SELECT COUNT(author_lname) FROM books;
+SELECT COUNT(DISTINCT author_lname) FROM books;
+SELECT COUNT(DISTINCT author_lname, author_fname) FROM books;
+SELECT COUNT(*) FROM books WHERE title LIKE '%the%';
+```
+
+- The group by
+```
+
+```
 
 
 
