@@ -277,12 +277,85 @@ SELECT COUNT(*) FROM books WHERE title LIKE '%the%';
 
 - The group by
 ```
-
+SELECT title, author_lname FROM books GROUP BY author_lname;
+SELECT author_lname, COUNT(*) FROM books GROUP BY author_lname;
+SELECT author_fname, author_lname, COUNT(*) FROM books GROUP BY author_lname;
+SELECT author_fname, author_lname, COUNT(*) FROM books GROUP BY author_lname, author_fname;
+SELECT released_year, COUNT(*) FROM books GROUP BY released_year;
+SELECT CONCAT('In', released_yaer, COUNT(*), 'book(s) released') FROM books GROUP BY released_year;
 ```
 
+- The min and max
+```
+SELECT MIN(released_year) FROM books;
+SELECT MIN(pages) FROM books;
+SELECT MAX(released_year) FROM books;
+SELECT * FROM books 
+WHERE pages = (SELECT Min(pages) FROM books); (query inside a query)
+SELECT * FROM books ORDER BY pages ASC LIMIT 1;
+```
 
+- The min, max with group by
+```
+SELECT author_fname, 
+       author_lname,
+       MIN(released_year)
+FROM   books
+GROUP BY author_lname,
+         author_fname;
 
+SELECT author_fname, author_lname, MAX(pages) FROM books GROUP BY author_lname, author_fname;
 
+SELECT 
+CONCAT(author_fname, ' ', author_lname) AS author,
+MAX(pages) AS 'longest book'
+FROM books
+GROUP BY author_lname, author_fname;
+```
+ 
+- The sum function
+```
+SELECT SUM(pages) FROM books;
+SELECT author_fname, author_lname, SUM(pages)
+FROM books
+GROUP BY author_fname, author_lname;
+```
+
+- The avg function
+```
+SELECT AVG(released_year) FROM books;
+
+SELECT AVG(stock_quantity) FROM books
+GROUP BY released_year;
+
+SELECT author_fname, author_lname, AVG(pages) FROM books
+GROUP BY author_lname, author_fname;
+```
+
+- CHAR (fixed length)
+```
+CREATE TABLE dogs (name CHAR(5), breed VARCHAR(10));
+```
+
+- DECIMAL
+```
+CREATE TABLE items (price DECIMAL(5,2));
+```
+
+- FLOAT and DOUBLE
+```
+CREATE TABLE items (price FLOAT);
+```
+
+- DATE, TIME, DATETIME
+```
+CREATE TABLE people (
+name VARCHAR(100),
+birthdate DATE,
+birthtime TIME,
+birthdt DATETIME
+);
+```
 
 
 
