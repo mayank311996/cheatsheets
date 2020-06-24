@@ -357,6 +357,514 @@ birthdt DATETIME
 );
 ```
 
+- CURDATE, CURTIME, NOW
+```
+SELECT CURDATE();
+SELECT CURTIME();
+SELECT NOW();
+```
+
+- Formatting DATES
+```
+SELECT name, DAY(birthdate) FROM people;
+SELECT name, DAYNAME(birthdate) FROM people;
+SELECT name, DAYOFYEAR(birthdate) FROM people;
+SELECT name, DAYOFWEEK(birthdate) FROM people;
+SELECT name, MONTH(birthdate) FROM people;
+SELECT name, MONTHNAME(birthdt) FROM people;
+SEELCT name, HOUR(birthtime) FROM people;
+SELECT name, MINUTE(birthtime) FROM people;
+SELECT DATE_FORMAT('2009-10-04 22:23:00', '%W %M %Y');
+```
+
+- DATE math
+```
+SELECT DATEDIFF(NOW(), birthdate) FROM people;
+SELECT birthdt, DATE_ADD(birthdt, INTERVAL 1 MONTH) FROM people;
+SEELCT birthdt, birthdt + INTERVAL 1 MONTH FROM people;
+```
+
+- TIMESTAMPS
+```
+CREATE TABLE comments(
+content VARCHAR(100),
+created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE comments2(
+content VARCHAR(100),
+changed_at TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+- Not Equal
+```
+SELECT title FROM books WHERE year != 2017;
+```
+
+- Not like
+```
+SELECT title FROM books WHERE title LIKE 'W%';
+SELECT title FROM books WHERE title NOT LIKE 'W%';
+```
+
+- Greater than, Less than, Greater than or equal to, Less than or equal to
+```
+SELECT title, released_year FROM books WHERE released_year > 2000 ORDER BY released_year;
+SELECT title, released_year FROM books WHERE released_year >= 2000 ORDER BY released_year;
+SELECT title, released_year FROM books WHERE released_year < 2000 ORDER BY released_year;
+SELECT title, released_year FROM books WHERE released_year <= 2000 ORDER BY released_year;
+SELECT 99 > 1
+```
+
+- Logical AND(&&)
+```
+SELECT * FROM books 
+WHERE author_lname='Eggers' 
+AND released_year > 2010;
+
+SELECT * FROM books 
+WHERE author_lname='Eggers' AND
+released_year > 2010 AND
+title LIKE '%novel%';
+```
+
+- Logical OR(||)
+```
+SELECT * FROM books 
+WHERE author_lname='Eggers' 
+OR released_year > 2010;
+```
+
+- BETWEEN and NOT BETWEEN
+```
+SELECT title, released_year FROM 
+books WHERE released_year >= 2004 AND
+released_yaer <= 2015;
+
+SELECT title, released_year FROM books
+WHERE released_yaer BETWEEN 2004 AND 2015;
+
+SELECT title, released_year FROM books
+WHERE released_yaer NOT BETWEEN 2004 AND 2015;
+
+SELECT name, birthdt FROM people 
+WHERE birthdt BETWEEN CAST('1980-01-01' AS DATETIME)
+AND CAST('2000-01-01' AS DATETIME);
+```
+
+- IN and NOT IN
+```
+SELECT title, author_lname FROM books
+WHERE author_lname='Carver' OR
+author_lname = 'Lahiri' OR
+author_lname = 'Smith';
+
+SELECT title, author_lname FROM books
+WHERE author_lname IN ('Carver', 'Lahiri', 'Smith');
+
+SELECT title, author_lname FROM books
+WHERE author_lname NOT IN ('Carver', 'Lahiri', 'Smith');
+
+SELECT title, released_year FROM books
+WHERE released_year >= 2000
+AND released_year NOT IN
+(2000,2002,2004,2006,2008,2010,2012,2014,2016);
+```
+
+- MODULO(%)
+```
+SELECT title, released_year FROM books
+WHERE released_year >= 2000
+AND released_year % 2 != 0
+ORDER BY released_year;
+```
+
+- CASE STATEMENTS
+```
+SELECT title, released_year,
+	CASE
+		WHEN released_year >= 2000 THEN 'Modern Lit'
+		ELSE '20th century lit'
+	END AS GENRE
+FROM books;
+
+SELECT title, stock_quantity,
+	CASE
+		WHEN stock_quantity BETWEEN 0 AND 50 THEN '*'
+		WHEN stock_quantity BETWEEN 51 AND 100 THEN '**'
+		ELSE '***'
+	END AS STOCK
+FROM books;
+
+SELECT title, stock_quantity,
+	CASE
+		WHEN stock_quantity <= 50 THEN '*'
+		WHEN stock_quantity <= 100 THEN '**'
+		ELSE '***'
+	END AS STOCK
+FROM books;
+```
+
+- One to many relationship
+- Primary key and Foreign key
+```
+CREATE TABLE customers(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	first_name VARCHAR(100),
+	last_name VARCHAR(100),
+	email VARCHAR(100)
+);
+CREATE TABLE orders(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	order_date DATE,
+	amount DECIMAL(8,2),
+	customer_id INT,
+	FOREIGN KEY(customer_id) REFERENCES customers(id)
+);
+```
+
+- Cross JOIN
+```
+SELECT * FROM orders WHERE customer_id = 
+	(
+		SELECT id FROM customers
+		WHERE last_name = 'George'
+	);
+
+SELECT * FROM customers, orders; (cross join)
+```
+
+- Inner Join
+```
+SELECT * FROM customers, orders
+WHERE customers.id = orders.customer_id; (implicit inner join)
+
+SELECT * FROM customers
+JOIN orders 
+ON customers.id = orders.customer_id; (explicit inner join) (order matters)
+
+SELECT first_name, last_name, order_date, amount
+FROM customers
+JOIN orders
+ON customers.id = orders.customer_id; (you can explicitly write INNER JOIN)
+```
+
+```
+SELECT first_name, last_name, order_date, SUM(amount) AS total_spent
+FROM customers
+JOIN orders
+	ON customers.id = orders.customer_id
+GROUP BY orders.customer_id
+ORDER BY total_spent;
+```
+
+- Left Join
+```
+SELECT * FROM customers
+LEFT JOIN orders
+	ON customers.id = orders.customer_id;
+
+SELECT first_name, last_name, order_date, amount
+FROM customers
+LEFT JOIN orders
+	ON cutomers.id = orders.customer_id;
+
+SELECT first_name, last_name, SUM(amount) FROM cutomers 
+LEFT JOIN orders
+	ON customers.id = orders.customer_id
+GROUP BY customers.id; 
+
+SELECT first_name, last_name, IFNULL(SUM(amount, 0)) AS total_spent
+FROM customers
+LEFT JOIN orders
+	ON customers.id = orders.customer_id
+GROUP BY customers.id;
+```
+
+- Right Join
+```
+SELECT * FROM customers
+RIGHT JOIN orders
+	ON customers.id = orders.customer_id; 
+
+SELECT 
+	IFNULL(first_name, 'MISSING') AS first,
+	IFNULL(last_name, 'USER') AS last,
+	order_date,
+	amount,
+	SUM(amount),
+FROM customers
+RIGHT JOIN orders
+	ON customers.id = orders.customer_id
+GROUP BY customer_id;
+
+CREATE TABLE orders(
+	id INT AUTO_INCREMENT PRIMARY_KEY,	
+	order_date DATE,
+	amount DECIMAL(8,2),
+	customer_id INT,
+	FOREIGN KEY(customer_id)
+		REFERENCES customes(id)
+		ON DELETE CASCADE
+);
+```
+
+- Many to Many
+```
+CREATE TABLE reviewers(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	first_name VARCHAR(100),
+	last_name VARCHAR(100)
+);
+CRAETE TABLE series(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(100),
+	released_year YEAR(4),
+	genre VARCHAR(100) 
+);
+CREATE TABLE reviews(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	rating DECIMAL(2,1),
+	series_id INT,
+	reviewrs_id INT,
+	FOREIGN KEY(series_id) REFERENCES series(id),
+	FOREIGN KEY(reviewer_id) REFERENCES reviewers(id)
+);
+
+SELECT title, rating
+FROM series
+JOIN reviews
+	ON series.id = reviews.series_id;
+
+SELECT series.id, title, AVG(rating) AS avg_rating
+FROM series 
+JOIN reviews
+	ON series.id = reviews.series_id
+GROUP BY series.id;
+ORDER BY avg_rating;
+
+SELECT first_name, last_name, rating
+FROM reviewers
+JOIN reviews 
+	ON reviewers.id = reviews.reviewer_id;
+
+SELECT title AS unreviewed_series
+FROM series
+LEFT JOIN reviews
+	ON series.id = reviews.series_id
+WHERE rating IS NULL;
+
+SELECT genre, ROUND(AVG(rating),2) AS avg_rating
+FROM series
+JOIN reviews
+	ON series.id = reviews.series_id
+GROUP BY genre;
+
+SELECT
+	first_name,
+	last_name,
+	COUNT(rating) AS COUNT,
+	IFNULL(MIN(rating), 0) AS MIN,
+	IFNULL(MAX(rating), 0) AS MAX,
+	IFNULL(AVG(rating), 0) AS AVG,
+	CASE
+		WHEN COUNT(rating) >= 1 THEN 'ACTIVE'
+		ELSE 'INACTIVE'
+	END AS STATUS
+FROM reviewers 
+LEFT JOIN reviews
+	ON reviewers.id = reviews.reviewer_id
+GROUP BY reviewers.id;
+
+SELECT
+	first_name,
+	last_name,
+	COUNT(rating) AS COUNT,
+	IFNULL(MIN(rating), 0) AS MIN,
+	IFNULL(MAX(rating), 0) AS MAX,
+	IFNULL(AVG(rating), 0) AS AVG,
+	IF(COUNT(rating) >= 1, 'ACTIVE', 'INACTIVE') AS STATUS 
+FROM reviewers 
+LEFT JOIN reviews
+	ON reviewers.id = reviews.reviewer_id
+GROUP BY reviewers.id;
+
+SELECT 
+	title,
+	rating,
+	CONCAT(first_name, ' ', last_name) AS reviewer
+FROM reviewers
+JOIN reviews
+	ON reviewers.id = reviews.reviewer_id
+JOIN series
+	ON series.id = reviews.series_id
+ORDER BY title;
+```
+ 
+- Instagram schema
+```
+DROP DATABASE ig_clone;
+CREATE DATABASE ig_clone;
+USE ig_clone;
+
+CREATE TABLE users(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(255) UNIQUE NOT NULL,
+	created_at TIMESTAMP DEFAULT NOW()
+); 
+
+CREATE TABLE photos(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	image_url VARCHAR(255) NOT NULL,
+	user_id INTEGER NOT NULL,
+	created_at TIMESTAMP DEFAULT NOW(),
+	FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+CREATE TABLE comments(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	comment_text VARCHAR(255 )    NOT NULL,
+	user_id INT NOT NULL,
+	photo_id INT NOT NULL,
+	created_at TIMESTAMP DEFAULT NOW(),
+	FOREIGN KEY(user_id) REFERENCES users(id),
+	FOREIGN KEY(photo_id) REFERENCES photos(id)
+);
+
+CREATE TABLE likes(
+	user_id INT NOT NULL,
+	photo_id INT NOT NULL,
+	created_at TIMESTAMP DEFAULT NOW(),
+	FOREIGN KEY(user_id) REFERENCES users(id),
+	FOREIGN KEY(photo_id) REFERENCES photos(id),
+	PRIMARY KEY(user_id, photo_id) (just to confirm not more than one likes on same photo by same user)
+); (no id here because we will be not referring that)
+
+CREATE TABLE follows(
+	follower_id INT NOT NULL,
+	followee_id INT NOT NULL,
+	created_at TIMESTAMP DEFAULT NOW(),
+	FOREIGN KEY(follower_id) REFERENCES users(id),
+	FOREIGN KEY(followee_id) REFERENCES users(id),
+	PRIMARY KEY(follower_id, followee_id)
+);
+
+CREATE TABLE tags(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	tag_name VARCHAR(255) UNIQUE,
+	created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE photo_tags(
+	photo_id INT NOT NULL,
+	tag_id INT NOT NULL,
+	FOREIGN KEY(photo_id) REFERENCES photos(id),
+	FOREIGN KEY(tag_id) REFERENCES tags(id),
+	PRIMARY KEY(photo_id, tag_id)
+);
+```
+
+- Working with Instagram schema
+```
+source starter_data.sql
+
+SELECT COUNT(*) FROM likes;
+
+SELECT * FROM users ORDER BY created_at LIMIT 5;
+
+SELECT username, DAYNAME(created_at) FROM users;
+SELECT DAYNAME(created_at) AS day,
+COUNT(*) AS total
+FROM users 
+GROUP BY day
+ORDER BY total DESC;
+
+SELECT username 
+FROM users
+LEFT JOIN photos
+	ON users.id = photos.user_id
+WHERE photos.image_url IS NULL;
+
+SELECT
+	photos.id,
+	photos.image_url,
+	COUNT(*) AS total
+FROM photos
+INNER JOIN likes
+	ON likes.photo_id = photos.id
+GROUP BY photos.id
+ORDER BY total DESC
+LIMIT 1;
+SELECT
+	username,
+	photos.id,
+	photos.image_url,
+	COUNT(*) AS total
+FROM photos
+INNER JOIN likes
+	ON likes.photo_id = photos.id
+INNER JOIN users
+	ON photos.user_id = users.id
+GROUP BY photos.id
+ORDER BY total DESC
+LIMIT 1;
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
