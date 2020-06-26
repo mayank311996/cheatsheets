@@ -613,15 +613,280 @@ rfc_model.featureImportances
 ```
 
 ```
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('tree').getOrCreate()
+
+data = spark.read.csv('College.csv', inferSchema=True, header=True)
+
+data.printSchema()
+
+data.head(1)
+
+from pyspark.ml.feature import VectorAssembler
+
+data.columns
+
+assembler = VectorAssembler(inputCols=['Apps', 'Accept', 'Enroll', 'Top10perc', 'Top25perc', 'F_Undergrad', 'P_Undergrad', 
+			    'Outstate', 'Room_Board', 'Books', 'Personal', 'PhD', 'Terminal', 'S_F_Ratio', 'perc_alumni',
+			    'Expend', 'Grad_Rate'], outputCol = 'features')
+
+output = assembler.transform(data)
+
+from pyspark.ml.feature import StringIndexer
+
+indexer = StringIndexer(inputCol='Private', outputCol='PrivateIndex')
+
+output_fixed = indexer.fit(output).transform(output)
+
+final_data = output_fixed.select('features', 'PrivateIndex')
+
+train_data, test_data = final_data.randomSplit([0.7, 0.3])
+
+from pyspark.ml.classification import DecisionTreeClassifier, GBTClassifier, RandomForestClassifier
+
+from pyspark.ml import Pipeline
+
+dtc = DecisionTreeClassifier(labelCol='PrivateIndex', featuresCol='features')
+rfc = RandomForestClassifier(labelCol='PrivateIndex', featuresCol='features')
+gbt = GBTClassifier(labelCol='PrivateIndex', featuresCol='features')
+
+dtc_model = dtc.fit(train_data)
+rfc_model = rfc.fit(train_data)
+gbt_model = gbt.fit(train_data)
+
+dtc_preds = dtc_model.transform(test_data)
+rfc_preds = rfc_model.transform(test_data)
+gbt_model = gbt_model.transform(test_data)
+
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+
+my_binary_eval = BinaryClassificationEvaluator(labelCol='PrivateIndex')
+
+print('DTC')
+print(my_binary_eval.evaluate(dtc_preds))
+
+print('RFC')
+print(my_binary_eval.evaluate(rfc_preds))
+
+rfc_preds.printSchema()
+
+gbt_preds.printSchema()
+
+my_binary_eval2 = BinaryClassificationEvaluator(labelCol='PrivateIndex', rawPredictionCol='prediction')
+
+print('GBT')
+print(my_binary_eval2.evaluate(gbt_preds)) # Try changing default parameters to improve the score
+
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+
+acc_eval = MulticlassClassificationEvaluator(labelCol = 'PrivateIndex', metricName='accuracy')
+
+rfc_acc = acc_eval.evaluate(rfc_preds)
+```
+
+```
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName('tree_consult').getOrCreate()
+
+data = spark.read.csv('dog_food.csv', inferSchema=True, header=True)
+
+data.head(1)
+
+from pyspark.ml.feature import VectorAssembler
+
+data.columns
+
+assembler = VectorAssembler(inputCols=['A', 'B', 'C', 'D'], outputCol= 'features')
+
+output = assembler.transform(data)
+
+from pyspark.ml.classification import RandomForestClassfier
+
+rfc = RandomForestClassifier(labelCol='Spoiled', featuresCol='features')
+
+output.printSchema()
+
+final_data = output.select(['features', 'Spoiled'])
+
+final_data.show()
+
+rfc_model = rfc.fit(final_data)
+
+final_data.head(1)
+
+rfc_model.featureImportance
+```
+
+```
+from pyspark.sql import SparkSession
+
+spark = SaprkSession.builder.appName('cluster').getOrCreate()
+
+from pyspark.ml.clustering import KMeans
+
+dataset = spark.read.format('libsvm').load('sample_kmeans_data.txt')
+
+dataset.show()
+
+final_data = dataset.select('features')
+
+final_data.show()
+
+kmeans = KMeans().setK(2).setSeed(1)
+
+model = kmeans.fit(final_data)
+
+wssse = model.computeCost(final_data)
+
+print(wssse)
+
+centers = model.clusterCenters()
+
+centers
+
+results = model.transform(final_data)
+
+results.show()
+```
+
+```
+from spark.sql import SparkSession
+
+spark = SparkSession.builder.appName('cluster').getOrCreate()
+
+dataset = spark.read.csv('seeds_dataset.csv'. inferSchema=True, header=True)
+
+dataset.printSchema()
+
+dataset.head(1)
+
+from pyspark.ml.clustering import KMeans
+
+from pyspark.ml.feature import VectorAssembler
+
+dataset.columns
+
+assembler = VectorAssembler(inputCols=dataset.columns, outputCol='features')
+
+final_data = assembler.transform(dataset)
+
+final_data.printSchema()
+
+from pyspark.ml.feature import StandardScaler
+
+scaler = StandardScaler(inputCol='features', outputCol='scaledFeatures')
+
+scaler_model = scaler.fit(final_data)
+
+final_data = scaler_model.transform(final_data)
+
+final_data.head(1)
+
+kmeans = KMeans(featuresCol='scaledFeatures',k=3)
+
+model = kmeans.fit(final_data)
+
+print("WSSSE")
+print(model.computeCost(final_data))
+
+centers = model.clusterCenters()
+
+print(centers)
+
+model.transform(final_data).select('prediction').show()
+```
+
+```
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('cluster').getOrCreate()
+
+dataset = spark.read.csv('hack_data.csv', inferSchema=True, header=True)
+
+dataset.head()
+
+from pyspark.ml.clustering import KMeans
+
+from pyspark.ml.feature import VectorAssembler
+
+dataset.columns
+
+feat_cols = ['Session_Connection_Time', 'Bytes Transferred', 'Kali_Trace_Used', 'Servers_Corrupted', 'Pages_Corrupted', 	   	       'WPM_Typing_Speed']
+
+assembler = VectorAssembler(inputCols=feat_cols, outputCol = 'features')
+
+final_data = assembler.transform(dataset)
+
+final_data.printSchema()
+
+from pyspark.ml.feature import StandardScaler
+
+scaler = StandardScaler(inputCol='features', outputCol='scaledFeatures')
+
+scaler_model = scaler.fit(final_data)
+
+cluster_final_data = scaler_model.transform(final_data)
+
+cluster_final_data.printSchema()
+
+kmeans2 = KMeans(featuresCol='scaledFeatures', k=2)
+kmeans3 = KMeans(featuresCol='scaledFeatures', k=3)
+
+model_k2 = kmeans2.fit(cluster_final_data)
+model_k3 = kmeans3.fit(cluster_final_data)
+
+model_k3.transform(cluster_final_data).select('prediction').show()
+
+model_k3.transform(cluster_final_data).groupBy('prediction').count().show()
+
+model_k2.transform(cluster_final_data).groupBy('prediction').count().show()
+```
+
+```
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('rec').getOrCreate()
+
+from pyspark.ml.recommendation import ALS
+
+from pyspark.ml.evaluation import RegressionEvaluator
+
+data = spark.read.csv('movielens_ratings.csv', inferSchema=True, header=True)
+
+data.show()
+
+data.describe().show()
+
+training, test = data.randomSplit([0.8, 0.2])
+
+als = ALS(maxIter=5, regParam=0.01, userCol='userId',itemCol='movieId', ratingCol='rating')
+
+model = als.fit(training)
+
+predictions = model.transform(test)
+
+predictions.show()
+
+evaluator = RegressionEvaluator(metricName='rmse',labelCol='rating',predictionCol='prediction')
+
+rmse = evaluator.evaluate(predictions)
+
+print('RMSE')
+print(rmse)
+
+single_user = test.filter(test['userId']==11).select(['movieId', 'userId'])
+
+single_user.show()
+
+recommendations = model.transform(single_user)
+
+recommendations.orderBy('prediction', ascending=False).show()
+```
 
 ```
 
-
-
-
-
-
-
+```
 
 
 
