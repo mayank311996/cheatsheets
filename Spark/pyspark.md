@@ -234,9 +234,145 @@ new.select(['Year', format_number('Average Closing Price', 2).alias('Avg Close')
 ```
 
 ```
- 
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName('lreg').getOrCreate()
+from pyspark.ml.regression import LinearRegression
+
+training = spark.read.format('libsvm').load('sample_linear_regression_data.txt')
+
+training.show()
+
+lr = LinearRegression(featuresCol = 'features', labelCol = 'label', predictionCol = 'prediction')
+
+lrModel = lr.fit(training)
+
+lrModel.coefficients
+
+lrModel.intercept
+
+training_summary = lrModel.summary
+
+training_summary.r2
+
+training_summary.rootMeanSquareError
+
+all_data = spark.read.format('libsvm').load('sample_linear_regression_data.txt')
+
+split_object = all_data.randomSplit([0.7, 0.3])
+
+split_object
+
+train_data, test_data = all_data.randomSplit([0.7, 0.3])
+
+train_data.describe().show()
+
+test_data.describe().show()
+
+correct_model = lr.fit(train_data)
+
+test_results = correct_model.evaluate(test_data)
+
+test_results.residuals.show()
+
+test_results.rootMeanSquareError
+
+unlabeled_data = test_data.select('features')
+
+unlabeled_data.show() 
+
+predictions = correct_model.transform(unlabeled_data)
+
+predictions.show()
 ```
 
+```
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('lr_example').getOrCreate()
+
+from pyspark.ml.regression import LinearRegression
+
+data = spark.read.csv('Ecommerce_Customers.csv', inferSchema=True, header=True)
+
+data.printSchema()
+
+data.head(1)
+
+for item in data.head(1)[0]:
+	print(item)
+
+from pyspark.ml.linalg import Vectors
+from pyspark.ml.feature import VectorAssembler
+
+data.columns 
+
+assembler = VectorAssembler(inputCols = ['Avg Session Length', 'Time on App', 'Time on Website', 'Length of Memebership'],
+			    outputCol = 'features')
+
+output = assembler.transform(data)
+
+output.select('features').show()
+
+output.head(1)
+
+final_data = output.select(['features', 'Yearly Amount Spent'])
+
+final_data.show()
+
+train_data, test_data = final_data.randomSplit([0.7, 0.3])
+
+train_data.describe().show()
+
+test_data.describe().show()
+
+lr = LienarRegression(labelCol = 'Yearly Amount Spent')
+
+lr_model = lr.fit(train_data)
+
+test_results = lr_model.evaluate(test_data)
+
+test_results.residuals.show()
+
+test_results.rootMeanSquaredError
+
+test_results.r2
+
+final_data.describe().show()
+
+unlabeled_data = test_data.select('features')
+
+unlabeled_data.show()
+
+predictions = lr_model.transform(unlabeled_data)
+
+predictions.show()
+```
+
+```
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('cruise').getOrCreate()
+
+df = spark.read.csv('cruise_ship_info.csv', inferSchema=True, header=True)
+
+df.printSchema()
+
+for ship in df.head(5):
+	print(ship)
+	print('\n')
+
+df.groupBy('Cruise_line').count().show()
+
+from pyspark.ml.feature import StringIndexer
+
+indexer = StringIndexer(inputCol = 'Crusie_line', outputCol = 'Cruise_cat')
+
+indexed = indexer.fit(df).transform(df)
+
+indexed.head(3)
+
+ 
+```
 
 
 
