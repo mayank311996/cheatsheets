@@ -371,13 +371,207 @@ indexed = indexer.fit(df).transform(df)
 
 indexed.head(3)
 
- 
+from pyspark.ml.linalg import Vectors
+from pyspark.ml.feature import VectorAssembler
+
+indexed.columns
+
+assembler = VectorAssembler(inputCols=['Age', 'Tonnage', 'passengers', 'length', 'cabins', 'passenger_density', 'crew', 'cruise_cat'],
+			    outputCol=['features'])
+
+output = assembler.transform(indexed)
+output.select('features', 'crew').show()
+
+final_data = output.select(['features', 'crew'])
+
+train_data, test_data = final_data.randomSplit([0.7, 0.3])
+
+train_data.describe().show()
+
+test_data.describe().show()
+
+from pyspark.ml.regression import LinearRegression
+
+ship_lr = LinearRegression(labelCol = 'crew')
+
+trained_ship_model = ship_lr.fit(train_data)
+
+ship_results = trained_ship_model.evaluate(test_data)
+
+ship_results.rootMeanSquaredError
+
+train_data.describe().show()
+
+ship_results.r2
+
+ship_results.meanSquaredError
+
+ship_results.meanAbsoluteError
+
+from pyspark.sql.functions import corr
+
+df.select(corr('crew', 'passengers')).show()
+
+df.select(corr('crew', 'cabins')).show()  
 ```
 
+```
+from pyspark.sql import SparkSession
 
+spark = SparkSession.builder.appName('mylogreg').getOrCreate()
 
+from pyspark.ml.classification import LogisticRegression
 
+my_data = spark.read.format('libsvm').load('sample_libsvm_data.txt')
 
+my_data.show()
+
+my_log_reg_model = LogisticRegression()
+
+fitted_logreg = my_log_reg_model.fit(my_data)
+
+log_summary = fitted_logreg.summary
+
+log_summary.predictions.printSchema()
+
+log_summary.predictions.show()
+
+lr_train, lr_test = my_data.randomSplit([0.7, 0.3])
+
+final_model = LogisticRegression()
+
+fit_final = final_model.fit(lr_train)
+
+predictions_and_labels = fit_final.evaluate(lr_test)
+
+predictions_and_labels.predictions.show() 
+
+from pyspark.ml.evaluation import BinaryClassificationEvaluator, MulticlassClassificationEvaluator
+
+my_eval = BinaryClassificationEvaluator()
+
+my_final_roc = my_eval.evaluate(prediction_and_labels.predictions)
+
+my_final_roc
+```
+
+```
+(In databricks)
+
+df = spark.sql("SELECT * FROM titanic_csv")
+
+df.printSchema()
+
+df.columns
+
+my_cols = df.select(['Survived', 'Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked'])
+
+my_final_data = my_cols.na.drop()
+
+from pyspark.ml.feature import VectorAssembler, VectorIndexer, OneHotEncoder, StringIndexer
+
+gender_indexer = StringIndexer(inputCol = 'Sex', outputCol = 'SexIndex')
+
+gender_encoder = OneHotEncoder(inputCol = 'SexIndex', outputCol = 'SexVec')
+
+embark_indexer = StringIndexer(inputCol = 'Embarked', outputCol = 'EmbarkIndex')
+
+embark_encoder = OneHotEncoder(inputCol = 'EmbarkIndex', outputCol = 'EmbarkVec')
+
+assembler = VectorAssembler(inputCols = ['Pclass', 'SexVec', 'EmbarkVec', 'Age', 'SibSp', 'Parch', 'Fare'],
+			    outputCol = 'features')
+
+from pyspark.ml.classification import LogisticRegression
+
+from pyspark.ml import Pipeline
+
+log_reg_titanic = LogisticRegression(featuresCol='features', labelCol='Survived')
+
+pipeline = Pipeline(stages=[gender_indexer, embark_indexer, gender_encoder, embark_encoder, assembler, log_reg_titanic])
+
+train_data, test_data = my_final_data.randomSplit([0.7, 0.3])
+
+fit_model = pipeline.fit(train_data)
+
+results = fit_model.transform(test_data)
+
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+
+my_eval = BinaryClassificationEvaluator(rawPredictionCol='prediction', labelCol='Survived')
+
+results.select('Survived', 'prediction').show()
+
+AUC = my_eval.evaluate(results)
+
+AUC 
+```
+
+```
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('logregconsult').getOrCreate()
+
+data = spark.read.csv('customer_churn.csv', inferSchema=True, header=True)
+
+data.printSchema()
+
+data.descibe().show()
+
+data.columns
+
+from pyspark.ml.feature import VectorAssembler
+
+assembler = VectorAssembler(inputCols = ['Age', 'Total_Purchase', 'Account_Manager', 'Years', 'Num_Sites'],
+			    outputCol = 'features')
+
+output = assembler.transform(data)
+
+final_data = output.select('features', 'churn')
+
+train_churn,test_churn = final_data.randomSplit([0.7, 0.3])
+
+from pyspark.ml.classification import LogisticRegression
+
+lr_churn = LogisticRegression(labelCol='churn')
+
+fitted_churn_model = lr_churn.fit(train_churn)
+
+training_sum = fitted_churn_model.summary
+
+training_sum.predictions.describe().show()
+
+from pyspark.ml.evaluation import BinaryClassificationEvaluation
+
+pred_and_labels = fitted_churn_model.evaluate(test_churn)
+
+pred_and_labels.predictions.show()
+
+churn_eval = BinaryClassificationEvaluator(rawPredictionCol='prediction', labelCol='churn')
+
+auc = churn.eval.evaluate(pred_and_labels.predictions)
+
+auc
+
+final_lr_model = lr_churn.fit(final_data)
+
+new_customers = spark.read.csv('new_customers.csv', inferSchema=True, header=True)
+
+new_customers.printSchema()
+
+test_new_customers = assembler.transform(new_customers)
+
+test_new_customers.printSchema()
+
+final_results = final_lr_model.transform(test_new_customers)
+
+final_results.select('Company','prediction').show()
+
+test_new_customers.describe().show()
+```
+
+```
+
+```
 
 
 
