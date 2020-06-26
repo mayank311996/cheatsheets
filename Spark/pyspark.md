@@ -885,12 +885,120 @@ recommendations.orderBy('prediction', ascending=False).show()
 ```
 
 ```
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('nlp').getOrCreate()
+
+from pyspark.ml.feature import Tokenizer, RegexTokenizer
+
+from pyspark.sql.functions import col, udf
+from pyspark.sql.types import IntegerType
+
+sen_df = spark.createDataFrame([
+	(0, 'Hi I heard about Spark'),
+	(1, 'I wish java could use case classes'),
+	(2, 'Logistic,regression,models,are,neat')
+], ['id', 'sentence'])
+
+sen_df.show()
+
+tokenizer = Tokenizer(inputCol='sentence', outputCol='words')
+
+regex_tokenizer = RegexTokenizer(inputCol='sentence', outputCol='words', pattern='\\W')
+
+count_tokens = udf(lambda words:len(words), IntegerType())
+
+tokenized = tokenizer.transform(sen_df)
+
+tokenized.show()
+
+tokenized.withColumn('tokens', count_tokens(col('words'))).show()
+
+rg_tokenized = regex_tokenizer.transform(sen_df)
+
+rg_tokenized.show()
+
+rg_tokenized.withColumn('tokens', count_tokens(col('words'))).show()
+
+from pyspark.ml.feature import StopWordsRemover
+
+sentenceDataFrame = spark.createDataFrame([
+	(0,['I','saw','the','green','horse']),
+	(1,['Mary','had','a','little','lamb'])],
+	['id','tokens']
+)
+
+remover = StopWordsRemover(inputCol='tokens', outputCol='filtered')
+
+remover.transform(sentenceDataFrame).show()
+
+from pyspark.ml.feature import NGram
+
+wordDataFrame = spark.createDataFrame([	
+	(0, ['Hi', 'I', 'heard', 'about', 'Spark']),
+	(1, ['I', 'wish', 'Java', 'could', 'use', 'case', 'classes']),
+	(2, ['Logistic, 'regression', 'models', 'are', 'neat'])
+], ['id', 'words'])
+
+ngram = NGram(n=2, inputCol='words', outputCol='grams')
+
+ngram.transform(wordDataFrame).select('grams').show(truncate=False)
+```
+
+```
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('nlp').getOrCreate()
+
+from pyspark.ml.feature import HashingTF, IDF, Tokenizer
+
+sentenceData = spark.createDataFrame([
+	(0.0, 'Hi I heard about Spark'),
+	(0.0, 'I wish Java could use case classes'),
+	(1.0, 'Logistic regression models are neat')
+], ['label', 'sentence'])
+
+sentenceData.show()
+
+tokenizer = Tokenizer(inputCol='sentence', outputCol='words')
+
+words_data = tokenizer.transform(sentenceData)
+
+words_data.show(truncate=False)
+
+hashing_tf = HashingTF(inputCol='words', outputCol='rawFeatures')
+
+featurized_data = hashing_tf.transform(words_data)
+
+idf = IDF(inputCol='rawFeatures', outputCol='features')
+
+idf_model = idf.fit(featurized_data)
+
+rescaled_data = idf_mdoel.transform(featurized_data)
+
+rescaled_data.select('label', 'features').show()
+
+from pyspark.ml.feature import CountVectorizer
+
+df = spark.createDataFrame([
+	(0, "a b c".split(" ")),
+	(1, "a b b c a".split(" "))
+], ["id", "words"])
+
+df.show()
+
+cv = CountVectorizer(inputCol='words', outputCol='features', vocabSize=3, minDF=2.0)
+
+model = cv.fit(df)
+
+result = model.transform(df)
+
+result.show(truncate=False) 
+```
 
 ```
 
-
-
-
+```
 
 
 
