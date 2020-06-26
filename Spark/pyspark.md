@@ -570,12 +570,51 @@ test_new_customers.describe().show()
 ```
 
 ```
+from pyspark.sql import SparkSession
+
+spark = SaprkSession.builder.appName('mytree').getOrCreate()
+
+from pyspark.ml import Pipeline
+
+from pyspark.ml.classification import RandomForestClassifier, GBTClassifier, DecisionTreeClassifier
+
+data = spark.load.format('libsvm').load('sample_libsvm_data.txt')
+
+data.show()
+
+train_data, test_data = data.randomSplit([0.7, 0.3])
+
+dtc = DecisionTreeClassifier()
+rfc = RandomForestClassifier()
+gbt = GBTClassifier()
+
+dtc_model = dtc.fit(train_data)
+rfc_model = rfc.fit(train_data)
+gbt_model = gbt.fit(train_data)
+
+dtc_preds = dtc_model.transform(test_data)
+rfc_preds = rfc_model.transform(test_data)
+gbt_preds = gbt_model.transform(test_data)
+
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+
+acc_eval = MulticlassClassificationEvaluator(metricName='accuracy')
+
+print('DTC ACCURACY:')
+acc_eval.evaluate(dtc_preds)
+
+print('RFC ACCURACY:')
+acc_eval.evaluate(rfc_preds)
+
+print('GBT ACCURACY:')
+acc_eval.evaluate(gbt_preds)
+
+rfc_model.featureImportances
+```
 
 ```
 
-
-
-
+```
 
 
 
