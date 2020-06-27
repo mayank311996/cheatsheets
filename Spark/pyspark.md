@@ -6,8 +6,38 @@
 Collect --> Analyze --> Clean --> Organize --> Transform --> Insight
 ```
 
+- Spark, Spark Streaming, Spark ML, Spark GraphX
+
+```
+Code --> Driver Program (SparkContext) --> Cluster Manager(YARN, mesos, kubernetes, etc.) --> Worker Nodes
+```
+
+- SparkXGBoost
+
+## Databricks
+
+- Data Analysis and data cleaning (in databricks)
+
+```
+\# File location and type
+file_location = 'LoanStats_1028Q4.csv'
+file_type = 'csv'
+
+\# CSV options
+infer_schema = 'true'
+first_row_is_header = 'true'
+delimiter = ','
+
+df = spark.read.format(file_type) \
+	.option('inferSchema', infer_schema) \
+	.option('header', first_row_is_header) \
+	.option('sep', delimiter) \
+	.load(file_location)
+
+display(df)
 
 
+```
 
 
 
@@ -997,13 +1027,109 @@ result.show(truncate=False)
 ```
 
 ```
+from pyspark.sql import SparkSession
 
+spark = SparkSession.builder.appName('nlp').getOrCreate()
+
+data = spark.read.csv('SMSSpamCollection', inferSchema=True, header=True, sep='\t')
+
+data.show()
+
+data = data.withColumnRenmaed('_c0', 'class').withColumnRenamed('_c1','text')
+
+data.show()
+
+from pyspark.sql.functions import length
+
+data = data.withColumn('length', length(data['text']))
+
+data.show()
+
+data.groupBy('class').mean().show()
+
+from pyspark.ml.feature import (Tokenizer, StopWordsRemover, CountVectorizer, IDF, StringIndexer)
+
+tokenizer = Tokenizer(inputCol='text', outputCol='token_text')
+stop_remove = StopWordsRemover(inputCol='token_text', outputCol='stop_token')
+count_vec = CountVectorizer(inputCol='stop_token', outputCol='c_vec')
+idf = IDF(inputCol='c_vec', outputCol='tf_idf')
+ham_spam_to_numeric = StringIndexer(inputCol='class', outputCol='label')
+
+from pyspark.ml.feature import VectorAssembler
+
+clean_up = VectorAssembler(inputCols=['tf_idf','length'], outputCol = 'features')
+
+from pyspark.ml.classification import NaiveBayes
+
+nb = NaiveBayes()
+
+from pyspark.ml import Pipeline
+
+data_prep_pipe = Pipeline(stages=[ham_spam_to_numeric, tokenizer, stop_remove, count_vec, idf, clean_up])
+
+cleaner = data_prep_pipe.fit(data)
+
+clean_data = cleaner.transform(data)
+
+clean_data = clean_data.select(['features','label'])
+
+clean_data.show()
+
+training, test = clean_data.randomSplit([0.7, 0.3])
+
+spam_detector = nb.fit(training)
+
+data.printSchema()
+
+test_results = spam_detector.transform(test)
+
+test_results.show()
+
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+
+acc_eval = MulticlassClassificationEvaluator()
+
+acc = acc_eval.evaluate(test_results)
+
+print('ACC of NB Model')
+print(acc)
 ```
 
+```
+from pyspark import SparkContext
 
+from pyspark.streaming import StreamingContext
 
+sc = SparkContext('local[2]',NetworkWordCount)
 
+ssc = StreamingContext(sc,1)
 
+lines = ssc.socketTextStream('localhost',9999)
+
+words = lines.flatMap(lambda line: line.split(' '))
+
+pairs = words.map(lambda word:(word, 1))
+
+word_counts = pairs.reduceByKey(lambda num1, num2: num1+num2)
+
+words_counts.pprint()
+
+ssc.start()
+```
+
+```
+import tweepy
+from tweepy import OAuthHandler, Stream
+
+From tweepy.streaming import StreamListener
+import socket
+import json
+
+consumer_key = ''
+consumer_secret = ''
+access_token = ''
+access_secret = ''
+```
 
 
 
