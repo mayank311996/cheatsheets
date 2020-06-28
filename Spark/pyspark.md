@@ -36,17 +36,39 @@ df = spark.read.format(file_type) \
 
 display(df)
 
+df.count()
 
+df.printSchema()
+
+temp_table_name = 'loanstats'
+df.createOrReplaceTempView(temp_table_name)
+
+%sql
+select * from loanstats
+
+%sql
+select count(*) from loanstats
+
+df.describe().show()
+
+df_sel = df.select("term", "home_ownership", "grade", "purpose", "int_rate", "addr_state", "loan_status", "application_type",
+	"loan_amnt", "emp_length", "annual_inc", "dti", "delinq_2yrs", "revol_util", "total_acc", "num_tl_90g_dpd_24m",
+	"dti_joint")
+
+df_sel.describe().show()
+
+df_sel.describe("term", "loan_amnt", "emp_length", "annual_inc", "dti", "delinq_2yrs", "revol_util", "total_acc").show()
+
+df_sel.cache()
+
+df_sel.describe("loan_amnt", "emp_length", "dti", "delinq_2yrs", "revol_util", "total_acc").show()
+
+%sql
+select distinct emp_length from loanstats limit 50
+
+from pyspark.sql.functions import regexp_replace, regexp_extract
+from pyspark.sql.functions import col
 ```
-
-
-
-
-
-
-
-
-
 
 
 
