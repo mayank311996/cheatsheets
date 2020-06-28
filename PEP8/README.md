@@ -1,6 +1,8 @@
 # PEP8 
 
-#### The guide is located [here](https://realpython.com/python-pep8/).
+#### The guide to PEP9 is located [here](https://realpython.com/python-pep8/).
+
+#### The guide to code quality is located [here](https://realpython.com/python-code-quality/).
 
 The summary of PEP8 standard is given below for a quick reference.
 
