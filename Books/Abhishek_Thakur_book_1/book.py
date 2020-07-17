@@ -184,7 +184,69 @@ plt.xlabel("max_depth", size=20)
 plt.ylabel("accuracy", size=20)
 plt.show()
 
+### K-fold using sklearn
+import pandas as pd
+from sklearn import model_selection
 
+if __name__ == "__main__":
+    df = pd.read_csv("train.csv")
+    # Create a new column called Kfold and fill it with -1
+    df["kfold"]=-1
+    # Randomize the rows of the data
+    df = df.sample(frac=1).reset_index(drop=True)
+    # K-fold class
+    kf = model_selection.KFold(n_splits=5)
+    # Filling new k-fold column
+    for fold, (trn_, val_) in enumerate(kf.split(X=df)):
+        df.loc[val_, 'kfold'] = fold
+    # Save the new csv with kfold column
+    df.to_csv("train_folds.csv", index=False)
+
+### Stratified Kfold using sklearn
+import pandas as pd
+from sklearn import model_selection
+
+if __name__ == "__main__":
+    df = pd.read_csv("train.csv")
+    # Create a new column called Kfold and fill it with -1
+    df["kfold"]=-1
+    # Randomize the rows of the data
+    df = df.sample(frac=1).reset_index(drop=True)
+    # Fetch targets 
+    y = df.targets.values
+    # K-fold class
+    kf = model_selection.StratifiedKFold(n_splits=5)
+    # Filling new k-fold column
+    for fold, (trn_, val_) in enumerate(kf.split(X=df, y=y)):
+        df.loc[val_, 'kfold'] = fold
+    # Save the new csv with kfold column
+    df.to_csv("train_folds.csv", index=False)
+
+### Checking the distribution of labels for wine dataset
+b = sns.countplot(x='quality', data=df)
+b.set_xlabel("quality", fontsize=20)
+b.set_ylabel("count", fontsize=20)
+
+### Stratified Kfold using sklearn for Regression
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 
 
