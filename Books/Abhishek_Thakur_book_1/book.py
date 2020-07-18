@@ -478,7 +478,55 @@ for thresh in thresholds:
     tpr_list.append(temp_tpr)
     fpr_list.append(temp_fpr)
 
-    
+# Plotting 
+plt.figure(figsize=(7, 7))
+plt.fill_between(fpr_list, tpr_list, alpha=0.4)
+plt.plot(fpr_list, tpr_list, lw=3)
+plt.xlim(0, 1.0)
+plt.ylim(0, 1.0)
+plt.xlabel('FPR', fontsize=15)
+plt.ylabel('TPR', fontsize=15)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
