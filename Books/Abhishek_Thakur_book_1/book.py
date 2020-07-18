@@ -297,6 +297,172 @@ l1 = [0,1,1,1,0,0,0,1]
 l2 = [0,1,0,1,0,1,0,0]
 metrics.accuracy_score(l1, l2)
 
+### TP, FP, FN, TN custom implementation (Only for binary classification)
+def true_positive(y_true, y_pred):
+    """
+    Function to calculate True Positives 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: number of True Positives
+    """
+    # Initialize 
+    tp = 0
+    for yt, yp in zip(y_true, y_pred):
+        if yt == 1 and yp == 1:
+            tp += 1
+    return tp
+
+def false_positive(y_true, y_pred):
+    """
+    Function to calculate False Positives 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: number of False Positives
+    """
+    # Initialize
+    fp = 0
+    for yt, yp in zip(y_true, y_pred):
+        if yt == 0 and yp == 1:
+            fp += 1
+    return fp
+
+def false_negative(y_true, y_false):
+    """
+    Function to calculate False Negatives  
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: number of False Negatives
+    """
+    # Initialize 
+    fn = 0
+    for yt, yp in zip(y_true, y_pred):
+        if yt == 1 and yp == 0:
+            fn += 1 
+    return fn
+
+def true_negative(y_true, y_pred):
+    """
+    Function to calculate True Negatives 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: number of True Negatives
+    """
+    # Initialize
+    tn = 0
+    for yt, yp in zip(y_true, y_pred):
+        if yt == 0 and yp == 0:
+            tn += 1
+    return tn
+
+### Accuracy function by using TP,TN,FP,FN
+def accuracy_v2(y_true, y_pred):
+    """
+    Function to calculate accuracy using TP,TN,FP,FN 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: accuracy score
+    """
+    tp = true_positive(y_true, y_pred)
+    fp = false_positive(y_true, y_pred)
+    fn = false_negative(y_true, y_pred)
+    tn = true_negative(y_true, y_pred)
+    accuracy_score = (tp+tn)/(tp+fp+fn+tn)
+    return accuracy_score
+
+### Custom Precision function
+def precision(y_true, y_pred):
+    """
+    Function to calculate Precision 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: precision score
+    """
+    tp = true_positive(y_true, y_pred)
+    fp = false_positive(y_true,y_pred)
+    precision = tp/(tp+fp)
+    return precision
+
+### Custom Recall function
+def recall(y_true, y_pred):
+    """
+    Function to calculate recall 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: recall score
+    """
+    tp = true_positive(y_true, y_pred)
+    fn = false_negative(y_true, y_pred)
+    recall = tp/(tp+fn)
+    return recall
+
+### Precision-Recall curve
+precisions = []
+recalls = []
+# Some assumed thresholds 
+thresholds = [0.04909370, 0.05934905, 0.079377,
+              0.08584789, 0.11114267, 0.11639273, 
+              0.15952202, 0.17554844, 0.18521942, 
+              0.27259048, 0.31620708, 0.33056815, 
+              0.39095342, 0.61977213]
+# For every threshold value calculate precision and recall
+for i in thresholds:
+    temp_prediction = [1 if x>=i else 0 for x in y_pred]
+    p = precision(y_true, temp_prediction)
+    r = recall(y_true, temp_prediction)
+    precisions.append(p)
+    recalls.append(r)
+# Plotting 
+plt.figure(figsize=(7,7))
+plt.plot(recalls, precisions)
+plt.xlabel('Recall', fontsize=15)
+plt.ylabel('Precision', fontsize=15)
+
+### Custom F1 score function
+def f1(y_true, y_pred):
+    """
+    Function to calculate F1 score 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: F1 score
+    """
+    p = precision(y_true, y_pred)
+    r = recall(y_true, y_pred)
+    score = 2*p*r/(p+r)
+    return score
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
