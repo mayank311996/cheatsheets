@@ -228,6 +228,95 @@ b.set_xlabel("quality", fontsize=20)
 b.set_ylabel("count", fontsize=20)
 
 ### Stratified Kfold using sklearn for Regression
+import numpy as np
+import pandas as pd
+
+from sklearn import datasets 
+from sklearn import model_selection
+
+def create_folds(data):
+    # Create a new column kfold and fill it with -1
+    data["kfold"] = -1
+    # Randomize the rows of data
+    data = data.sample(frac=1).reset_index(drop=True)
+    # Calculate the number of bins by Sturge's rule and take the floor of the value
+    num_bins = np.floor(1+np.log2(len(data)))
+    # bin targets 
+    data.loc[:, "bins"] = pd.cut(data["target"], bins=num_bins, labels=Fasle)
+    # kfold class
+    kf = model_selection.StratifiedKFold(n_splits=5)
+    # Filling kfold column
+    for f, (t_, v_) in enumerate(kf.split(X=data, y=data.bins.values)):
+        data.loc[v_, 'kfold'] = f
+    # Drop the bins column
+    data = data.drop("bins", axis=1)
+    # Return dataframe with kfolds
+    return data
+
+if __name__ == "__main__":
+    # Creating a sample dataset with 15000 samples and 100 features and 1 target
+    X, y = datasets.make_regression(
+        n_samples=15000, n_features=100, n_targets=1
+    )
+    # Create dataframe out of our numpy arrays
+    df = pd.DataFrame(
+        X,
+        columns=[f"f_{i}" for i in range(X.shape[1])]
+    )
+    df.loc[:, "target"] = y
+    # create folds
+    df = create_folds(df)
+
+
+
+
+#################################################################################################
+# Chapter 4: Evaluation Metrics
+#################################################################################################
+
+### Custom code of accuracy
+def accuracy(y_true, y_pred):
+    """
+    Function to calculate accuracy 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: accuracy score
+    """
+    # Counter initialization
+    correct_counter = 0
+    # loop over all element of y_true and y_pred together using zip
+    for yt, yp in zip(y_truem y_pred):
+        if yt == yp:
+            correct_counter += 1
+    # return accuracy
+    return correct_counter/len(y_true)
+
+### Accuracy using sklearn
+from sklearn import metrics 
+l1 = [0,1,1,1,0,0,0,1]
+l2 = [0,1,0,1,0,1,0,0]
+metrics.accuracy_score(l1, l2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
 
