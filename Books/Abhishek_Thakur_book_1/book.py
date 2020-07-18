@@ -572,6 +572,167 @@ def macro_precision(y_true, y_pred):
     precision /= num_classes
     return precision
 
+### Custom Micro-averaged precision
+import numpy as np
+
+def micro_precision(y_true, y_pred):
+    """
+    Function to calculate Micro-averaged precision 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: micro-averaged precision
+    """
+    # Find number of classes by taking length of unique values in true list
+    num_classes = len(np.unique(y_true))
+    # Initialize tp and fp to 0
+    tp = 0
+    fp = 0
+    # loop over all classes
+    for class_ in range(num_classes):
+        # all classes accept current are considered negative
+        temp_true = [1 if p == class_ else 0 for p in y_true]
+        temp_pred = [1 if p == class_ else 0 for p in y_pred]
+        # calculate true positive for current class and update overall tp
+        tp += true_positive(temp_true, temp_pred)
+        # calculate false positive for current class and update overall fp
+        fp += false_positive(temp_true, temp_pred)
+    # calculate and return overall precision
+    precision = tp/(tp+fp)
+    return precision
+
+### Custom Weighted-averaged precision
+from collections import Counter
+import numpy as np
+
+def weighted_precision(y_true, y_pred):
+    """
+    Function to calculate Weighted-averaged precision 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: weighted-averaged precision
+    """
+    # Find number of classes by taking length of unique values in true list
+    num_classes = len(np.unique(y_true))
+    # create class:sample count dictionary, it looks something like this: {0:20, 1:15, 2:21}
+    class_counts = Counter(y_true)
+    # Initialize precision to 0
+    precision = 0
+    # loop over all classes
+    for class_ in range(num_classes):
+        # all classes accept current are considered negative
+        temp_true = [1 if p == class_ else 0 for p in y_true]
+        temp_pred = [1 if p == class_ else 0 for p in y_pred]
+        # calculate tp and fp for current class
+        tp = true_positive(temp_true, temp_pred)
+        fp = false_positive(temp_true, temp_pred)
+        # calculate precision of current class
+        temp_precision = tp/(tp+fp)
+        # multiply precision with count of samples in class
+        weighted_precision = class_counts[class_]*temp_precision
+        # add to overall precision
+        precision += weighted_precision
+    # calculate and return overall precision
+    overall_precision = precision/len(y_true)
+    return overall_precision
+
+### Macro, micro and weighted precision from sklearn
+from sklearn import metrics
+
+y_true = [0, 1, 2, 0, 1, 2, 0, 2, 2]
+y_pred = [0, 2, 1, 0, 2, 1, 0, 0, 2]
+
+metrics.precision_score(y_true, y_pred, average="macro")
+metrics.precision_score(y_true, y_pred, average="micro")
+metrics.precision_score(y_true, y_pred, average="weighted")
+
+### Custom weighted-averaged f1
+from collections import Counter
+import numpy as np
+
+def weighted_f1(y_true, y_pred):
+    """
+    Function to calculate Weighted-averaged F1
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: weighted-averaged F1
+    """
+    # Find number of classes by taking length of unique values in true list
+    num_classes = len(np.unique(y_true))
+    # create class:sample count dictionary, it looks something like this: {0:20, 1:15, 2:21}
+    class_counts = Counter(y_true)
+    # Initialize F1 to 0
+    f1 = 0
+    # loop over all classes
+    for class_ in range(num_classes):
+        # all classes accept current are considered negative
+        temp_true = [1 if p == class_ else 0 for p in y_true]
+        temp_pred = [1 if p == class_ else 0 for p in y_pred]
+        # calculate precision and recall for current class
+        p = precision(temp_true, temp_pred)
+        r = recall(temp_true, temp_pred)
+        # calculate f1 of current class
+        if p+r != 0:
+            temp_f1 = 2*p*r/(p+r)
+        else: 
+            temp_f1 = 0
+        # multiply precision with count of samples in class
+        weighted_f1 = class_counts[class_]*temp_f1
+        # add to overall precision
+        f1 += weighted_f1
+    # calculate and return overall precision
+    overall_f1 = f1/len(y_true)
+    return overall_f1
+
+### Weighted F1 with sklearn
+from sklearn import metrics
+
+y_true = [0, 1, 2, 0, 1, 2, 0, 2, 2]
+y_pred = [0, 2, 1, 0, 2, 1, 0, 0, 2]
+
+metrics.f1_score(y_true, y_pred, average="weighted")
+
+### Confusion matrix using sklearn
+import matplotlib.pyplot as plt 
+import seaborn as sns
+from sklearn import metrics
+
+y_true = [0, 1, 2, 0, 1, 2, 0, 2, 2]
+y_pred = [0, 2, 1, 0, 2, 1, 0, 0, 2]
+# Get confusion matrix from sklearn
+cm = metrics.confusion_matrix(y_true, y_pred)
+# Plotting 
+plt.figure(figsize=(10,10))
+cmap = sns.cubehelix_palette(50, hue=0.05, rot=0, light=0.9, dark=0, as_cmap=True)
+sns.set(font_scale=2.5)
+sns.heatmap(cm, annot=True, cmap=cmap, cbar=False)
+plt.ylabel('Actual Labels', fontsize=20)
+plt.xlabel('Predicted Labels', fontsize=20)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
