@@ -488,6 +488,124 @@ plt.xlabel('FPR', fontsize=15)
 plt.ylabel('TPR', fontsize=15)
 plt.show()
 
+### Using sklearn to calculate roc-auc score
+from sklearn import metrics 
+y_true = [0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1]
+y_pred = [0.1, 0.3, 0.2, 0.6, 0.8, 0.05, 0.9, 0.5, 0.3, 0.66, 0.3, 0.2, 0.85, 0.15, 0.99]
+
+metrics.roc_auc_score(y_true, y_pred)
+
+### How threshold impacts TPR and FPR
+tp_list = []
+fp_list = []
+
+y_true = [0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1]
+y_pred = [0.1, 0.3, 0.2, 0.6, 0.8, 0.05, 0.9, 0.5, 0.3, 0.66, 0.3, 0.2, 0.85, 0.15, 0.99]
+
+thresholds = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.99, 1.0]
+
+for thresh in thresholds:
+    temp_pred = [1 if x>= thresh else 0 for x in y_pred]
+    temp_tp = true_positive(y_true, temp_pred)
+    temp_fp = false_positive(y_true, temp_pred)
+    tp_list.append(temp_tp)
+    fp_list.append(temp_fp)
+
+### Custom log-loss implementation
+
+import numpy as np
+
+def log_loss(y_true, y_proba):
+    """
+    Function to calculate Log loss 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: log loss
+    """
+    # define an epsilon value, this can also be an input, this value is used to clip probabilities 
+    epsilon = 1e-15
+    # Initialize empty list to store the individual losses
+    loss = []
+    # Looping 
+    for yt, yp in zip(y_true, y_proba):
+        # Adjust probabilities, 0 gets converted to 1e-15 and 1 gets converted to 1-1e-15, Why we need it?
+        yp = np.clip(yp, epsilon, 1-epsilon)
+        # Loss
+        temp_loss = -1.0*(yt*np.log(yp) + (1-yt)*np.log(1-yp))
+        # Append
+        loss.append(temp_loss)
+    # Return mean loss
+    return np.mean(loss)
+
+### log loss from sklearn
+from sklearn import metrics
+metrics.log_loss(y_true, y_proba)
+
+### Custom Macro-averaged precision
+import numpy as np
+
+def macro_precision(y_true, y_pred):
+    """
+    Function to calculate Macro-averaged precision 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: macro-averaged precision
+    """
+    # Find number of classes by taking length of unique values in true list
+    num_classes = len(np.unique(y_true))
+    # Initialize precision to 0
+    precision = 0
+    # loop over all classes
+    for class_ in range(num_classes):
+        # all classes accept current are considered negative
+        temp_true = [1 if p == class_ else 0 for p in y_true]
+        temp_pred = [1 if p == class_ else 0 for p in y_pred]
+        # calculate true positive for current class
+        tp = true_positive(temp_true, temp_pred)
+        # calculate false positive for current class
+        fp = false_positive(temp_true, temp_pred)
+        # calculate precision for current class
+        temp_precision = tp/(tp+fp)
+        # keep adding precision for all classes
+        precision += temp_precision
+    # return avg precision over all classes
+    precision /= num_classes
+    return precision
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
