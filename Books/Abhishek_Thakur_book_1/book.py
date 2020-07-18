@@ -430,6 +430,75 @@ def f1(y_true, y_pred):
     score = 2*p*r/(p+r)
     return score
 
+### F1 score from sklearn
+from sklearn import metrics 
+metrics.f1_score(y_true, y_pred)
+
+### Custom TPR function
+def tpr(y_true, y_pred):
+    """
+    Function to calculate True Positive Rate 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: tpr/recall
+    """
+    return recall(y_true, y_pred)
+
+### Custom FPR function
+def fpr(y_true, y_pred):
+    """
+    Function to calculate False Positive Rate 
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: fpr
+    """
+    fp = false_positive(y_true, y_pred)
+    tn = true_negative(y_true, y_pred)
+    return fp/(fp+tn)
+
+### Calculating and plotting TPR vs FPR
+# empty lists to store tpr and fpr values
+tpr_list = []
+fpr_list = []
+# Actual targets 
+y_true = [0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1]
+# Predicted probabilities of a sample being 1
+y_pred = [0.1, 0.3, 0.2, 0.6, 0.8, 0.05, 0.9, 0.5, 0.3, 0.66, 0.3, 0.2, 0.85, 0.15, 0.99]
+# Custom thresholds 
+thresholds = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.99, 1.0]
+# Looping over all thresholds 
+for thresh in thresholds:
+    # calculating prediction for given threshold 
+    temp_pred = [1 if x>=thresh else 0 for x in y_pred]
+    # calculate tpr
+    temp_tpr = tpr(y_true, temp_pred)
+    # calculate fpr
+    temp_fpr = fpr(y_true, temp_pred)
+    # Appending 
+    tpr_list.append(temp_tpr)
+    fpr_list.append(temp_fpr)
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
