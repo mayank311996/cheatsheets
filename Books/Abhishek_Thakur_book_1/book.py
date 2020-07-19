@@ -820,7 +820,185 @@ mapk(y_true, y_pred, k=2)
 mapk(y_true, y_pred, k=3)
 mapk(y_true, y_pred, k=4)
 
-                                                     
+### Custom Mean Absolute Error OR MAE function for regression
+import numpy as np
+
+def mean_absolute_error(y_true, y_pred):
+    """
+    Function to calculate mean absolute error
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: mean absolute error
+    """
+    # Initialize error at 0
+    error = 0
+    # Loop over all samples in the true and predicted list
+    for yt, yp in zip(y_true, y_pred):
+        # Calculate abs error and add to error
+        error += np.abs(yt-yp)
+    # Return mean error
+    return error/len(y_true)
+
+### Custom Mean Squared Error OR MSE function for regression
+def mean_squared_error(y_true, y_pred):
+    """
+    Function to calculate mean squared error
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: mean squared error
+    """
+    # Initialize error at 0
+    error = 0
+    # Loop over all samples in the true and predicted list
+    for yt, yp in zip(y_true, y_pred):
+        # Calculate squared error and add to error
+        error += (yt-yp)**2
+    # Return mean error
+    return error/len(y_true)
+
+### Custom Mean Squared Log Error OR MSLE for regression
+def mean_squared_log_error(y_true, y_pred):
+    """
+    Function to calculate mean squared log error
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: mean squared log error
+    """
+    # Initialize error at 0
+    error = 0
+    # Loop over all samples in the true and predicted list
+    for yt, yp in zip(y_true, y_pred):
+        # Calculate squared log error and add to error
+        error += (np.log(1+yt) - np.log(1+yp))**2
+    # Return mean error
+    return error/len(y_true)
+
+### Custom Mean Percentage Error OR MPE for regression
+def mean_percentage_error(y_true, y_pred):
+    """
+    Function to calculate mean percentage error
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: mean percentage error
+    """
+    # Initialize error at 0
+    error = 0
+    # Loop over all samples in the true and predicted list
+    for yt, yp in zip(y_true, y_pred):
+        # Calculate percentage error and add to error
+        error += (yt-yp)/yt
+    # Return mean error
+    return error/len(y_true)
+
+### Custom Mean Absolute Percentage Error OR MAPE for regression
+def mean_absolute_percentage_error(y_true, y_pred):
+    """
+    Function to calculate mean absolute percentage error
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: mean absolute percentage error
+    """
+    # Initialize error at 0
+    error = 0
+    # Loop over all samples in the true and predicted list
+    for yt, yp in zip(y_true, y_pred):
+        # Calculate abs error and add to error
+        error += np.abs(yt-yp)/yt
+    # Return mean error
+    return error/len(y_true)
+
+### Custom R-squared OR R2 for regression
+def r2(y_true, y_pred):
+    """
+    Function to calculate R-squared score
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: r2 score
+    """
+    # Calculate the mean value of true values
+    mean_true_value = np.mean(y_true)
+    # Initialize numerator with 0
+    numerator = 0
+    # Initialize denominator with 0
+    denominator = 0
+    # Loop over all true and predicted value
+    for yt, yp in zip(y_true, y_pred):
+        # update numerator 
+        numerator += (yt-yp)**2
+        # update denominator
+        denominator += (yt-mean_true_value)**2
+    # calculate the ratio
+    ratio = numerator/denominator
+    # return 1-ratio
+    return 1-ratio
+
+### Quadratic weighted kappa or Cohen's kappa from sklearn
+from sklearn import metrics
+
+y_true = [1, 2, 3, 1, 2, 3, 1, 2, 3]
+y_pred = [2, 1, 3, 1, 2, 3, 3, 1, 2]
+
+metrics.cohen_kappa_score(y_true, y_pred, weights="quadratic")
+metrics.accuracy_score(y_true, y_pred)
+
+### Custom function for Matthew's Correlation Coefficient for classification problem
+def mcc(y_true, y_pred):
+    """
+    Function to calculate Matthew's Correlation Coefficient
+    :param y_true: list of true values 
+    :param y_pred: list of predicted values 
+    :return: MCC score
+    """
+    tp = true_positive(y_true, y_pred)
+    tn = true_negative(y_true, y_pred)
+    fp = false_positive(y_true, y_pred)
+    fn = false_negative(y_true, y_pred)
+
+    numerator = (tp*tn)-(fp*fn)
+    denominator = (
+        (tp+fp)
+        * (fn+tn)
+        * (fp+tn)
+        * (tp+fn)
+    )
+
+    denominator = denominator**0.5
+    return numerator/denominator
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
