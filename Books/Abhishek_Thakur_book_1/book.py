@@ -1236,6 +1236,131 @@ example = np.array(
 # print size in bytes 
 print(example.nbytes)
 
+### Covnerting to Sparse Matrix
+import numpy as np
+from scipy import sparse
+
+# create our example feature matrix
+example = np.array(
+    [
+        [0, 0, 1],
+        [1, 0, 0],
+        [1, 0, 1]
+    ]
+)
+# convert numpy array to spare CSR matrix
+sparse_example = sparse.csr_matrix(example)
+# print size of this sparse matrix
+print(sparse_example.data.nbytes)
+
+### Total size of a sparse matrix 
+print(
+    sparse_example.data.nbytes 
+    + sparse_example.indptr.nbytes
+    + sparse_example.indices.nbytes
+)
+
+### Effect on size for a large dataset, benefits of using sparse matrix
+import numpy as np 
+from scipy import sparse
+
+# number of rows
+n_rows = 10000
+# number of columns
+n_cols = 10000
+# create random binray matrix with only 5% value as 1s 
+example = np.random.binomial(1, p=0.05, size=(n_rows, n_cols))
+# print size in bytes
+print(f"Size of dense array: {example.nbytes}")
+# convert numpy array to sparse CSR matrix
+sparse_example = sparse.csr_matrix(example)
+# print size of this sparse matrix
+print(f"Size of sparse array: {sparse_example.data.nbytes}")
+
+full_size = (
+    sparse_example.data.nbytes 
+    + sparse_example.indptr.nbytes
+    + sparse_example.indices.nbytes
+)
+# print full size of this sparse matrix
+print(f"Full size of sparse array: {full_size}")
+
+### Converting to one-hot-encoding and check the size
+import numpy as np
+from scipy import sparse 
+# create binary matrix 
+example = np.array(
+    [
+        [0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0]
+    ]
+)
+# print size in bytes
+print(f"Size of dense array: {example.nbytes}")
+# convert numpy array to sparse CSR matrix 
+sparse_example = sparse.csr_matrix(example)
+# print size of this sparse matrix
+print(f"Size of sparse array: {sparse_example.data.nbytes}")
+
+full_size = (
+    sparse_example.data.nbytes 
+    + sparse_example.indptr.nbytes
+    + sparse_example.indices.nbytes
+)
+# print full size of this sparse matrix
+print(f"Full size of sparse array: {full_size}")
+
+### Large data with one-hot-encoding with sklearn
+import numpy as np
+from sklearn import preprocessing
+
+# create random 1-d array with 1001 different categories (int)
+example = np.random.randint(1000, size=1000000)
+# initialize OneHotEncoder from scikit-learn 
+# keep sparse = False to get dense array
+ohe = preprocessing.OneHotEncoder(sparse=False)
+# fit and transform data with dense one-hot-encoder
+ohe_example = ohe.fit_transform(example.reshape(-1,1))
+# print size in bytes for dense array
+print(f"Size of dense array: {ohe_example.nbytes}")
+# initialize OneHotEncoder from scikit-learn
+# keep sparse = True to get sparse array
+ohe = preprocessing.OneHotEncoder(sparse=True)
+# fit and transform data wwith sparse one-hot-encoder
+ohe_example = ohe.fit_transform(example.reshape(-1,1))
+# print size of this sparse matrix
+print(f"Size of sparse array: {ohe_example.data.nbytes}")
+
+full_size = (
+    ohe_example.data.nbytes 
+    + ohe_example.indptr.nbytes
+    + ohe_example.indices.nbytes
+)
+# print full size of this sparse matrix
+print(f"Ful size of sparse array: {full_size}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
