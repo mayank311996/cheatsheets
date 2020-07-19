@@ -1160,6 +1160,63 @@ if __name__ == "__main__":
         model=args.model
     )
 
+### sample run
+python train.py --fold 0 --model decision_tree_gini
+python train.py --fold 0 --model decision_tree_entropy
+
+### src/model_dispatcher.py v2
+from sklearn import tree
+from sklearn import ensemble
+
+models = {
+    "decision_tree_gini": tree.DecisionTreeClassifier(
+        criterion="gini"
+    ),
+    "decision_tree_entropy": tree.DecisionTreeClassifier(
+        criterion="entropy"
+    ),
+    "rf": ensemble.RandomForestClassifier()
+}
+
+### sample run
+python train.py --fold 0 --model rf
+
+###!/bin/sh
+python train.py --fold 0 --model rf
+python train.py --fold 1 --model rf
+python train.py --fold 2 --model rf
+python train.py --fold 3 --model rf
+python train.py --fold 4 --model rf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
