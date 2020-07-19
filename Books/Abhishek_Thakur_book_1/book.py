@@ -1190,6 +1190,84 @@ python train.py --fold 4 --model rf
 
 
 
+#################################################################################################
+# Chapter 6: Approaching Categorical Variables
+#################################################################################################
+
+### Custom Label Encoding
+mapping = {
+    "Freeaing": 0,
+    "Warm": 1,
+    "Cold": 2,
+    "Boiling Hot": 3,
+    "Hot": 4,
+    "Lava Hot": 5
+}
+
+import pandas as pd
+
+df = pd.read_csv("../input/cat_train.csv")
+df.loc[:, "ord_2"] = df.ord_2.map(mapping)
+df.ord_2.value_counts()
+
+### Label Encoding using sklearn
+import pandas as pd 
+from sklearn import preprocessing
+# read the data
+df = pd.read_csv("../input/cat_train.csv")
+# fill NaN values in ord_2 column
+df.loc[:, "ord_2"] = df.ord_2.fillna("NONE")
+# initialize LabelEncoder
+lbl_enc = preprocessing.LabelEncoder()
+# fit label encoder and transform values on ord_2 column
+# P.S: do not use this directly. fit first, then transform
+df.loc[:, "ord_2"] = lbl_enc.fit_transform(df.ord_2.values)
+
+### Binarize the data, checking size of a matrix 
+import numpy as np
+# create our example feature matrix
+example = np.array(
+    [
+        [0, 0, 1],
+        [1, 0, 0],
+        [1, 0, 1]
+    ]
+)
+# print size in bytes 
+print(example.nbytes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
