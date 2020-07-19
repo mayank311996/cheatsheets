@@ -971,7 +971,7 @@ def mcc(y_true, y_pred):
 # Chapter 5: Arranging Machine Learning Projects
 #################################################################################################
 
-# src/train.py
+### src/train.py
 import joblib
 import pandas as pd
 from sklearn import metrics
@@ -991,7 +991,30 @@ def run(fold):
     # similarly, for validation, we have
     x_valid = df_valid.drop("label", axis=1).values
     y_valid = df_valid.label.values
-    
+    # initialize simple decision tree classifier from sklearn
+    clf = tree.DecisionTreeClassifier()
+    # fit the model on training data
+    clf.fit(x_train, y_train)
+    # create predictions for validation samples
+    preds = clf.predict(x_valid)
+    # calculate & print accuracy 
+    accuracy = metrics.accuracy_score(y_valid, preds)
+    print(f"Fold={fold}, Accuracy={accuracy}")
+    # save the model 
+    joblib.dump(clf, f"../model/dt_{fold}.bin")
+
+if __name__ == "__main__":
+    run(fold=0)
+    run(fold=1)
+    run(fold=2)
+    run(fold=3)
+    run(fold=4)
+
+### src/config.py
+
+TRAINING_FILE = "../input/mnist_train_folds.csv"
+MODEL_OUTPUT = "../models/"
+
 
 
 
