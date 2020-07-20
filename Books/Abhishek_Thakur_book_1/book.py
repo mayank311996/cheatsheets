@@ -1340,6 +1340,114 @@ full_size = (
 # print full size of this sparse matrix
 print(f"Ful size of sparse array: {full_size}")
 
+### Some more ways of dealing with categorical variables and generating new features
+df[df.ord_2 == "Boiling Hot"].shape
+
+df.groupby(["ord_2"])["id"].count()
+
+df.groupby(["ord_2"])["id"].transform("count")
+
+df.groupby(
+    [
+        "ord_1",
+        "ord_2"
+    ]
+)["id"].count().reset_index(name="count")
+
+df["new_feature"] = (
+    df.ord_1.astype(str) 
+    + "_"
+    + df.ord_2.astype(str)
+)
+
+df["new_feature"] = (
+    df.ord_1.astype(str) 
+    + "_"
+    + df.ord_2.astype(str)
+    + "_"
+    + df.ord_3.astype(str)
+)
+
+df.ord_2.value_counts()
+
+df.ord_2.fillna("NONE").value_counts()
+
+df.ord_2.value_counts()
+
+df.ord_2.fillna("NONE").value_counts()
+
+### Sample code for applying same transformation to training and test data 
+import pandas as pd 
+from sklearn import preprocessing
+# read training data
+train = pd.read_csv("../input/cat_train.csv")
+# read test data 
+test = pd.read_csv("../input/cat_test.csv")
+# create a fake target column for test data since this column doesn't exist 
+test.loc[:"target"] = -1
+# concatenate both training and test data 
+data = pd.concat([train, test]).reset_index(drop=True)
+# make a list of features we are interested in, id and target is something we should not encode
+features = [x for x in train.columns if x not in ["id", "target"]]
+# loop over the features list
+for feat in features:
+    # create a new instance of LabelEncoder for each feature
+    lbl_enc = preprocessing.LabelEncoder()
+    # note the trick here
+    # since its categorical data, we fillna with a string 
+    # and we convert all the data to string type
+    # so, no matter its int or float, its converted to string 
+    # int/float but categorical!!!
+    temp_col = data[feat].fillna("NONE").astype(str).values
+    # we can use fit_transform here as we do not 
+    # have any extra test data that we need to 
+    # transform on separately
+    data.loc[:,feat] = lbl_enc.fit_transform(temp_col)
+# split the training and test data again
+train = data[data.target != -1].reset_index(drop=True)
+test = data[data.target == -1].reset_index(drop=True)
+
+### Handling ord_4 column
+df.ord_4.fillna("NONE").value_counts()
+
+df.ord_4 = df.ord_4.fillna("NONE")
+df.loc[
+    df["ord_4"].value_counts()[df["ord_4"]].values < 2000,
+    "ord_4"
+] = "RARE"
+df.ord_4.value_counts()
+
+### Building Models for categorical problem
+### src/create_folds.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
