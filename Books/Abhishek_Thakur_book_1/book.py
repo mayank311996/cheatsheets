@@ -1419,6 +1419,161 @@ df.ord_4.value_counts()
 
 ### Building Models for categorical problem
 ### src/create_folds.py
+import pandas as pd
+from sklearn import model_selection
+
+if __name__ == "__main__":
+    # read training data
+    df = pd.read_csv("../input/cat_train.csv")
+    # we create a new column called kfold and fill it with -1
+    df["kfold"] = -1
+    # the next step is to randomize the rows of the data
+    df = df.sample(frac=1).reset_index(drop=True)
+    # fetch labels 
+    y = df.target.values
+    # initiate the kfold class from model_selection module
+    kf = model_selection.StratifiedKFold(n_splits=5)
+    # fill the new kfold column
+    for f, (t_,v_) in enumerate(kf.split(X=df, y=y)):
+        df.loc[v_, 'kfold'] = f
+    # save the new csv with kfold column
+    df.to_csv("../input/cat_train_folds.csv", index=False)
+
+### checking new folds 
+import pandas as pd
+
+df = pd.read_csv("../input/cat_train_folds.csv")
+df.kfold.value_counts()
+
+### checking target distribution per fold
+df[df.kfold==0].target.value_counts()
+df[df.kfold==1].target.value_counts()
+df[df.kfold==2].target.value_counts()
+df[df.kfold==3].target.value_counts()
+df[df.kfold==4].target.value_counts()
+
+### ohe_logreg.py
+import pandas as pd 
+from sklearn import linear_model
+from sklearn import metrics
+from sklearn import preprocessing
+
+def run(fold):
+    # load the full training data with folds
+    df = pd.read_csv("../input/cat_train_folds.csv")
+    # all columns are features except id, target and kfold columns
+    features = [f for f in df.columns if f not in ("id", "target", "kfold")]
+    # fill all NaN values with NONE
+    # note that I am converting all comumns to "strings"
+    # it doesn't matter because all are categories
+    for col in features: 
+        df.loc[:, col] = df[col].astype(str).fillna("NONE")
+    # get training data using folds
+    df_train = df[df.kfold != fold].reset_index(drop=True)
+    # get validation data using folds
+    df_valid = df[df.kfold == fold].reset_index(drop=True)
+    # initialize OneHotEncoder from sklearn
+    ohe = preprocessing.OneHotEncoder()
+    # fit ohe on training + validation features
+    full_data = pd.concat(
+        [df_train[features], df_valid[features]],
+        axis=0
+    )
+    ohe.fit(full_data[features])
+    # transform training data
+    x_train = ohe.transform(df_train[features])
+    # transform validation data
+    x_valid = ohe.transform(df_valid[features])
+    # initialize Logistic Regression model
+    model = linear_model.LogisticRegression()
+    # fit model on training data (ohe)
+    model.fit(x_train, df_train.target.values)
+    # predict on validation data 
+    # we need the probability values as we are calculating AUC
+    # we will use the probability of 1s
+    valid_preds = model.predict_proba(x_valid)[:,1]
+    # get roc auc score
+    auc = metrics.roc_auc_score(df_valid.target.values, valid_preds)
+    # print auc 
+    print(auc)
+
+if __name__ == "__main__":
+    # run function for fold = 0
+    # we can just replace this number and 
+    # run this for any fold
+    run(0)
+
+$ python ohe_logreg.py
+
+### ohe_logreg.py v2
+.
+.
+.
+    # initialize Logistic Regression model
+    model = linear_model.LogisticRegression()
+    # fit model on training data (ohe)
+    model.fit(x_train, df_train.target.values)
+    # predict on validation data 
+    # we need the probability values as we are calculating AUC
+    # we will use the probability of 1s
+    valid_preds = model.predict_proba(x_valid)[:,1]
+    # get roc auc score
+    auc = metrics.roc_auc_score(df_valid.target.values, valid_preds)
+    # print auc
+    print(f"Fold = {fold}, AUC = {auc}")
+
+if __name__ == "__main__":
+    for fold_ in range(5):
+        run(fold_)
+
+$ python -W ignore ohe_logreg.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
