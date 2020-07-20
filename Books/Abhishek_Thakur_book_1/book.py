@@ -1643,6 +1643,302 @@ if __name__ == "__main__":
 
 $ python ohe_svd_rf.py
 
+### lbl_xgb.py
+import pandas as pd
+import xgboost as xgb
+from sklearn import metrics
+from sklearn import preprocessing
+
+def run(fold):
+    # load the full training data with folds
+    df = pd.read_csv("../input/cat_train_folds.csv")
+    # all columns are features except id, target and kfold columns
+    features = [f for f in df.columns if f not in ("id", "target", "kfold")]
+    # fill all NaN values with NONE
+    # note that I am converting all comumns to "strings"
+    # it doesn't matter because all are categories
+    for col in features: 
+        df.loc[:, col] = df[col].astype(str).fillna("NONE")
+    # now its time to label encode the features 
+    for col in features:
+        # initialize LabelEncoder for each feature column
+        lbl = preprocessing.LabelEncoder()
+        # fit label encoder on all data
+        lbl.fit(df[col])
+        # transform all the data 
+        df.loc[:,col] = lbl.transform(df[col])
+    # get training data using folds
+    df_train = df[df.kfold != fold].reset_index(drop=True)
+    # get validation data using folds
+    df_valid = df[df.kfold == fold].reset_index(drop=True)
+    # get training data
+    x_train = df_train[features].values
+    # get validation data
+    x_valid = df_valid[features].values
+    # initialize xgboost model
+    model = xgb.XGBClassifier(
+        n_jobs=-1,
+        max_depth=7,
+        n_estimators=200
+    )
+    # fit model on training data (ohe)
+    model.fit(x_train, df_train.target.values)
+    # predict on validation data 
+    # we need the probability values as we are calculating AUC
+    # we will use the probability of 1s
+    valid_preds = model.predict_proba(x_valid)[:,1]
+    # get roc auc score
+    auc = metrics.roc_auc_score(df_valid.target.values, valid_preds)
+    # print auc
+    print(f"Fold = {fold}, AUC = {auc}")
+
+if __name__ == "__main__":
+    for fold_ in range(5):
+        run(fold_)
+
+$ python lbl_xgb.py
+
+### US adult census data
+import pandas as pd
+df = pd.read_csv("../input/adult.csv")
+df.income.value_counts()
+
+### ohe_logres.py
+import pandas as pd
+from sklearn import linear_model
+from sklearn import metrics
+from sklearn import preprocessing
+
+def run(fold):
+    # load the full training data with folds
+    df = pd.read_csv("../input/adult_folds.csv")
+    # list of numerical columns
+    num_cols = [
+        "fnlwgt",
+        "age",
+        "capital.gain",
+        "capital.loss",
+        "hours.per.week"
+    ]
+    # drop numerical columns
+    df = df.drop(num_cols, axis=1)
+    # map targets to 0s and 1s
+    target_mapping = {
+        "<=50K":0,
+        ">50K":1
+    }
+    df.loc[:,"income"] = df.income.map(target_mapping)
+    # all columns are features execpt income and kfold columns
+    features = [
+        f for f in df.columns if f not in ("kfold", "income")
+    ]
+    # fill all NaN values with NONE
+    # note that I am converting all columns to "strings"
+    # it doesn't matter because all are categories
+    for col in features:
+        df.loc[:, col] = df[col].astype(str).fillna("NONE")
+    # get training data using folds 
+    df_train = df[df.kfold != fold].reset_index(drop=True)
+    # get validation data using folds
+    df_valid = df[df.kfold == fold].reset_index(drop=True)
+    # initialize OneHotEncoder from sklearn
+    ohe = preprocessing.OneHotEncoder()
+    # fit ohe on training + validation features
+    full_data = pd.concat(
+        [df_train[features], df_valid[features]],
+        axis=0
+    )
+    ohe.fit(full_data[features])
+    # transform training data
+    x_train = ohe.transform(df_train[features])
+    # transform validation data
+    x_valid = ohe.transform(df_valid[features])
+    # initialize the logistic regression model
+    model = linear_model.LogisticRegression()
+    # fit model on training data (ohe)
+    model.fit(x_train, df_train.income.values)
+    # predict on validation data 
+    # we need the probability values as we are calculating AUC
+    # we will use the probability of 1s
+    valid_preds = model.predict_proba(x_valid)[:,1]
+    # get ROC AUC score
+    auc = metrics.roc_auc_score(df_valid.income.values, valid_preds)
+    # print auc
+    print(f"Fold={fold}, AUC={auc}")
+
+if __name__ == "__main__":
+    for fold_ in range(5):
+        run(fold_)
+
+$ python -W ignore ohe_logreg.py
+
+### lbl_xgb.py
+import pandas as pd 
+import xgboost as xgb
+from sklearn import metrics 
+from sklearn import preprocessing
+
+def run(fold):
+    # load the full training data with folds
+    df = pd.read_csv("../input/adult_folds.csv")
+    # list of numerical columns
+    num_cols = [
+        "fnlwgt",
+        "age",
+        "capital.gain",
+        "capital.loss",
+        "hours.per.week"
+    ]
+    # drop numerical columns
+    df = df.drop(num_cols, axis=1)
+    # map targets to 0s and 1s
+    target_mapping = {
+        "<=50K":0,
+        ">50K":1
+    }
+    df.loc[:,"income"] = df.income.map(target_mapping)
+    # all columns are features execpt income and kfold columns
+    features = [
+        f for f in df.columns if f not in ("kfold", "income")
+    ]
+    # fill all NaN values with NONE
+    # note that I am converting all columns to "strings"
+    # it doesn't matter because all are categories
+    for col in features:
+        df.loc[:, col] = df[col].astype(str).fillna("NONE")
+    # now its time to label ecode the features
+    for col in features:
+        # initialize LabelEncoder for each feature column
+        lbl = preprocessing.LabelEncoder()
+        # fit label encoder on all data
+        lbl.fit(df[col])
+        # transform all the data 
+        df.loc[:,col] = lbl.transform(df[col])
+    # get training data using folds 
+    df_train = df[df.kfold != fold].reset_index(drop=True)
+    # get validation data using folds
+    df_valid = df[df.kfold == fold].reset_index(drop=True)
+    # get training data
+    x_train = df_train[features].values
+    # get validation data
+    x_valid = df_valid[features].values
+    # initialize the xgb model
+    model = xgb.XGBClassifier(
+        n_jobs=-1
+    )
+    # fit model on training data (ohe)
+    model.fit(x_train, df_train.income.values)
+    # predict on validation data 
+    # we need the probability values as we are calculating AUC
+    # we will use the probability of 1s
+    valid_preds = model.predict_proba(x_valid)[:,1]
+    # get ROC AUC score
+    auc = metrics.roc_auc_score(df_valid.income.values, valid_preds)
+    # print auc
+    print(f"Fold={fold}, AUC={auc}")
+
+if __name__ == "__main__":
+    for fold_ in range(5):
+        run(fold_)
+
+$ python lbl_xgb.py
+
+### lbl_xgb_num.py
+import pandas as pd 
+import xgboost as xgb
+from sklearn import metrics 
+from sklearn import preprocessing
+
+def run(fold):
+    # load the full training data with folds
+    df = pd.read_csv("../input/adult_folds.csv")
+    # list of numerical columns
+    num_cols = [
+        "fnlwgt",
+        "age",
+        "capital.gain",
+        "capital.loss",
+        "hours.per.week"
+    ]
+    # map targets to 0s and 1s
+    target_mapping = {
+        "<=50K":0,
+        ">50K":1
+    }
+    df.loc[:,"income"] = df.income.map(target_mapping)
+    # all columns are features execpt income and kfold columns
+    features = [
+        f for f in df.columns if f not in ("kfold", "income")
+    ]
+    # fill all NaN values with NONE
+    # note that I am converting all columns to "strings"
+    # it doesn't matter because all are categories
+    for col in features:
+        # do not encode the numerical columns
+        if col not in num_cols:
+            df.loc[:, col] = df[col].astype(str).fillna("NONE")
+    # now its time to label ecode the features
+    for col in features:
+        if col not in num_cols:
+            # initialize LabelEncoder for each feature column
+            lbl = preprocessing.LabelEncoder()
+            # fit label encoder on all data
+            lbl.fit(df[col])
+            # transform all the data 
+            df.loc[:,col] = lbl.transform(df[col])
+    # get training data using folds 
+    df_train = df[df.kfold != fold].reset_index(drop=True)
+    # get validation data using folds
+    df_valid = df[df.kfold == fold].reset_index(drop=True)
+    # get training data
+    x_train = df_train[features].values
+    # get validation data
+    x_valid = df_valid[features].values
+    # initialize the xgb model
+    model = xgb.XGBClassifier(
+        n_jobs=-1
+    )
+    # fit model on training data (ohe)
+    model.fit(x_train, df_train.income.values)
+    # predict on validation data 
+    # we need the probability values as we are calculating AUC
+    # we will use the probability of 1s
+    valid_preds = model.predict_proba(x_valid)[:,1]
+    # get ROC AUC score
+    auc = metrics.roc_auc_score(df_valid.income.values, valid_preds)
+    # print auc
+    print(f"Fold={fold}, AUC={auc}")
+
+if __name__ == "__main__":
+    for fold_ in range(5):
+        run(fold_)
+
+$ python lbl_xgb_num.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
