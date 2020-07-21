@@ -2229,7 +2229,7 @@ def run(fold):
     # get validation data using folds 
     df_valid = df[df.kfold == fold].reset_index(drop=True)
     # create tf.keras model
-    mdoel = create_model(df, features)
+    model = create_model(df, features)
     # our features are lists of lists 
     xtrain = [
         df_train[features].values[:,k] for k in range(len(features))
@@ -2268,7 +2268,69 @@ if __name__ == "__main__":
     run(3)
     run(4)
 
-    
+
+
+
+#################################################################################################
+# Chapter 7: Feature Engineering 
+#################################################################################################
+
+### dealing with date time column and creating features out of it.
+df.loc[:, "year"] = df["datetime_column"].dt.year
+df.loc[:, "weekofyear"] = df["datetime_column"].dt.weekofyear
+df.loc[:, "month"] = df["datetime_column"].dt.month
+df.loc[:, "dayofweek"] = df["datetime_column"].dt.dayofweek
+df.loc[:, "weekend"] = (df.datetime_column.dt.weekday >= 5).astype(int)
+df.loc[:, "hour"] = df["datetime_column"].dt.hour
+
+### sample features from date time column
+import pandas as pd 
+# create a series of datetime with a frequency of 10 hours 
+s = pd.date_range('2020-01-06', '2020-01-10', freq='10H').to_series()
+# create some features based on datetime
+features = {
+    "dayofweek": s.dt.dayofweek.values,
+    "dayofyear": s.dt.dayofyear.values,
+    "hour": s.dt.hour.values,
+    "is_leap_year": s.dt.is_leap_year.values,
+    "quarter": s.dt.quarter.values,
+    "weekofyear": s.dt.weekofyear.values
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
