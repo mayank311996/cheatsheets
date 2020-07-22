@@ -2510,7 +2510,181 @@ ufs.fit(X, y)
 X_transformed = ufs.transform(X)
 
 ### Greedy Feature Selection
+# greedy.py
+import pandas as pd
+from sklearn import linear_model
+from sklearn import metrics
+from sklearn.datasets import make_classification
 
+class GreedyFeatureSelection:
+    """
+    A simple and custom class for greedy feature selection.
+    You will need to modigy it quite a bit to make it suitable
+    for your dataset.
+    """
+    def evaluate_score(self, X, y):
+        """
+        This function evaluates model on data and returns
+        Area Under ROC Curve (AUC)
+        NOTE: We fit the data and calculate AUC on same data.
+        WE ARE OVERFITTING HERE.
+        But this is also a way to achieve greedy selection.
+        k-fold will take k times longer.
+
+        If you want to implement it in really correct way,
+        calculate OOF AUC and return mean AUC over k folds.
+        This requires only a few lines of change and has been
+        shown a few times in this book.
+
+        :param X: training data
+        :param y: targets
+        :return : overfitted area under the ROC curve
+        """
+        # fit the logistic regression model,
+        # and calculate AUC on same data
+        # again: BEWARE
+        # you can choose any model that suits your data
+        model = linear_model.LogisticRegression()
+        model.fit(X, y)
+        predictions = model.predict_proba(X)[:, 1]
+        auc = metrics.roc_auc_score(y, predictions)
+        return auc
+
+    def _feature_selection(self, X, y):
+        """
+        This function does the actual greedy selection
+        :param X: data, numpy array
+        :param y: targets, numpy array
+        :return: (best scores, best features)
+        """
+        # initialize good features list
+        # and best scores to keep track of both
+        good_features = []
+        best_scores = []
+        # calculate the number of features
+        num_features = X.shape[1]
+        # infinite loop
+        while True:
+            # initialize best feature and score of this loop
+            this_feature = None
+            best_score = 0
+            # loop over all features
+            for features in range(num_features):
+                # if feature is already in good features,
+                # skip this for loop
+                if feature in good_features:
+                    continue
+                # selected features are all good features till now
+                # and current feature
+                selected_features = good_features + [feature]
+                # remove all other features from data
+                xtrain = X[:, selected_features]
+                # calculate the score, in our case, AUC
+                score = self.evaluate_score(xtrain, y)
+                # if score is greater than the best score
+                # of this loop, change best score and best feature
+                if score > best_score:
+                    this_feature = feature
+                    best_score = score
+            # if we have selected a feature, add it
+            # to the good feature list and update best scores list
+            if this_feature != None
+                good_features.append(this_feature)
+                best_scores.append(best_score)
+            # if we didn't improve during the last two rounds,
+            # exit the while loop
+            if len(best_scores) > 2:
+                if best_scores[-1] < best_scores[-2]:
+                    break
+        # return best scores and good features
+        # why do we remove the last data point?
+        return best_scores[:-1], good_features[:-1]
+
+    def __call__(self, X, y):
+        """
+        Call function will call the class on a set of arguments
+        """
+        # select featues, return scores and selected indices
+        scores, features = self._feature_selection(X, y)
+        # transform data with selected features
+        return X[:, features], scores
+
+if __name__ == "__main__":
+    # generate binary classification data
+    X, y = make_classification(n_samples=1000, n_features=100)
+    # tranform data by greedy feature selection
+    X_transformed, scores = GreedyFeatureSelection()(X, y)
+
+### Recursive feature elimination
+import pandas as pd
+from sklearn.feature_selection import RFE
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import fetch_california_housing
+# fetch a regression dataset
+data = fetch_california_housing()
+X = data["data"]
+col_names = data["feature_names"]
+y = data["target"]
+# initialize the model
+model = LinearRegression()
+# initialize RFE
+rfe = RFE(
+    estimator=model,
+    n_features_to_select=3
+)
+# fit RFE
+rfe.fit(X, y)
+# get the transformed data with
+# selected columns
+X_transformed = rfe.transform(X)
+
+### Removing features based on value of feature of importance
+import pandas as pd
+from sklearn.datasets import load_diabetes
+from sklearn.ensemble import RandomForestRegressor
+# fetch a regression dataset
+# in diabetes data we predict diabetes progression
+# after one year based on some features
+data = load_diabetes()
+X = data["data"]
+col_names = data["feature_names"]
+y = data["target"]
+# initialize the model
+model = RandomForestRegressor()
+# fit the model
+model.fit(X,y)
+# Plotting feature of importance
+importance = model.feature_importances_
+idxs = np.argsort(importances)
+plt.title("Feature Importances")
+plt.barh(range(len(idxs)), importances[idxs], align="center")
+plt.yticks(range(len(idxs)), [col_names[i] for i in idxs])
+plt.xlabel("Random Forest Feature Importance")
+plt.show()
+
+### Using sklearn's SelectFromModel to select the features
+import pandas as pd
+from sklearn.datasets import load_diabetes
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.feature_selection import SelectFromModel
+# fetch a regression dataset
+# in diabetes data we predict diabetes progression
+# after one year based on some features
+data = load_diabetes()
+X = data["data"]
+col_names = data["feature_names"]
+y = data["target"]
+# initialize the model
+model = RandomForestRegressor()
+# select from the model
+sfm = SelectFromModel(estimator=model)
+X_transformed = sfm.fit_transform(X, y)
+# see which features were selected
+support = sfm.get_support()
+# get feature names
+print([
+    x for x, y in zip(col_names, support) if y == True
+])
 
 
 
