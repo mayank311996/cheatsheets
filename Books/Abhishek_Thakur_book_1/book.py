@@ -2366,7 +2366,48 @@ df = pd.DataFrame(
     columns = [f"f_{i}" for i in range(1,3)]
 )
 
+from sklearn import preprocessing
+# initialize polynomial features class object
+# for two-degree polynomial features 
+pf = preprocessing.PolynomialFeatures(
+    degree = 2,
+    interaction_only = False,
+    include_bias = False 
+)
+# fit to the features 
+pf.fit(df)
+# create polynomial features 
+poly_feats = pf.transform(df)
+# create a dataframe with all the features 
+num_feats = poly_feats.shape[1]
+df_transformed = pd.DataFrame(
+    poly_feats,
+    columns=[f"f_{i}" for i in range(1, num_feats+1)]
+)
 
+### Creating bins out of numerical columns
+# 10 bins
+df["f_bin_10"] = pd.cut(df["f_1"], bins=10, labels=False)
+# 100 bins 
+df["f_bin_100"] = pd.cut(df["f_1"], bins=100, labels=False)
+
+# Applying log transformation to column having high variance 
+df.f_3.var()
+df.f_3.apply(lambda x: np.log(1+x)).var()
+
+### Using KNN imputer to impute the missing values
+import numpy as np
+from sklearn import impute
+# create a random numpy array with 10 samples
+# and 6 features and values ranging from 1 to 15
+X = np.random.randint(1, 15, (10, 6))
+# convert the array to float 
+X = X.astype(float)
+# randomly assign 10 elements to NaN (missing)
+X.ravel()[np.random.choice(X.size, 10, replace=False)] = np.nan
+# use 3 nearest neighbours to fill na values 
+knn_imputer = impute.KNNImputer(n_neighbors=2)
+knn_imputer.fit_transform(X)
 
 
 
