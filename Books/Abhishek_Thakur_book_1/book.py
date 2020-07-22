@@ -2297,6 +2297,76 @@ features = {
     "weekofyear": s.dt.weekofyear.values
 }
 
+### Using pandas to create aggregate features 
+def generate_features(df):
+    # create a bunch of features using the date column
+    df.loc[:, "year"] = df["date"].dt.year
+    df.loc[:, "weekofyear"] = df["date"].dt.weekofyear
+    df.loc[:, "month"] = df["date"].dt.month
+    df.loc[:, "dayofweek"] = df["date"].dt.dayofweek
+    df.loc[:, "weekend"] = (df["date"].dt.weekday >= 5).astype(int)
+    # create an aggregate dictionary
+    aggs = {}
+    # for aggregation by month, we calculate the 
+    # number of unique month values and also the mean
+    aggs["month"] = ["nunique", "mean"]
+    aggs["weekofyear"] = ["nunique", "mean"]
+    # we aggregate by num1 and calculate sum, max, min
+    # and mean values of this column
+    aggs["num1"] = ["sum", "max", "min", "mean"]
+    # for customer_id, we calculate the total count
+    aggs["customer_id"] = ["size"]
+    # again for customer_id, we calculate the total unique
+    aggs["customer_id"] = ["nunique"]
+    # we group by customer_id and calculate the aggregates
+    agg_df = df.groupby("customer_id").agg(aggs)
+    agg_df = agg_df.reset_index()
+    return agg_df
+
+### creating some features like mean, min, max, std, var, percentile etc.
+import numpy as np
+
+feature_dict = {}
+# calculate mean 
+feature_dict["mean"] = np.mean(x)
+# calculate max
+feature_dict["max"] = np.max(x)
+# calculate min
+feature_dict["min"] = np.min(x)
+# calculate standard deviation 
+feature_dict["std"] = np.std(x)
+# calculate variance 
+feature_dict["var"] = np.var(x)
+# peak-to-peak
+feature_dict["ptp"] = np.ptp(x)
+# percentile features 
+feature_dict["percentile_10"] = np.percentile(x, 10)
+feature_dict["percentile_60"] = np.percentile(x, 60)
+feature_dict["percentile_90"] = np.percentile(x, 90)
+# quantile features 
+feature_dict["quantile_5"] = np.percentile(x, 5)
+feature_dict["quantile_95"] = np.percentile(x, 95)
+feature_dict["quantile_99"] = np.percentile(x, 99)
+
+### features based on tsfresh library 
+from tsfresh.feature_extraction import feature_calculators as fc
+# tsfresh based features 
+feature_dict["abs_energy"] = fc.abs_energy(x)
+feature_dict["count_above_mean"] = fc.count_above_mean(x)
+feature_dict["count_below_mean"] = fc.count_below_mean(x)
+feature_dict["mean_abs_change"] = fc.mean_abs_change(x)
+feature_dict["mean_change"] = fc.mean_change(x)
+
+### Simple way of creating polynomial features using sklearn
+import numpy as np
+# generate a random dataframe with
+# 2 columns and 100 rows 
+df = pd.DataFrame(
+    np.random.rand(100, 2),
+    columns = [f"f_{i}" for i in range(1,3)]
+)
+
+
 
 
 
