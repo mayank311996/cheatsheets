@@ -2412,7 +2412,31 @@ knn_imputer.fit_transform(X)
 
 
 
+#################################################################################################
+# Chapter 8: Feature Selection 
+#################################################################################################
 
+### removing low variance columns from the dataset
+from sklearn.feature_selection import VarianceThreshold
+data = ...
+var_thresh = VarianceThreshold(threshold=0.1)
+transformed_data = var_thresh.fit_transform(data)
+# transformed data will have all columns with variance less than 0.1 removed
+
+### removing features with high correlations 
+import pandas as pd
+from sklearn.datasets import fetch_california_housing 
+# fetch a regression dataset
+data = fetch_california_housing()
+X = data["data"]
+col_names = data["feature_names"]
+y = data["target"]
+# convert to pandas dataframe
+df = pd.DataFrame(X, columns=col_names)
+# introduce a highly correlated column
+df.loc[:, "MedInc_Sqrt"] = df.MedInc.apply(np.sqrt)
+# get correlation matrix (pearson)
+df.corr()
 
 
 
