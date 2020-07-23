@@ -2688,6 +2688,165 @@ print([
 
 
 
+#################################################################################################
+# Chapter 9: Hyperparameter Optimization
+#################################################################################################
+
+### Simple understanding of hyperparameter optimization
+# define the best accuracy to be 0
+# if you choose loss as a metric,
+# you can make best loss to be inf (np.inf)
+best_accuracy = 0
+best_parameters = {"a":0, "b":0, "c":0}
+# loop over all values for a, b & c
+for a in range(1,11):
+    for b in range(1,11):
+        for c in range(1,11):
+            # initialize model with current parameters
+            model = MODEL(a, b, c)
+            # fit the model
+            model.fit(training_data)
+            # make predictions
+            preds = model.predict(validation_data)
+            # calculate accuracy
+            accuracy = metrics.accuracy_score(targets, preds)
+            # save params if current accuracy
+            # is greater than best accuracy
+            if accuracy > best_accuracy:
+                best_accuracy = accuracy
+                best_parameters["a"] = a
+                best_parameters["b"] = b
+                best_parameters["c"] = c
+
+### rf_grid_search.py
+import numpy as np
+import pandas as pd
+from sklearn import ensemble
+from sklearn import metrics
+from sklearn import model_selection
+
+if __name__ == "__main__":
+    # raed the training data
+    df = pd.read_csv("./input/mobile_train.csv")
+    # features are all columns without price_range
+    # note that there is no id column in this dataset
+    # here we have training features
+    X = df.drop("price_range", axis=1).values
+    # and the targets
+    y = df.price_range.values
+    # define the model here
+    # i am using random forest with n_jobs = -1
+    # n_jobs = -1 => use all cores
+    classifier = ensemble.RandomForestClassifier(n_jobs=-1)
+    # define a grid of parameters
+    # this can be a dictionary or a list of
+    # dictionaries
+    param_grid = {
+        "n_estimators": [100, 200, 250, 300, 400, 500],
+        "max_depth": [1, 2, 5, 7, 11, 15],
+        "criterion": ["gini", "entropy"]
+    }
+    # initialize grid search
+    # estimator is the model that we have defined
+    # param_grid is the grid of parameters
+    # we use accuracy as out metric. you can define your own.
+    # higher value of verbose implies a lot of details are printed
+    # cv=5 means that we are using 5 fold cv (not stratified)
+    model = model_selection.GridSearchCV(
+        estimator=classifier,
+        param_grid = param_grid,
+        scoring = "accuracy",
+        verbose = 10,
+        n_jobs= -1,
+        cv = 5
+    )
+    # fit the model and extract best score
+    model.fit(X, y)
+    print(f"Best score: {model.best_score_}")
+    print("Best parameters set:")
+    best_parameters = model.best_estimator_.get_params()
+    for param_name in sorted(param_grid.keys()):
+        print(f"\t{param_name}: {best_parameters[param_name]}")
+
+### rf_random_search.py
+.
+.
+.
+if __name__ == "__main__":
+    .
+    .
+    .
+    # define the model here
+    # i am using random forest with n_jobs = -1
+    # n_jobs = -1 => use all cores
+    classifier = ensemble.RandomForestClassifier(n_jobs=-1)
+    # define a grid of parameters
+    # this can be a dictionary or a list of
+    # dictionaries
+    param_grid = {
+        "n_estimators": np.arange(100, 1500, 100),
+        "max_depth": np.arange(1, 31),
+        "criterion": ["gini", "entropy"]
+    }
+    # initialize random search
+    # estimator is the model that we have defined
+    # param_distributions is the grid/distribution of parameters
+    # we use accuracy as our metric. you can define your own.
+    # higher value of verbose implies a lot of details are printed
+    # cv=5 means that we are using 5 fold cv (not stratified)
+    # n_iter is the number of iterations we want
+    # if param_distributions has all the values as list,
+    # random search will be done by sampling without replacement
+    # if any of the parameters come from a distribution,
+    # random search uses sampling with replacement
+    model = model_selection.RandomizedSearchCV(
+        estimator=classifier,
+        param_distributions=param_grid,
+        n_iter=20,
+        scoring="accuracy",
+        verbose=10,
+        n_jobs=-1,
+        cv=5
+    )
+    # fit the model and extract best score
+    model.fit(X, y)
+    print(f"Best score: {model.best_score_}")
+    print("Best parameters set:")
+    best_parameters = model.best_estimator_.get_params()
+    for param_name in sorted(param_grid.keys()):
+        print(f"\t{param_name}: {best_parameters[param_name]}")
+
+### pipeline_search.py
+import numpy as np
+import pandas as pd
+from sklearn import metrics
+from sklearn import model_selection
+from sklearn import pipeline
+from sklearn.decomposition import TruncatedSVD
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+
+def quadratic_weighted_kappa(y_true, y_pred):
+    """
+    Craete a wrapper for Cohen's kappa
+    with quadratic weights
+    """
+    return metrics.cohen_kappa_score(
+        y_true,
+        y_pred,
+        weights = "quadratic"
+    )
+
+if __name__ == "__main__":
+    # load the training file
+    train = pd.read_csv("../input/train.csv")
+    # we don't need ID columns
+    idx = test.id.values.astype(int)
+    train = train.drop("id", axis=1)
+    test = test.drop("id", axis=1)
+    
+
 
 
 
