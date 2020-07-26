@@ -4069,7 +4069,7 @@ from wtfml.data_loaders.image import ClassificationDataLoader
 
 class DenseCrossEntropy(nn.Module):
     # Taken from:
-    # https://www.kaggle.com/pestpeti/plant-pathology-2020-pytorch
+    # https://www.kaggle.com/pestipeti/plant-pathology-2020-pytorch
     def __init__(self):
         super(DenseCrossEntropy, self).__init__()
     def forward(self, logits, labels):
@@ -4186,6 +4186,10 @@ $ python plant.py --data_path ../../plant_pathology --device cuda --epochs 2
 
 
 
+
+#################################################################################################
+# Chapter 11: Approaching Text Classification/Regression
+#################################################################################################
 
 
 
