@@ -4191,7 +4191,212 @@ $ python plant.py --data_path ../../plant_pathology --device cuda --epochs 2
 # Chapter 11: Approaching Text Classification/Regression
 #################################################################################################
 
+### A simple approach towards text classification
+def find_sentiment(sentence, pos, neg):
+    """
+    This function returns sentiment of sentence
+    :param snetence: sentence, a string
+    :param pos: set of positive words
+    :param neg: set of negative words
+    :return: returns positive, negative or neutral sentiment
+    """
+    # split sentence by a space
+    # "this is a sentence!" becomes:
+    # ["this", "is", "a", "sentence!"]
+    # note that I'm splitting on all whitespaces
+    # if you want to split by space use .split(" ")
+    sentence = sentence.split()
+    # make sentence into set
+    sentence = set(sentence)
+    # check number of common words with positive
+    num_common_pos = len(sentence.intersection(pos))
+    # check number of common words with negative
+    num_common_neg = len(sentence.intersection(neg))
+    # make conditions and return
+    # see how return used eliminates if else
+    if num_common_pos > num_common_neg:
+        return "positive"
+    if num_common_pos < num_common_neg:
+        return "negative"
+    return "neutral"
 
+### Tokenization using NLTK
+from nltk.tokenize import word_tokenize
+sentence = "hi, how are you?"
+sentence.split()
+word_tokenize(sentence)
+
+### Implementing CountVectorizer for bag of words using sklearn
+from sklearn.feature_extraction.text import CountVectorizer
+# create a corpus of sentences
+corpus = [
+    "hello, how are you?",
+    "im getting bored at home. And you? What do you think?",
+    "did you know about counts",
+    "let's see if this works!",
+    "YES!!!!"
+]
+# initialize CountVectorizer
+ctv = CountVectorizer()
+# fit the vectorizer on corpus
+ctv.fit(corpus)
+corpus_transformed = ctv.transform(corpus)
+print(ctv.vocabulary_)
+
+### Combining word tokenizer and bag of words
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.tokenize import word_tokenize
+# create a corpus of sentences
+corpus = [
+    "hello, how are you?",
+    "im getting bored at home. And you? What do you think?",
+    "did you know about counts",
+    "let's see if this works!",
+    "YES!!!!"
+]
+# initialize CountVectorizer with word_tokenize from nltk
+# as the tokenizer
+ctv = CountVectorizer(tokenizer=word_tokenize, token_pattern=None)
+# fit the vectorizer on corpus
+ctv.fit(corpus)
+corpus_transformed = ctv.transform(corpus)
+print(ctv.vocabulary_)
+
+### Using logistic regression to create first benchmark
+import pandas as pd
+from nltk.tokenize import word_tokenize
+from sklearn import linear_model
+from sklearn import metrics
+from sklearn import model_selection
+from sklearn.feature_extraction.text import CountVectorizer
+
+if __name__ == "__main__":
+    # read the training data
+    df = pd.read_csv("../input/imdb.csv")
+    # map positive to 1 and negative to 0
+    df.sentiment = df.sentiment.apply(
+        lambda x: 1 if x == "positive" else 0
+    )
+    # we create a new column called kfold and fill it with -1
+    df["kfold"] = -1
+    # the next step is to randomize the rows of the data
+    df = df.sample(frac=1).reset_index(drop=True)
+    # fetch labels
+    y = df.sentiment.values
+    # initiate the kfold class from model_selection module
+    kf = model_selection.StratifiedKFold(n_splits=5)
+    # fill the new kfold column
+    for f, (t_, v_) in enumerate(kf.split(X=df, y=y)):
+        df.loc[v_, "kfold"] = f
+    # we go over the folds created
+    for fold_ in range(5):
+        # temporary dataframes for train and test
+        train_df = df[df.kfold != fold_].reset_index(drop=True)
+        test_df = df[df.kfold == fold_].reset_index(drop=True)
+        # initialize CountVectorizer with NLTK's word_tokenize
+        # function as tokenizer
+        count_vec = CountVectorizer(
+            tokenizer=word_tokenize,
+            token_pattern=None
+        )
+        # fit count_vec on training data reviews
+        count_vec.fit(train_df.review)
+        # transform training and validation data reviews
+        xtrain = count_vec.transform(train_df.review)
+        xtest = count_vec.transform(test_df.review)
+        # initialize logistic regression model
+        model = linear_model.LogisticRegression()
+        # fit the model on training data reviews and sentiment
+        model.fit(xtrain, train_df.sentiment)
+        # make predictions on test data
+        # threshold for predictions is 0.5
+        preds = model.predict(xtest)
+        # calculate accuracy
+        accuracy = metrics.accuracy_score(test_df.sentiment, preds)
+        print(f"Fold: {fold_}")
+        print(f"Accuracy = {accuracy}")
+        print("")
+
+$ python ctv_logres.py
+
+### Using multinomial naive bayes
+import pandas as pd
+from nltk.tokenize import word_tokenize
+from sklearn import naive_bayes
+from sklearn import metrics
+from sklearn import model_selection
+from sklearn.feature_extraction.text import CountVectorizer
+.
+.
+.
+.
+        # initialize naive bayes model
+        model = naive_bayes.MultinomialNB()
+        # fit the model on training data reviews and sentiment
+        model.fit(xtrain, train_df.sentiment)
+.
+.
+.
+
+$ python ctv_nb.py
+
+### Tfidf Vectorizer using sklearn
+from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.tokenize import word_tokenize
+# create a corpus of sentences
+corpus = [
+    "hello, how are you?",
+    "im getting bored at home. And you? What do you think?",
+    "did you know about counts",
+    "let's see if this works!",
+    "YES!!!!"
+]
+# initialize TfidfVectorizer with word_tokenize from nltk
+# as the tokenizer
+tfv = TfidfVectorizer(tokenizer=word_tokenize, token_pattern=None)
+# fit the vectorizer on corpus
+tfv.fit(corpus)
+corpus_transformed = tfv.transform(corpus)
+print(corpus_transformed)
+
+### TfidfVectorizer with Logistic Regression
+import pandas as pd
+from nltk.tokenize import word_tokenize
+from sklearn import linear_model
+from sklearn import metrics
+from sklearn import model_selection
+from sklearn.feature_extraction.text import TfidfVectorizer
+.
+.
+.
+    # we go over the folds created
+    for fold_ in range(5):
+        # temporary dataframes for train and test
+        train_df = df[df.kfold != fold_].reset_index(drop=True)
+        test_df = df[df.kfold == fold_].reset_index(drop=True)
+        # initialize TfidfVectorizer with NLTK's word_tokenize
+        # function as tokenizer
+        tfidf_vec = TfidfVectorizer(
+            tokenizer=word_tokenize,
+            token_pattern=None
+        )
+        # fit tfidf_vec on training data reviews
+        tfidf_vec.fit(train_df.review)
+        # transform training and validation data reviews
+        xtrain = tfidf_vec.transform(train_df.review)
+        xtest = tfidf_vec.transform(test_df.review)
+        # initialize logistic regression model
+        model = linear_model.LogisticRegression()
+        # fit the model on training data reviews and sentiment
+        model.fit(xtrain, train_df.sentiment)
+        # make predictions on test data
+        # threshold for predictions is 0.5
+        preds = model.predict(xtest)
+        # calculate accuracy
+        accuracy = metrics.accuracy_score(test_df.sentiment, preds)
+        print(f"Fold: {fold_}")
+        print(f"Accuracy = {accuracy}")
+        print("")
 
 
 
