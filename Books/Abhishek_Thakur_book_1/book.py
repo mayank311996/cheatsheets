@@ -4398,6 +4398,80 @@ from sklearn.feature_extraction.text import TfidfVectorizer
         print(f"Accuracy = {accuracy}")
         print("")
 
+$ python tfv_logres.py
+
+### n-gram using NLTK
+from nltk import ngrams
+from nltk.tokenize import word_tokenize
+# let's see 3 grams
+N = 3
+# input sentence
+sentence = "hi, how are you?"
+# tokenized sentence
+tokenized_sentence = word_tokenize(sentence)
+# generate n_grams
+n_grams = list(ngrams(tokenized_sentence, N))
+print(n_grams)
+
+### TfidfVectorizer with Logistic Regression and ngrams
+import pandas as pd
+from nltk.tokenize import word_tokenize
+from sklearn import linear_model
+from sklearn import metrics
+from sklearn import model_selection
+from sklearn.feature_extraction.text import TfidfVectorizer
+.
+.
+.
+    # we go over the folds created
+    for fold_ in range(5):
+        # temporary dataframes for train and test
+        train_df = df[df.kfold != fold_].reset_index(drop=True)
+        test_df = df[df.kfold == fold_].reset_index(drop=True)
+        # initialize TfidfVectorizer with NLTK's word_tokenize
+        # function as tokenizer
+        tfidf_vec = TfidfVectorizer(
+            tokenizer=word_tokenize,
+            token_pattern=None,
+            ngram_range=(1, 3)
+        )
+        # fit tfidf_vec on training data reviews
+        tfidf_vec.fit(train_df.review)
+        # transform training and validation data reviews
+        xtrain = tfidf_vec.transform(train_df.review)
+        xtest = tfidf_vec.transform(test_df.review)
+        # initialize logistic regression model
+        model = linear_model.LogisticRegression()
+        # fit the model on training data reviews and sentiment
+        model.fit(xtrain, train_df.sentiment)
+        # make predictions on test data
+        # threshold for predictions is 0.5
+        preds = model.predict(xtest)
+        # calculate accuracy
+        accuracy = metrics.accuracy_score(test_df.sentiment, preds)
+        print(f"Fold: {fold_}")
+        print(f"Accuracy = {accuracy}")
+        print("")
+
+$ python tfv_logres_trigram.py
+
+### Stemming and lemmantization
+from nltk.stem import WordNetLemmantizer
+from nltk.stem.snowball import SnowballStemmer
+# initialize lemmantizer
+lemmantizer = WordNetLemmantizer()
+# initialize stemmer
+stemmer = SnowballStemmer("english")
+words = ["fishing", "fishes", "fished"]
+for word in words:
+    print(f"word={word}")
+    print(f"stemmed_word={stemmer.stem(word)}")
+    print(f"lemma={lemmantizer.lemmantize(word)}")
+    print("")
+
+
+
+
 
 
 
