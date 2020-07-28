@@ -4525,6 +4525,36 @@ for sample_index in range(5):
         )[:N]
     )
 
+### cleaning the data and then feeding to SVD
+import re
+import string
+
+def clean_text(s):
+    """
+    This function cleans the text a bit
+    :param s: string
+    :return: cleaned string
+    """
+    # split by all whitespaces
+    s = s.split()
+    # join tokens by single space
+    # why we do this?
+    # this will remove all kinds of weird space
+    # "hi.    how are you?" becomes
+    # "hi. how are you"
+    s = " ".join(s)
+    # remove all punctuations using regex and string module
+    s = re.sub(f"[{re.escape(string.punctuation)}]", "", s)
+    # you can add more cleaning here if you want
+    # and then return the cleaned string
+    return s
+
+import pandas as pd
+.
+corpus = pd.read_csv("../input/imdb.csv", nrows=10000)
+corpus.loc[:, "review"] = corpus.review.apply(clean_text)
+.
+.
 
 
 
