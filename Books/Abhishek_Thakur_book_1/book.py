@@ -4625,6 +4625,8 @@ def sentence_to_vec(s, embedding_dict, stop_words, tokenizer):
     .
     .
     .
+    return 0
+
 if __name__ == "__main__":
     # read the training data
     df = pd.read_csv("../input/imdb.csv")
@@ -4673,6 +4675,118 @@ if __name__ == "__main__":
         accuracy = metrics.accuracy_score(ytest, preds)
         print(f"Accuracy = {accuracy}")
         print("")
+
+$ python fasttext.py
+
+### Project
+### create_folds.py
+import pandas as pd
+from sklearn import model_selection
+
+if __name__=="__main__":
+    # read training data
+    df = pd.read_csv("../input/imdb.csv")
+    # map positive to 1 and negative to 0
+    df.sentiment = df.sentiment.apply(
+        lambda x: 1 if x == "positive" else 0
+    )
+    # we create a new column called kfold and fill it with -1
+    df["kfold"] = -1
+    # the next step is to randomize the rows of the data
+    df = df.sample(frac=1).reset_index(drop=True)
+    # fetch labels
+    y = df.sentiment.values
+    # initiate the kfold class from model_selection module
+    kf = model_selection.StratifiedKFold(n_splits=5)
+    # fill the new kfold column
+    for f, (t_, v_) in enumerate(kf.split(X=df, y=y)):
+        df.loc[v_, 'kfold'] = f
+    # save the new csv with kfold column
+    df.to_csv("../input/imdb_folds.csv", index=False)
+
+### dataset.py
+import torch
+
+class IMDBDataset:
+    def __init__(self, reviews, targets):
+        """
+        :param reviews: this is a numpy array
+        :param targets: a vector, numpy array
+        """
+        self.reviews = reviews
+        self.target = targets
+    def __getitem__(self, item):
+        # for any given item, which is an int,
+        # return review and targets as torch tensor
+        # item is the index of the item in concern
+        review = self.reviews[item,:]
+        target = self.target[item]
+        return {
+            "review": torch.tensor(review, dtype=torch.long)
+            "target": torch.tensor(target, dtype=torch.float)
+        }
+
+### lstm.py
+import torch
+import torch.nn as nn
+
+class LSTM(nn.Module):
+    def __init__(self, embedding_matrix):
+        """
+        :param embedding_matrix: numpy array with vectors for all words
+        """
+        super(LSTM, self).__init__()
+        # number of words = number of rows in embedding matrix
+        num_words = embedding_matrix.shape[0]
+        # dimension of embedding is num of columns in the matrix
+        embed_dim = embedding_matrix.shape[1]
+        # we define an input embedding layer
+        self.embedding = nn.Embedding(
+            num_embeddings = num_words,
+            embedding_dim = embed_dim
+        )
+        # embedding matrix is used as weights of
+        # the embedding layer
+        self.embedding.weight = nn.Parameter(
+            torch.tensor(
+                embedding_matrix,
+                dtype=torch.float32
+            )
+        )
+        # we don't want to train the pretrained embeddings
+        self.embedding.weight.requires_grad = False
+        # a simple bidirectional LSTM with
+        # hidden size of 128
+        self.lstm = nn.LSTM(
+            embed_dim,
+            128,
+            bidirectional=True,
+            batch_first=True
+        )
+        # output layer which is a linear layer
+        # we have only one output
+        # input (512) = 128 + 128 for mean and same for max pooling
+        self.out = nn.Linear(512, 1)
+    def forward(self, x):
+        # pass data through embedding layer
+        # the input is just the tokens
+        x = self.embedding(x)
+        # move embedding output to lstm
+        x, _ = self.lstm(x)
+        # apply mean and max pooling on lstm output
+        avg_pool = torch.mean(x, 1)
+        max_pool, _ = torch.max(x, 1)
+        # concatenate mean and max pooling
+        # this is why size is 512
+        # 128 for each direction
+        # avg_pool = 256 and max_pool = 256
+        out = torch.cat((avg_pool, max_pool), 1)
+        # pass through the output layer and return the output
+        out = self.out(out)
+        # return linear output
+        return out
+
+
 
 
 
