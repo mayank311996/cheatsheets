@@ -5063,6 +5063,241 @@ def load_embeddings(word_index, embedding_file, vector_length=300):
             embedding_matrix[i] = embedding_vector
     return embedding_matrix
 
+### Moving towards transformers
+### config.py
+import transformers
+# this is the maximum number of tokens in the sentence
+MAX_LEN = 512
+# batch size is small because model is huge!
+TRAIN_BATCH_SIZE = 8
+VALID_BATCH_SIZE = 4
+# let's train for a maximum of 10 epochs
+EPOCHS = 10
+# define path to BERT model files
+BERT_PATH = "../input/bert_base_uncased/"
+# this is where you want to save the model
+MODEL_PATH = "model.bin"
+# training file
+TRAINING_FILE = '../input/imdb.csv'
+# define the tokenizer
+# we use tokenizer and model
+# from huggingface's transformers
+TOKENIZER = transformers.BertTokenizer.from_pretrained(
+    BERT_PATH,
+    do_lower_case = True
+)
+
+### dataset.py
+import config
+import torch
+
+class BERTDataset:
+    def __init__(self, review, target):
+        """
+        :param review: list or numpy array of strings
+        :param targets: list or numpt array which is binary
+        """
+        self.review = review
+        self.target = target
+        # we fetch max len and tokenizer from config.py
+        self.tokenizer = config.TOKENIZER
+        self.max_len = config.MAX_LEN
+
+    def __len__(self):
+        # this returns the length of dataset
+        return len(self.review)
+
+    def __getitem__(self, item):
+        # for a given item index, return a dictionary
+        # of inputs
+        review = str(self.review[item])
+        review = " ".join(review.split())
+        # encode_plus comes from huggingface's transformers
+        # and exists for all tokenizers they offer
+        # it can be used to convert a given string
+        # to ids, mask and token type ids which are
+        # needed for models like BERT
+        # here, review is a string
+        inputs = self.tokenizer.encode_plus(
+            review,
+            None,
+            add_special_tokens=True,
+            max_length=self.max_len,
+            pad_to_max_length=True
+        )
+        # ids are ids of tokens generated
+        # after tokenizing reviews
+        ids = inputs["input_ids"]
+        # mask is 1 where we have input
+        # and 0 where we have padding
+        mask = inputs["attention_mask"]
+        # token type ids behave the same way as
+        # mask in this specific case
+        # in case of two sentences, this is 0
+        # for first sentence and 1 for second sentece
+        token_type_ids = inputs["token_type_ids"]
+        # now we return everything
+        # note that ids, mask and token_type_ids
+        # are all long datatypes and targets is float
+        return {
+            "ids": torch.tensor(
+                ids, dtype=torch.long
+            ),
+            "mask": torch.tensor(
+                mask, dtype=torch.long
+            ),
+            "token_type_ids": torch.tensor(
+                token_type_ids, dtype=torch.long
+            ),
+            "targets": torch.tensor(
+                self.target[item], dtype=torch.float
+            )
+        }
+
+### model.py
+import config
+import transformers
+import torch.nn as nn
+
+class BERTBaseUncased(nn.Module):
+    def __init__(self):
+        super(BERTBaseUncased, self).__init__()
+        # we fetch the model from the BERT_PATH defined in
+        # config.py
+        self.bert = transformers.BertModel.from_pretrained(
+            config.BERT_PATH
+        )
+        # add a dropout for regularization
+        self.bert_drop = nn.Dropout(0.3)
+        # a simple linear layer for output
+        # yes, there is only one output
+        self.out = nn.Linear(768, 1)
+
+    def forward(self, ids, mask, token_type_ids):
+        # BERT in its default settings returns two outputs
+        # last hidden state and output of bert pooler layer
+        # we use the output of the pooler which is of the size
+        # (batch_size, hidden_size)
+        # hidden size can be 768 or 1024 depending on
+        # if we are using bert base or large respectively
+        # in our case, it is 768
+        # note that this model is pretty simple
+        # you might want to use last hidden state
+        # or several hidden states
+        _, o2 = self.bert(
+            ids,
+            attention_mask=mask,
+            token_type_ids=token_type_ids
+        )
+        # pass through dropout layer
+        bo = self.bert_drop(o2)
+        # pass through linear layer
+        output = self.out(bo)
+        # return output
+        return output
+    
+### engine.py
+import torch
+import torch.nn as nn
+
+def loss_fn(outputs, targets):
+    """
+    This function returns the loss.
+    :param outputs: output from the model (real numbers)
+    :param targets: input targets (binary)
+    """
+    return nn.BCEWithLogitsLoss()(outputs, targets.view(-1, 1))
+
+def train_fn(data_loader, model, optimizer, device, scheduler):
+    """
+    This is the training function which trains for one epoch
+    :param data_loader: it is the torch dataloader object
+    :param model: torch model, bert in our case
+    :param optimizer: adam, sgd, etc
+    :param device: can be cpu or cuda
+    :param scheduler: learning rate scheduler
+    """
+    # put the model in training mode
+    model.train()
+    # loop over all batches
+    for d in data_loader:
+        # extract ids, token type ids and mask
+        # from current batch
+        # also extract targets
+        ids = d["ids"]
+        token_type_ids = d["token_type_ids"]
+        mask = d["mask"]
+        targets = d["targets"]
+        # move everything to specified device
+        ids = ids.to(device, dtype=torch.long)
+        token_type_ids = token_type_ids.to(device, dtype=torch.long)
+        mask = mask.to(device, dtype=torch.long)
+        targets = targets.to(device, dtype=torch.float)
+        # zero-grad the optimizer
+        optimizer.zero_grad()
+        # pass through the model
+        outputs = model(
+            ids=ids,
+            mask=mask,
+            token_type_ids=token_type_ids
+        )
+        # calculate loss
+        loss = loss_fn(outputs, targets)
+        # backward step the loss
+        loss.backward()
+        # step optimizer
+        optimizer.step()
+        # step scheduler
+        scheduler.step()
+
+def eval_fn(data_loader, model, device):
+    """
+    this is the validation function that generates
+    predictions on validation data
+    :param data_loader: it is the torch dataloader object
+    :param model: torch model, bert in our case
+    :param device: can be cpu or cuda
+    :return: output and targets
+    """
+    # put model in eval mode
+    model.eval()
+    # initialize empty lists for
+    # targets and outputs
+    fin_targets = []
+    fin_outputs = []
+    # use the no_grad scope
+    # its very important else you might
+    # run out of gpu memory
+    with torch.no_grad():
+        # this part is same as training function
+        # except for the fact that there is no
+        # zero_grad of optimizer and there is no loss
+        # calculation or scheduler steps.
+        for d in data_loader:
+            ids = d["ids"]
+            token_type_ids = d["token_type_ids"]
+            mask = d["mask"]
+            targets = d["targets"]
+            # move everything to specified device
+            ids = ids.to(device, dtype=torch.long)
+            token_type_ids = token_type_ids.to(device, dtype=torch.long)
+            mask = mask.to(device, dtype=torch.long)
+            targets = targets.to(device, dtype=torch.float)
+            # zero-grad the optimizer
+            optimizer.zero_grad()
+            # pass through the model
+            outputs = model(
+                ids=ids,
+                mask=mask,
+                token_type_ids=token_type_ids
+            )
+            # convert targets to cpu and extend the final list
+            targets = targets.cpu().detach()
+            fin_targets.extend(targets.numpy().tolist())
+            # convert outputs to cpu and extend the final list
+            outputs = torch.sigmoid(outputs).cpu().detach()
+            fin_outputs.extend(outputs.numpy().tolist())
+    return fin_outputs, fin_targets
 
 
 
