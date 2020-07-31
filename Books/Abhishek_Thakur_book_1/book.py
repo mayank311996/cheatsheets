@@ -5299,7 +5299,67 @@ def eval_fn(data_loader, model, device):
             fin_outputs.extend(outputs.numpy().tolist())
     return fin_outputs, fin_targets
 
+### train.py
+import config
+import dataset
+import engine
+import torch
+import pandas as pd
+import torch.nn as nn
+import numpy as np
+from model import BERTBaseUncased
+from sklearn import model_selection
+from sklearn import metrics
+from transformers import AdamW
+from transformers import get_linear_schedule_with_warmup
 
+def train():
+    # this function trains the model
+    # read the training file and fill NaN values with "none"
+    # you can also choose to drop NaN values in this
+    # specific dataset
+    dfx = pd.read_csv(config.TRAINING_FILE).fillna("none")
+    # sentiment = 1 if its positive
+    # else sentiment = 0
+    dfx.sentiment = dfx.sentiment.apply(
+        lambda x: 1 if x == "positive" else 0
+    )
+    # we split the data into single training
+    # and validation fold
+    df_train, df_valid = model_selection.train_test_split(
+        dfx,
+        test_size=0.1,
+        random_state=42,
+        stratify=dfx.sentiment.values
+    )
+    # reset index
+    df_train = df_train.reset_index(drop=True)
+    df_valid = df_valid.reset_index(drop=True)
+    # initialize BERTDataset from dataset.py
+    # for training dataset
+    train_dataset = dataset.BERTDataset(
+        review=df_train.review.values,
+        target=df_train.sentiment.values
+    )
+    # create training dataloader
+    train_data_loader = torch.utils.data.DataLoader(
+        train_dataset,
+        batch_size=config.TRAIN_BATCH_SIZE,
+        num_workers=4
+    )
+    # initialize BERTDataset from dataset.py
+    # for validation dataset
+    valid_dataset = dataset.BERTDataset(
+        review=df_valid.review.values,
+        target=df_valid.sentiment.values
+    )
+    # create validation data loader
+    valid_data_loader = torch.utils.data.DataLoader(
+        valid_dataset,
+        batch_size=config.VALID_BATCH_SIZE,
+        num_workers=1
+    )
+    
 
 
 
