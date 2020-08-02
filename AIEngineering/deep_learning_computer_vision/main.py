@@ -225,3 +225,29 @@ for test_sample in fm_test.take(10):
     print(f"Predicted label: {info.features['label'].names[np.argmax(pred)]}")
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
