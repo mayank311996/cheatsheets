@@ -123,6 +123,11 @@ class Article(BaseModel):
 
 @app.post("/article/")
 def analyze_article(articles: List[Article]):
+    """
+    Analyze an article and extract entities with spaCy
+    :param articles: JSON object
+    :return: entities and comments
+    """
     ents = []
     comments = []
     for article in articles:
