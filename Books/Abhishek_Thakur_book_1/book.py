@@ -5359,9 +5359,30 @@ def train():
         batch_size=config.VALID_BATCH_SIZE,
         num_workers=1
     )
+########################################################################
+
+    d# create validation data loader
+    valid_data_loader = torch.utils.data.DataLoader(
+        valid_dataset,
+        batch_size=config.VALID_BATCH_SIZE,
+        num_workers=1
+    )
+
+# create validation data loader
+    valid_data_loader = torch.utils.data.DataLoader(
+        valid_dataset,
+        batch_size=config.VALID_BATCH_SIZE,
+        num_workers=1
+    )
+
+# create validation data loader
+    valid_data_loader = torch.utils.data.DataLoader(
+        valid_dataset,
+        batch_size=config.VALID_BATCH_SIZE,
+        num_workers=1
+    )
 
 
-    d
 
 
 
