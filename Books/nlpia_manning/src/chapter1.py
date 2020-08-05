@@ -3,7 +3,9 @@
 ######################################################################################
 
 import re
-
+from collections import Counter
+from itertools import permutations
+import numpy as np
 
 #######################################################################################
 r = "(hi|hello|hey)[ ]*([a-z]*)"
@@ -36,3 +38,31 @@ if match:
 
 
 #########################################################################################
+Counter("Guten Morgen Rosa".split())
+Counter("Good morning, Rosa!".split())
+
+
+#########################################################################################
+[" ".join(combo) for combo in permutations("Good morning "
+                                           "Rosa!".split(), 3)]
+
+s = "Find textbooks with titles containing 'NLP', " \
+    "or 'natural' and 'language', or" \
+    "'computational' and 'linguistics'."
+len(set(s.split()))
+np.arange(1, 12+1).prod()  # factorial (12) = arange(1, 13).prod()
+#########################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
