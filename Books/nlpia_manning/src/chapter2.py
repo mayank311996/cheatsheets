@@ -17,9 +17,9 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from nlpia.data.loaders import get_data
 from nltk.tokenize import casual_tokenize
 from sklearn.naive_bayes import MultinomialNB
+
 nltk.download("wordnet")
 nltk.download("stopwords")
-
 
 #########################################################################################
 sentence = "Thomas Jefferson began building Monticello at the age of 26."
@@ -182,7 +182,7 @@ df_bows.head()[list(bags_of_words[0].keys())]
 
 nb = MultinomialNB()
 nb = nb.fit(df_bows, movies.sentiment > 0)
-movies['predicted_sentiment'] = nb.predict_proba(df_bows)*8 - 4
+movies['predicted_sentiment'] = nb.predict_proba(df_bows) * 8 - 4
 movies['error'] = (movies.predict_sentiment - movies.sentiment).abs()
 print(movies.error.mean().round(1))
 movies['sentiment_ispositive'] = (movies.sentiment > 0).astype(int)
@@ -191,12 +191,24 @@ movies["sentiment predicted_sentiment sentiment_ispositive" \
        " predicted_ispositive".split()].head(8)
 
 #########################################################################################
+products = get_data('hutto_products')
+bags_of_words = []
+for text in products.text:
+    bags_of_words.append(Counter(casual_tokenize(text)))
+df_product_bows = pd.DataFrame.from_records(bags_of_words)
+df_product_bows = df_product_bows.fillna(0).astype(int)
+df_all_bows = df_bows.append(df_product_bows)
+print(df_all_bows.columns)
+df_product_bows = df_all_bows.iloc[len(movies):][df_bows.columns]
+print(df_product_bows.shape)
+print(df_bows.shape)
+products[ispos] = (products.sentiment > 0).astype(int)
+products["predicted_ispositive"] = nb.predict(df_product_bows.values)\
+    .astype(int)
+products.head()
+print((products.pred == products.ispos).sum()/len(products))
 
-
-
-
-
-
+#########################################################################################
 
 
 
