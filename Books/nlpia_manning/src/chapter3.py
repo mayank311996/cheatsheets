@@ -2,6 +2,7 @@
 # Chapter 3
 #########################################################################################
 
+from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import TreebankWordTokenizer
 from collections import Counter
 from collections import OrderedDict
@@ -193,6 +194,33 @@ for doc in docs:
 
     document_tfidf_vectors.append(vec)
 
+#########################################################################################
+query = "How long does it takes to get to the store?"
+query_vec = copy.copy(zero_vector)
+
+tokens = tokenizer.tokenize(query.lower())
+token_counts = Counter(tokens)
+
+for key, value in token_counts.items():
+    docs_containing_key = 0
+    for _doc in docs:
+        if key in _doc.lower():
+            docs_containing_key += 1
+    if docs_containing_key == 0:
+        continue
+    tf = value/len(tokens)
+    idf = len(docs)/docs_containing_key
+    query_vec[key] = tf*idf
+
+print(cosine_sim(query_vec, document_tfidf_vectors[0]))
+print(cosine_sim(query_vec, document_tfidf_vectors[1]))
+print(cosine_sim(query_vec, document_tfidf_vectors[2]))
+
+#########################################################################################
+corpus = docs
+vectorizer = TfidfVectorizer(min_df=1)
+model = vectorizer.fit_transform(corpus)
+print(model.todense().round(2))
 
 
 
