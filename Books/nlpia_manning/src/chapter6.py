@@ -3,8 +3,10 @@
 #########################################################################################
 
 import os
+import seaborn
 import numpy as np
 import pandas as pd
+import multiprocessing
 from nlpia.book.examples.ch06_nessvectors import *
 from nlpia.data.loaders import get_data
 # this conflicts with later import
@@ -13,6 +15,10 @@ from gensim.models.word2vec import Word2Vec
 from gensim.models.fasttext import FastText
 from gensim.models.word2vec import KeyedVectors
 from sklearn.decomposition import PCA
+from matplotlib import pyplot as plt
+from nlpia.plots import offline_plotly_scatter_bubble
+from gensim.models.doc2vec import TaggedDocument, Doc2Vec
+from gensim.utils import simple_preprocess
 
 #########################################################################################
 print(nessvector("Marie_Curie").round(2))
@@ -131,11 +137,58 @@ for c, state, st in zip(us.city, us.state, us.st):
     city_plus_state.append(row)
 us_300D = pd.DataFrame(city_plus_state)
 
+pca = PCA(n_components=2)
+us_300D = get_data("cities_us_wordvectors")
+us_2D = pca.fit_transform(us_300D.iloc[:, :300])
 
+#########################################################################################
+df = get_data("cities_us_wordvectors_pca2_meta")
+html = offline_plotly_scatter_bubble(
+    df.sort_values('population', ascending=False)[:350].copy()
+    .sort_values('population'),
+    filename='plotly_scatter_bubble.html',
+    x='x',
+    y='y',
+    size_col='population',
+    text_col='name',
+    category_col='timezone',
+    xscale=None,
+    yscale=None,
+    layout={},
+    marker={'sizeref': 3000}
+)
 
+#########################################################################################
+num_cores = multiprocessing.cpu_count()
+corpus = [
+    'This is the first document',
+    "this is the second document"
+]
+training_corpus = []
+for i, text in enumerate(corpus):
+    tagged_doc = TaggedDocument(
+        simple_preprocess(text),
+        [i]
+    )
+    training_corpus.append(tagged_doc)
 
+model = Doc2Vec(
+    size=100,
+    min_count=2,
+    workers=num_cores,
+    iter=10
+)
+model.build_vocab(training_corpus)
+model.train(
+    training_corpus,
+    total_examples=model.corpus_count,
+    epochs=model.iter
+)
 
-
+model.infer_vector(
+    simple_preprocess("This is an unseen doc"),
+    steps=10
+)
 
 
 
