@@ -13,6 +13,7 @@ from tensorflow.keras.layers import Dense, Dropout, Activation
 from nltk.tokenize import TreebankWordTokenizer
 from gensim.models.keyedvectors import KeyedVectors
 from nlpia.loaders import get_data
+from tensorflow.keras.models import model_from_json
 
 #########################################################################################
 model = Sequential()
@@ -155,6 +156,80 @@ x_test = np.reshape(x_test, (len(x_test), maxlen, embedding_dims))
 y_test = np.array(y_test)
 
 #########################################################################################
+print("Build model...")
+model = Sequential()
+
+model.add(
+    Conv1D(
+        filters,
+        kernel_size,
+        padding='valid',
+        activation='relu',
+        strides=1,
+        input_shape=(maxlen, embedding_dims)
+    )
+)
+model.add(
+    GlobalMaxPooling1D()
+)
+model.add(
+    Dense(hidden_dims)
+)
+model.add(
+    Dropout(0.2)
+)
+model.add(
+    Activation('relu')
+)
+model.add(
+    Dense(1)
+)
+model.add(
+    Activation('sigmoid')
+)
+
+model.compile(
+    loss='binary_crossentropy',
+    optimizer='adam',
+    metrics=['accuracy']
+)
+
+model.fit(
+    x_train,
+    y_train,
+    batch_size=batch_size,
+    epochs=epochs,
+    validation_data=(x_test, y_test)
+)
+
+model_structure = model.to_json()
+with open("cnn_model.json", "w") as json_file:
+    json_file.write(model_structure)
+model.save_weights("cnn_weights.h5")
+
+#########################################################################################
+with open("cnn_model.json", "r") as json_file:
+    json_string = json_file.read()
+model = model_from_json(json_string)
+model.load_weights("cnn_weights.h5")
+
+sample_1 = "I hate that the dismal weather had me down for so long, " \
+           "when will it break! Ugh, when does happiness return? " \
+           "The sun is blinding and the puffy clouds are too thin. " \
+           "I can't wait for the weekend."
+
+vec_list = tokenize_and_vectorize([(1, sample_1)])
+test_vec_list = pad_trunc(vec_list, maxlen)
+test_vec = np.reshape(test_vec_list, (
+    len(test_vec_list),
+    maxlen,
+    embedding_dims
+))
+model.predict(test_vec)
+model.predict_classes(test_vec)
+
+
+
 
 
 
