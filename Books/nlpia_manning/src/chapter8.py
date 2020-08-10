@@ -10,6 +10,8 @@ from nltk.tokenize import TreebankWordTokenizer
 from nlpia.loaders import get_data
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten, SimpleRNN
+from tensorflow.keras.models import model_from_json
+from tensorflow.keras.layers.wrappers import Bidirectional
 
 #########################################################################################
 word_vectors = get_data('wv')
@@ -154,6 +156,106 @@ model.compile(
     metrics=['accuracy']
 )
 model.summary()
+
+model.fit(
+    x_train,
+    y_train,
+    batch_size=batch_size,
+    epochs=epochs,
+    validation_data=(x_test, y_test)
+)
+
+model_structure = model.to_json()
+with open("simplernn_model1.json", "w") as json_file:
+    json_file.write(model_structure)
+model.save_weights("simplernn_weights1.h5")
+
+#########################################################################################
+num_neurons = 100
+model = Sequential()
+model.add(
+    SimpleRNN(
+        num_neurons,
+        return_sequences=True,
+        input_shape=(maxlen, embedding_dims),
+    )
+)
+model.add(
+    Dropout(0.2)
+)
+model.add(
+    Flatten()
+)
+model.add(
+    Dense(
+        1,
+        activation='sigmoid'
+    )
+)
+
+model.compile(
+    'rmsprop',
+    'binary_crossentropy',
+    metrics=['accuracy']
+)
+model.summary()
+
+model.fit(
+    x_train,
+    y_train,
+    batch_size=batch_size,
+    epochs=epochs,
+    validation_data=(x_test, y_test)
+)
+
+model_structure = model.to_json()
+with open("simplernn_model2.json", "w") as json_file:
+    json_file.write(model_structure)
+model.save_weights("simplernn_weights2.h5")
+
+#########################################################################################
+sample_1 = "I hate that the dismal weather had me down for so long, " \
+           "when will it break! Ugh, when does happiness return? " \
+           "The sun is blinding and the puffy clouds are too thin. " \
+           "I can't wait for the weekend."
+
+with open("simplernn_model1.json", "r") as json_file:
+    json_string = json_file.read()
+model = model_from_json(json_string)
+model.load_weights("simplernn_weights1.h5")
+
+vec_list = tokenize_and_vectorize([(1, sample_1)])
+test_vec_list = pad_trunc(vec_list, maxlen)
+test_vec = np.reshape(test_vec_list, (
+    len(test_vec_list),
+    maxlen,
+    embedding_dims
+))
+model.predict(test_vec)
+model.predict_classes(test_vec)
+
+#########################################################################################
+num_neurons = 10
+maxlen = 100
+embedding_dims = 300
+
+model = Sequential()
+model.add(
+    Bidirectional(
+        SimpleRNN(
+            num_neurons,
+            return_sequences=True,
+            input_shape=(maxlen, embedding_dims)
+        )
+    )
+)
+
+
+
+
+
+
+
 
 
 
