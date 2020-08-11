@@ -181,6 +181,19 @@ model.compile(
 print(model.summary())
 
 #########################################################################################
+model.fit(
+    x_train,
+    y_train,
+    epochs=EPOCHS,
+    validation_data=(x_test, y_test)
+)
+
+model_structure = model.to_json()
+with open("lstm_model1.json", "w") as json_file:
+    json_file.write(model_structure)
+model.save_weights("lstm_weights1.h5")
+
+#########################################################################################
 
 
 
