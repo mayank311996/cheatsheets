@@ -245,9 +245,74 @@ vectorized_data = tokenize_and_vectorize(dataset)
 test_len(vectorized_data, 400)
 
 #########################################################################################
+dataset = pre_process_data('<path to your downloaded file>/aclimdb/train')
 
+vectorized_data = tokenize_and_vectorize(dataset)
+expected = collect_expected(dataset)
 
+split_point = int(len(vectorized_data)*0.8)
 
+x_train = vectorized_data[:split_point]
+y_train = expected[:split_point]
+x_test = vectorized_data[split_point:]
+y_test = expected[split_point:]
+
+maxlen = 200
+batch_size = 32
+embedding_dims = 300
+epochs = 2
+
+x_train = pad_trunc(x_train, maxlen)
+x_test = pad_trunc(x_test, maxlen)
+
+x_train = np.reshape(x_train, (len(x_train), maxlen, embedding_dims))
+y_train = np.array(y_train)
+x_test = np.reshape(x_test, (len(x_test), maxlen, embedding_dims))
+y_test = np.array(y_test)
+
+MAXLEN = 200
+BATCH_SIZE = 32
+EMBEDDING_DIMS = 300
+EPOCHS = 2
+NUM_NEURONS = 50
+
+model = Sequential()
+model.add(
+    LSTM(
+        NUM_NEURONS,
+        return_sequences=True,
+        input_shape=(MAXLEN, EMBEDDING_DIMS)
+    )
+)
+model.add(
+    Dropout(0.2)
+)
+model.add(
+    Flatten()
+)
+model.add(
+    Dense(1, activation="sigmoid")
+)
+model.compile(
+    "rmsprop",
+    "binary_crossentropy",
+    metrics=["accuracy"]
+)
+print(model.summary())
+
+model.fit(
+    x_train,
+    y_train,
+    epochs=EPOCHS,
+    validation_data=(x_test, y_test)
+)
+
+model_structure = model.to_json()
+with open("lstm_model7.json", "w") as json_file:
+    json_file.write(model_structure)
+model.save_weights("lstm_weights7.h5")
+
+#########################################################################################
 
 
 
