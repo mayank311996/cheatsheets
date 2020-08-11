@@ -313,6 +313,23 @@ with open("lstm_model7.json", "w") as json_file:
 model.save_weights("lstm_weights7.h5")
 
 #########################################################################################
+dataset = pre_process_data("./aclimdb/train")
+expected = collect_expected(dataset)
+
+
+def avg_len(data):
+    """
+    Calculates avg num of characters present in a dataset per sentence.
+    :param data: input dataset
+    :return: avg num of characters
+    """
+    total_len = 0
+    for sample in data:
+        total_len += len(sample[1])
+    return total_len/len(data)
+
+
+#########################################################################################
 
 
 
