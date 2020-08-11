@@ -215,8 +215,36 @@ test_vec = np.reshape(test_vec_list, (
 model.predict(test_vec)
 model.predict_classes(test_vec)
 
-#########################################################################################
 
+#########################################################################################
+def test_len(data, maxlen):
+    """
+    Function to check suitability of maxlen
+    :param data: input data
+    :param maxlen: max len of list of tokens
+    :return: none
+    """
+    total_len = truncated = exact = padded = 0
+    for sample in data:
+        total_len += len(sample)
+        if len(sample) > maxlen:
+            truncated += 1
+        elif len(sample) < maxlen:
+            padded += 1
+        else:
+            exact += 1
+
+    print(f"Padded: {padded}")
+    print(f"Truncated: {truncated}")
+    print(f"Equal: {exact}")
+    print(f"Avg length: {total_len/len(data)}")
+
+
+dataset = pre_process_data("./aclimdb/train")
+vectorized_data = tokenize_and_vectorize(dataset)
+test_len(vectorized_data, 400)
+
+#########################################################################################
 
 
 
