@@ -395,6 +395,38 @@ def create_dicts(data):
 
 
 #########################################################################################
+def onehot_encode(dataset, char_indices, maxlen=1500):
+    """
+    Function to one-hot-encode the tokens
+    :param dataset: input dataset (list of lists of tokens)
+    :param char_indices: dictionary of char to indices mapping
+    {key = character, value = index to use encoding vector}
+    :param maxlen: max len of for num of characters in a sentence
+    :return: Encoded numpy array of shape (samples, tokens,
+    encoding length)
+    """
+    X = np.zeros((len(dataset), maxlen, len(char_indices.keys())))
+    for i, sentence in enumerate(dataset):
+        for t, char in enumerate(sentence):
+            X[i, t, char_indices[char]] = 1
+
+    return X
+
+
+#########################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
