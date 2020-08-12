@@ -313,8 +313,8 @@ with open("lstm_model7.json", "w") as json_file:
 model.save_weights("lstm_weights7.h5")
 
 #########################################################################################
-dataset = pre_process_data("./aclimdb/train")
-expected = collect_expected(dataset)
+# dataset = pre_process_data("./aclimdb/train")
+# expected = collect_expected(dataset)
 
 
 def avg_len(data):
@@ -353,7 +353,7 @@ def clean_data(data):
     return new_data
 
 
-listified_data = clean_data(dataset)
+# listified_data = clean_data(dataset)
 
 
 #########################################################################################
@@ -414,8 +414,20 @@ def onehot_encode(dataset, char_indices, maxlen=1500):
 
 
 #########################################################################################
+dataset = pre_process_data("./aclimdb/train")
+expected = collect_expected(dataset)
+listified_data = clean_data(dataset)
 
+common_length_data = char_pad_trunc(listified_data, maxlen=1500)
+char_indices, indices_char = create_dicts(common_length_data)
+encoded_data = onehot_encode(common_length_data, char_indices, 1500)
 
+split_point = int(len(encoded_data)*0.8)
+
+x_train = encoded_data[:split_point]
+y_train = expected[:split_point]
+x_test = encoded_data[split_point:]
+y_test = expected[split_point:]
 
 
 
