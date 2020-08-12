@@ -6,6 +6,7 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM, Embedding
 from tensorflow.keras.models import model_from_json
+from nltk.corpus import gutenberg
 
 #########################################################################################
 MAXLEN = 400
@@ -476,8 +477,22 @@ with open("char_lstm_model3.json", "w") as json_file:
 model.save_weights("char_lstm_weights3.h5")
 
 #########################################################################################
+print(gutenberg.fileids())
 
+text = ""
+for txt in gutenberg.fileids():
+    if "shakespeare" in txt:
+        text += gutenberg.raw(txt).lower()
 
+chars = sorted(list(set(text)))
+
+char_indices = dict((c, i) for i, c in enumerate(chars))
+indices_char = dict((i, c) for i, c in enumerate(chars))
+
+print(f"corpus length: {len(text)}, total chars: {len(chars)}")
+print(text[:500])
+
+#########################################################################################
 
 
 
