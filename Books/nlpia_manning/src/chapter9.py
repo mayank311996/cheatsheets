@@ -4,8 +4,9 @@
 
 import numpy as np
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM, Embedding
+from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM, Embedding, Activation
 from tensorflow.keras.models import model_from_json
+from tensorflow.keras.optimizers import RMSprop
 from nltk.corpus import gutenberg
 
 #########################################################################################
@@ -513,8 +514,50 @@ for i, sentence in enumerate(sentences):
     y[i, char_indices[next_chars[i]]] = 1
 
 #########################################################################################
+model = Sequential()
 
+model.add(
+    LSTM(
+        128,
+        input_shape=(maxlen, len(chars))
+    )
+)
+model.add(
+    Dense(
+        len(chars)
+    )
+)
+model.add(
+    Activation(
+        "softmax"
+    )
+)
 
+optimizer = RMSprop(
+    lr=0.01
+)
+
+model.compile(
+    loss="categorical_crossentropy",
+    optimizer=optimizer
+)
+model.summary()
+
+epochs = 6
+batch_size = 128
+model_structure = model.to_json()
+with open("shakes_lstm_model.json", "w") as json_file:
+    json_file.write(model_structure)
+for i in range(5):
+    model.fit(
+        X,
+        y,
+        batch_size=batch_size,
+        epochs=epochs
+    )
+    model.save_weights(f"shakes_lstm_weights_{i+1}.h5")
+
+#########################################################################################
 
 
 
