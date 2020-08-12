@@ -357,7 +357,27 @@ listified_data = clean_data(dataset)
 
 
 #########################################################################################
+def char_pad_trunc(data, maxlen=1500):
+    """
+    Truncate data to maxlen or add padding
+    :param data: input dataset
+    :param maxlen: max len for num of characters in a sentence
+    :return: Truncated and padded list of characters
+    """
+    new_datset = []
+    for sample in data:
+        if len(sample) > maxlen:
+            new_data = sample[:maxlen]
+        elif len(sample) < maxlen:
+            pads = maxlen - len(sample)
+            new_data = sample + ["PAD"]*pads
+        else:
+            new_data = sample
+        new_datset.append(new_data)
+    return new_datset
 
+
+#########################################################################################
 
 
 
