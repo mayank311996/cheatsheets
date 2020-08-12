@@ -4,7 +4,7 @@
 
 import numpy as np
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM
+from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM, Embedding
 from tensorflow.keras.models import model_from_json
 
 #########################################################################################
@@ -429,9 +429,36 @@ y_train = expected[:split_point]
 x_test = encoded_data[split_point:]
 y_test = expected[split_point:]
 
+#########################################################################################
+NUM_NEURONS = 40
+MAXLEN = 1500
 
+model = Sequential()
+model.add(
+    LSTM(
+        NUM_NEURONS,
+        return_sequences=True,
+        input_shape=(MAXLEN, len(char_indices.keys()))
+    )
+)
+model.add(
+    Dropout(0.2)
+)
+model.add(
+    Flatten()
+)
+model.add(
+    Dense(1, activation="sigmoid")
+)
 
+model.compile(
+    "rmsprop",
+    "binary_crossentropy",
+    metrics=["accuracy"]
+)
+model.summary()
 
+#########################################################################################
 
 
 
