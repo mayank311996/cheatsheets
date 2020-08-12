@@ -42,9 +42,24 @@ decoder_dense = Dense(
 decoder_outputs = decoder_dense(decoder_outputs)
 
 #########################################################################################
+model = Model(
+    inputs=[encoder_inputs, decoder_inputs],
+    outputs=decoder_outputs
+)
 
+#########################################################################################
+model.compile(
+    optimizer='rmsprop',
+    loss='categorical_crossentropy'
+)
+model.fit(
+    [encoder_input_data, decoder_input_data],
+    decoder_target_data,
+    batch_size=batch_size,
+    epochs=epochs
+)
 
-
+#########################################################################################
 
 
 
