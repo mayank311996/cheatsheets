@@ -5,6 +5,7 @@
 import sys
 import random
 import numpy as np
+from nlpia.loaders import get_data
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM, \
     Embedding, Activation, GRU, Input
@@ -93,6 +94,45 @@ while not stop_condition:
     )
 
 #########################################################################################
+df = get_data('moviedialog')
+input_texts, target_texts = [], []
+input_vocabulary = set()
+output_vocabulary = set()
+start_token = '\t'
+stop_token = '\n'
+max_training_samples = min(25000, len(df) - 1)
+
+for input_text, target_text in zip(df.statement, df.reply):
+    target_text = start_token + target_text + stop_token
+
+    input_texts.append(input_text)
+    target_texts.append(target_text)
+
+    for char in input_text:
+        if char not in input_vocabulary:
+            input_vocabulary.add(char)
+    for char in target_text:
+        if char not in output_vocabulary:
+            output_vocabulary.add(char)
+
+#########################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
