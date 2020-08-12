@@ -459,6 +459,24 @@ model.compile(
 model.summary()
 
 #########################################################################################
+BATCH_SIZE = 12
+EPOCHS = 10
+
+model.fit(
+    x_train,
+    y_train,
+    batch_size=BATCH_SIZE,
+    epochs=EPOCHS,
+    validation_data=(x_test, y_test)
+)
+
+model_structure = model.to_json()
+with open("char_lstm_model3.json", "w") as json_file:
+    json_file.write(model_structure)
+model.save_weights("char_lstm_weights3.h5")
+
+#########################################################################################
+
 
 
 
