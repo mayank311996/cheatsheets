@@ -83,8 +83,16 @@ decoder_model = Model(
 )
 
 #########################################################################################
+thought = encoder_model.predict(
+    input_seq
+)
 
+while not stop_condition:
+    output_tokens, h, c = decoder_model.predict(
+        [target_seq] + thought
+    )
 
+#########################################################################################
 
 
 
