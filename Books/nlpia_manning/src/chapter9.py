@@ -6,7 +6,8 @@ import sys
 import random
 import numpy as np
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM, Embedding, Activation
+from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM, \
+    Embedding, Activation, GRU
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.optimizers import RMSprop
 from nltk.corpus import gutenberg
@@ -595,10 +596,31 @@ for diversity in [0.2, 0.5, 1.0]:
     print()
 
 #########################################################################################
+model = Sequential()
+model.add(
+    GRU(
+        NUM_NEURONS,
+        return_sequences=True,
+        input_shape=X[0].shape
+    )
+)
 
-
-
-
+#########################################################################################
+NUM_NEURONS_2 = 20  # for example
+model = Sequential()
+model.add(
+    LSTM(
+        NUM_NEURONS,
+        return_sequences=True,
+        input_shape=X[0].shape
+    )
+)
+model.add(
+    LSTM(
+        NUM_NEURONS_2,
+        return_sequences=True
+    )
+)
 
 
 
