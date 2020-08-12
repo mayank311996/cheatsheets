@@ -329,10 +329,34 @@ def avg_len(data):
     return total_len/len(data)
 
 
+print(avg_len(dataset))
+
+
 #########################################################################################
+def clean_data(data):
+    """
+    This function converts data sentences into lower case,
+    replace unknowns with UNK, and listify
+    :param data: input dataset
+    :return: listified data
+    """
+    new_data = []
+    VALID = 'abcdefghijklmnopqrstuvwxyz0123456789"\'?!.,:; '
+    for sample in data:
+        new_sample = []
+        for char in sample[1].lower():
+            if char in VALID:
+                new_sample.append(char)
+            else:
+                new_sample.append('UNK')
+        new_data.append(new_sample)
+    return new_data
 
 
+listified_data = clean_data(dataset)
 
+
+#########################################################################################
 
 
 
