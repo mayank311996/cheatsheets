@@ -116,12 +116,34 @@ for input_text, target_text in zip(df.statement, df.reply):
             output_vocabulary.add(char)
 
 #########################################################################################
+input_vocabulary = sorted(input_vocabulary)
+output_vocabulary = sorted(output_vocabulary)
 
+input_vocab_size = len(input_vocabulary)
+output_vocab_size = len(output_vocabulary)
 
+max_encoder_seq_length = max(
+    [len(txt) for txt in input_texts]
+)
+max_decoder_seq_length = max(
+    [len(txt) for txt in target_texts]
+)
 
+input_token_index = dict(
+    [(char, i) for i, char in enumerate(input_vocabulary)]
+)
+target_token_index = dict(
+    [(char, i) for i, char in enumerate(output_vocabulary)]
+)
 
+reverse_input_char_index = dict(
+    [(i, char) for char, i in input_token_index.items()]
+)
+reverse_target_char_index = dict(
+    [(i, char) for char, i in target_token_index.items()]
+)
 
-
+#########################################################################################
 
 
 
