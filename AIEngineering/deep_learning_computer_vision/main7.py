@@ -138,7 +138,40 @@ q_aware_model.compile(
 q_aware_model.summary()
 
 logdir = os.path.join("/tmp/logs", datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+tensorboard_callback = tf.keras.callbacks.TensorBoard(
+    logdir,
+    histogram_freq=1
+)
 
+train_dataset, test_dataset, val_dataset = get_dataset()
+train_dataset.cache()
+val_dataset.cache()
+
+q_aware_model.fit(
+    train_dataset,
+    epochs=5,
+    validation_data=val_dataset,
+    callbacks=[tensorboard_callback]
+)
+
+model.save("/tmp/fashion.hdf5")
+
+# %tensorboard --logdir /tmp/logs
+# the size of the train model will be small and you still need
+# to convert it to work with int numbers
+
+# The quantization technique is not only useful for edge devices
+# but can also be used when low inference time is desired
+
+q_aware_model.evaluate(test_dataset, verbose=0)
+
+converter = tf.lite.TFLiteConverter.from_keras_model(q_aware_model)
+converter.optimizations = [tf.lite.Optimize.DEFAULT]
+
+quantized_tflite_model = converter.convert()
+
+quantized_model_size = len(quantized_tflite_model)/1024
+print(f"Quantized model size = {quantized_model_size}KBs")
 
 
 
