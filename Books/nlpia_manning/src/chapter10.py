@@ -248,6 +248,39 @@ model.fit(
 )
 
 #########################################################################################
+encoder_model = Model(encoder_inputs, encoder_states)
+thought_input = [
+    Input(shape=(NUM_NEURONS,)),
+    Input(shape=(NUM_NEURONS,))
+]
+decoder_outputs, state_h, state_c = decoder_lstm(
+    decoder_inputs,
+    initial_state=thought_input
+)
+decoder_states = [state_h, state_c]
+decoder_outputs = decoder_dense(decoder_outputs)
+
+decoder_model = Model(
+    inputs=[decoder_inputs] + thought_input,
+    output=[decoder_outputs] + decoder_states
+)
+
+#########################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
