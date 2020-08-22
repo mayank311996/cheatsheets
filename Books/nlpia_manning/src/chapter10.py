@@ -11,6 +11,7 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten, LSTM, \
     Embedding, Activation, GRU, Input
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.models import Model
 
 #########################################################################################
 encoder_inputs = Input(
@@ -195,10 +196,58 @@ for i, (input_text, target_text) in enumerate(
             ] = 1
 
 #########################################################################################
+BATCH_SIZE = 64
+EPOCHS = 100
+NUM_NEURONS = 256
 
+encoder_inputs = Input(
+    shape=(None, input_vocab_size)
+)
+encoder = LSTM(
+    NUM_NEURONS,
+    return_state=True
+)
+encoder_outputs, state_h, state_c = encoder(encoder_inputs)
+encoder_states = [state_h, state_c]
 
+decoder_inputs = Input(
+    shape=(None, output_vocab_size)
+)
+decoder_lstm = LSTM(
+    NUM_NEURONS,
+    return_sequences=True,
+    return_state=True
+)
+decoder_outputs, _, _ = decoder_lstm(
+    decoder_inputs,
+    initial_state=encoder_states
+)
+decoder_dense = Dense(
+    output_vocab_size,
+    activation="softmax"
+)
+decoder_outputs = decoder_dense(decoder_outputs)
 
+model = Model(
+    [encoder_inputs, decoder_inputs],
+    decoder_outputs
+)
 
+model.compile(
+    optimizer='rmsprop',
+    loss='categorical_crossentropy',
+    metrics=['acc']
+)
+
+model.fit(
+    [encoder_input_data, decoder_input_data],
+    decoder_target_data,
+    batch_size=BATCH_SIZE,
+    epochs=EPOCHS,
+    validation_split=0.1
+)
+
+#########################################################################################
 
 
 
