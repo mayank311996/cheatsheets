@@ -321,6 +321,11 @@ def response(input_text):
 
 
 #########################################################################################
+response("what is the internet?")
+response("why?")
+response("do you like coffee?")
+response("do you like football?")
+
 
 
 
