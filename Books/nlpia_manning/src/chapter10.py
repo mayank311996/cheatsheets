@@ -144,8 +144,57 @@ reverse_target_char_index = dict(
 )
 
 #########################################################################################
+encoder_input_data = np.zeros(
+    (
+        len(input_texts),
+        max_encoder_seq_length,
+        input_vocab_size
+    ),
+    dtype="float32"
+)
 
+decoder_input_data = np.zeros(
+    (
+        len(input_texts),
+        max_decoder_seq_length,
+        output_vocab_size
+    ),
+    dtype="float32"
+)
 
+decoder_target_data = np.zeros(
+    (
+        len(input_texts),
+        max_decoder_seq_length,
+        output_vocab_size
+    ),
+    dtype="float32"
+)
+
+for i, (input_text, target_text) in enumerate(
+    zip(input_texts, target_texts)
+):
+    for t, char in enumerate(input_text):
+        encoder_input_data[
+            i,
+            t,
+            input_token_index[char]
+        ] = 1
+
+    for t, char in enumerate(target_text):
+        decoder_input_data[
+            i,
+            t,
+            target_token_index[char]
+        ] = 1
+        if t > 0:
+            decoder_target_data[
+                i,
+                t-1,
+                target_token_index[char]
+            ] = 1
+
+#########################################################################################
 
 
 
