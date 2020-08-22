@@ -301,7 +301,26 @@ def decode_sequence(input_seq):
 
 
 #########################################################################################
+def response(input_text):
+    """
+    Converts input texts into tokens and pass it to decode_sequence
+    function. Finally prints the generated sequences.
+    :param input_text: input text (str)
+    :return: None
+    """
+    input_seq = np.zeros(
+        (1, max_encoder_seq_length, input_vocab_size),
+        dtype='float32'
+    )
 
+    for t, char in enumerate(input_text):
+        input_seq[0, t, input_token_index[char]] = 1
+
+    decoded_sentence = decode_sequence(input_seq)
+    print('Bot Reply (Decoded sentence):', decoded_sentence)
+
+
+#########################################################################################
 
 
 
