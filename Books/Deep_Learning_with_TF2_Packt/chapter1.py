@@ -5,6 +5,8 @@
 import tensorflow as tf
 import numpy as np
 from tf.keras.regularizers import l2, activity_l2
+from tensorflow.keras import datasets, layers, models, preprocessing
+import tensorflow_datasets as tfds
 
 #########################################################################################
 EPOCHS = 200
@@ -251,6 +253,103 @@ model.add(
 )
 
 #########################################################################################
+MAX_LEN = 200
+N_WORDS = 10000
+DIM_EMBEDDING = 256
+EPOCHS = 20
+BATCH_SIZE = 500
+
+
+def load_data():
+    """
+    This function pads the input sequences to uniform dimension
+    :return: Returns padded data with labels
+    """
+    # load data
+    (X_train, y_train), (X_test, y_test) = \
+    datasets.imdb.load_data(num_words=N_WORDS)
+    # pad sequences
+    X_train = preprocessing.sequence.pad_sequences(
+        X_train,
+        maxlen=MAX_LEN
+    )
+    X_test = preprocessing.sequence.pad_sequences(
+        X_test,
+        maxlen=MAX_LEN
+    )
+
+    return (X_train, y_train), (X_test, y_test)
+
+
+def build_model():
+    """
+    Builds DL model for sentiment analysis using one
+    embedding layer
+    :return: Deep Learning model
+    """
+    model = models.Sequential()
+    model.add(
+        layers.Embedding(
+            N_WORDS,
+            DIM_EMBEDDING,
+            input_length=MAX_LEN
+        )
+    )
+    model.add(
+        layers.Dropout(0.3)
+    )
+    model.add(
+        layers.GlobalMaxPooling1D()
+    )
+    model.add(
+        layers.Dense(
+            128,
+            activation='relu'
+        )
+    )
+    model.add(
+        layers.Dropout(0.5)
+    )
+    model.add(
+        layers.Dense(
+            1,
+            activation='sigmoid'
+        )
+    )
+
+    return model
+
+
+(X_train, y_train), (X_test, y_test) = load_data()
+model = build_model()
+model.summary()
+
+model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['accuracy']
+)
+
+score = model.fit(
+    X_train,
+    y_train,
+    epochs=EPOCHS,
+    batch_size=BATCH_SIZE,
+    validation_data=(X_test, y_test)  # wrong way maybe
+)
+
+score = model.evaluate(
+    X_test,
+    y_test,
+    batch_size=BATCH_SIZE
+)
+print("\nTest score:", score[0])
+print("Test accuracy:", score[1])
+# predictions = model.predict(X)
+
+#########################################################################################
+
+
 
 
 
