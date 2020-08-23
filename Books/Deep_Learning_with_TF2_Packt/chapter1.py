@@ -4,6 +4,7 @@
 
 import tensorflow as tf
 import numpy as np
+from tf.keras.regularizers import l2, activity_l2
 
 #########################################################################################
 EPOCHS = 200
@@ -227,12 +228,29 @@ test_loss, test_acc = model.evaluate(X_test, Y_test)
 print("Test accuracy:", test_acc)
 
 #########################################################################################
+model.compile(
+    optimizer='RMSProp',
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
 
+model.compile(
+    optimizer='adam',
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
 
+#########################################################################################
+model.add(
+    Dense(
+        64,
+        input_dim=64,
+        W_regularizer=l2(0.01),
+        activity_regularizer=activity_l2(0.01)
+    )
+)
 
-
-
-
+#########################################################################################
 
 
 
