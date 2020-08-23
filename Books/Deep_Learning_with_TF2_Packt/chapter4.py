@@ -380,6 +380,52 @@ print("\nTest score:", score[0])
 print("Test Accuracy", score[1])
 
 #########################################################################################
+# image augmentation
+datagen = ImageDataGenerator(
+    rotation_range=30,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    horizontal_flip=True
+)
+datagen.fit(x_train)
+
+# train
+model.fit_generator(
+    datagen.flow(
+        x_train,
+        y_train,
+        batch_size=BATCH_SIZE
+    ),
+    epochs=EPOCHS,
+    verbose=VERBOSE,
+    validation_data=(x_test, y_test)
+)
+
+# save to disk
+model_json = model.to_json()
+with open('model.json', 'w') as json_file:
+    json_file.write(model_json)
+model.save_weights('model.h5')
+
+# test
+scores = model.evaluate(
+    x_test,
+    y_test,
+    batch_size=128,
+    verbose=1
+)
+print(f"\nTest result: {scores[0], scores[1]}")
+
+#########################################################################################
+
+
+
+
+
+
+
+
+
 
 
 
