@@ -1,5 +1,6 @@
 # %matplotlib inline
 
+import pickle
 import numpy as np
 import pandas as pd
 import seaborn as s
@@ -17,6 +18,7 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import GridSearchCV
 from skelarn.svm import SVC
 from xgboost import XGBClassifier
+from imblearn.over_sampling import SMOTE
 
 #########################################################################################
 data = pd.read_csv('/input/data.csv')
@@ -205,7 +207,7 @@ def fitmodel(x, y, algo_name, algorithm, gridsearchparams, cv):
     best_params = grid_result.best_params_
     pred = grid_result.predict(x_test)
     cm = confusion_matrix(y_test, pred)
-
+    pickle.dump(grid_result, open(algo_name, 'wb'))
     print('Best Params:', best_params)
     print('Classification Report:', classification_report(y_test, pred))
     print('Accuracy Score:' + str(accuracy_score(y_test, pred)))
@@ -262,11 +264,48 @@ param = {
 }
 fitmodel(X, Y, 'XGBoost', XGBClassifier(), param, cv=5)
 
+# Balancing the Dataset
+df_norm.head()
 
+sm = SMOTE(random_state=42)
+X_res, Y_res = sm.fit_resample(X_norm, Y_norm)
 
+pd.Series(Y_res).value_counts()
 
+param = {
+    'n_estimators': [100, 500, 1000, 2000]
+}
+fitmodel(X_res, Y_res, 'Random Forest', RandomForestClassifier(),
+         param, cv=10)
 
+param = {
+    'C': [0.1, 1, 100, 1000],
+    'gamma': [0.0001, 0.001, 0.005, 0.1, 1, 3, 5]
+}
+fitmodel(X_res, Y_res, 'SVC', SVC(), param, cv=5)
 
+# Feature Selection
+feat_imp.index = feat_imp.Feature
+feat_to_keep = feat_imp.ilov[1:15].index
+print(feat_to_keep)
+
+X_res = pd.DataFrame(X_res)
+Y_res = pd.DataFrame(Y_res)
+X_res.columns = X_norm.columns
+
+param = {
+    'n_estimators': [100, 500, 1000, 2000]
+}
+fitmodel(X_res[feat_to_keep], Y_res, 'Random Forest',
+         RandomForestClassifier(), param, cv=10)
+
+# Reloading the saved model
+loaded_model = pickle.load(open("XGBoost_norm", "rb"))
+
+pred1 = loaded_model.predict(x_test)
+print(loaded_model.best_params_)
+
+#########################################################################################
 
 
 
