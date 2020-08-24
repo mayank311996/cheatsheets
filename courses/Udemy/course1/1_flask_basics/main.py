@@ -16,6 +16,7 @@ def add():
     return str(a+b)
 
 
+# get request passes the parameters in url itself
 @app.route('/addParam', methods=['GET'])
 def add_param():
     a = request.args.get("a")
