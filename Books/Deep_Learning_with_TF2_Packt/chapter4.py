@@ -2,6 +2,8 @@
 # Chapter 4
 #########################################################################################
 
+import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import datasets, layers, models, optimizers, \
@@ -10,6 +12,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from skimage.transform import resize
 from imageio import imread
 from tensorflow.keras.models import model_from_json
+from tensorflow.keras.applications.vgg16 import VGG16
 
 #########################################################################################
 EPOCHS = 5
@@ -445,9 +448,33 @@ predictions = model.predict_classes(imgs)
 print("predictions:", predictions)
 
 #########################################################################################
+# prebuild model with pretrained weights on imagenet
+model = VGG16(
+    weights='imagenet',
+    include_top=True
+)
+model.compile(
+    optimizer='sgd',
+    loss='categorical_crossentropy'
+)
 
+# resize into VGG16 trained images format
+im = cv2.resize(
+    cv2.imread('steam-locomotive.jpg'),
+    (224, 224)
+)
+im = np.expand_dims(im, axis=0)
+im.astype(np.float32)
 
+# predict
+out = model.predict(im)
+index = np.argmax(out)
+print(index)
 
+plt.plot(out.ravel())
+plt.show()
+
+#########################################################################################
 
 
 
