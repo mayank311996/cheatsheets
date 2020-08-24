@@ -9,3 +9,4 @@ WORKDIR /usr/local/python/
 
 RUN pip install -r requirements.txt
 
+CMD python breast_cancer_API.py
