@@ -40,7 +40,7 @@ print(col)
 print(X.isnull().sum())
 
 # Normalization and Feature Scaling
-df_norm = (X - X.mean())/(X.max() - X.min())
+df_norm = (X - X.mean()) / (X.max() - X.min())
 df_norm = pd.concat([df_norm, Y], axis=1)
 df_norm.head()
 
@@ -70,6 +70,8 @@ f.tight_layout()
 # Also, for specific domain like medical, finance etc.
 # outliers can represent very valuable information
 
+# To get idea that data is normally distributed or gaussian
+# distributed or skewed etc.
 g = s.FacetGrid(df, col='diagnosis', hue='diagnosis')
 g.map(s.distplot, 'radius_mean', hist=False, rug=True)
 
@@ -158,6 +160,107 @@ f.tight_layout()
 # highly correlated data can be remove as they don't add much value
 # also removing them saves computation time.
 # this can be useful when you have large number of features say 300
+
+X_norm = df_norm.drop(labels='diagnosis', axis=1)
+Y_norm = df_norm['diagnosis']
+col = X_norm.columns
+
+le = LabelEncoder()
+le.fit(Y_norm)
+
+Y_norm = le.transform(Y_norm)
+Y_norm = pd.DataFrame(Y_norm)
+Y_norm.head()
+
+
+#########################################################################################
+# Fitting the ML model
+
+
+def fitmodel(x, y, algo_name, algorithm, gridsearchparams, cv):
+    """
+    Trains the model and predicts on test data
+    :param x: data
+    :param y: labels
+    :param algo_name: name of the algorithm
+    :param algorithm: algorithm to be used
+    :param gridsearchparams: grid parameters
+    :param cv: number of cross validations
+    :return: none
+    """
+    np.random.seed(10)
+    x_train, x_test, y_train, y_test = \
+        train_test_split(x, y, test_size=0.2)
+
+    grid = GridSearchCV(
+        estimator=algorithm,
+        param_grid=gridsearchparams,
+        cv=cv,
+        scoring='accuracy',
+        verbose=1,
+        n_jobs=-1
+    )
+
+    grid_result = grid.fit(x_train, y_train)
+    best_params = grid_result.best_params_
+    pred = grid_result.predict(x_test)
+    cm = confusion_matrix(y_test, pred)
+
+    print('Best Params:', best_params)
+    print('Classification Report:', classification_report(y_test, pred))
+    print('Accuracy Score:' + str(accuracy_score(y_test, pred)))
+    print('Confusion Matrix:', cm)
+
+
+# SVC ML Model
+param = {
+    'C': [0.1, 1, 100, 1000],
+    'gamma': [0.0001, 0.001, 0.005, 0.1, 1, 3, 5]
+}
+fitmodel(X_norm, Y_norm, 'SVC', SVC(), param, cv=5)
+
+# Random Forest
+param = {
+    'n_estimators': [100, 500, 1000, 2000]
+}
+fitmodel(X, Y, 'Random Forest', RandomForestClassifier(), param, cv=10)
+# not used normalized data (remember Abhishek Thakur book tree based \
+# algorithms don't need any scaling)
+
+# repeated
+np.random.seed(10)
+x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
+
+forest = RandomForestClassifier(n_estimators=1000)
+fit = forest.fit(x_train, y_train)
+accuracy = fit.score(x_test, y_test)
+predict = fit.predict(x_test)
+cmatrix = confusion_matrix(y_test, predict)
+
+print(f'Accuracy of Random Forest: {accuracy}')
+
+importances = forest.feature_importances_
+indices = np.argsort(importances)[::-1]
+
+print('Feature ranking:')
+for f in range(X.shape[1]):
+    print(f"feature {list(X)[f]} ({importances[indices[f]]})")
+
+feat_imp = pd.DataFrame({
+    'Feature': list(X),
+    'Gini importance': importances[indices]
+})
+plt.rcParams['figure.figsize'] = (12, 12)
+s.set_style('whitegrid')
+ax = s.barplot(x='Gini importance', y='Feature', data=feat_imp)
+ax.set(xlabel='Gini Importance')
+plt.show()
+
+# XGBoost
+param = {
+    'n_estimators': [100, 500, 1000, 2000]
+}
+fitmodel(X, Y, 'XGBoost', XGBClassifier(), param, cv=5)
 
 
 
