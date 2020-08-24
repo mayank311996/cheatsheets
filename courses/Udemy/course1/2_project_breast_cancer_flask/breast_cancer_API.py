@@ -23,7 +23,7 @@ cols = [
 
 @app.route("/")
 def get_model():
-    return str(loaded_model)
+    return render_template('form.html')
 
 
 @app.route('/predict', methods=['POST'])
