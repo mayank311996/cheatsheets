@@ -15,9 +15,19 @@ docker images
 ```
 
 > STEP 3
-#### TO remove running docker container and the image
+#### To remove running docker container and the image
 
 ```
 sudo docker rm `container_num`
 sudo docker rmi `image_name`
 ```
+
+> STEP 4
+#### To run docker container 
+
+```
+docker run -p 5000:5000 `image_name`
+```
+
+
+
