@@ -16,6 +16,7 @@ from sklearn.metrics import confusion_matrix, \
     classification_report, accuracy_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.manifold import TSNE
+from sklearn.preprocessing import Imputer
 import pickle
 from lightgbm import LGBMClassifier
 print('Library Loaded')
@@ -110,6 +111,49 @@ def fashion_scatter(x, colors):
 
 
 #########################################################################################
+fashion_scatter(df_tsne, df.target)
+
+#########################################################################################
+# Feature Engineering
+df.target.value_counts()
+# not to unbalanced
+# we can implement semi-supervised learning techniques later
+# to balance the dataset
+
+print(f"# rows in dataset {len(df)}")
+print("----------------------------")
+for col in cols:
+    print(
+        f"# rows in {len(df.loc[df[col] == 0])} with ZERO value: {col}"
+    )
+
+X = df.drop('target', axis=1)
+y = df.target
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.1,
+    random_state=10
+)
+
+print('Training Set:', len(X_train))
+print('Test Set:', len(X_test))
+print('Training labels:', len(y_train))
+print('Test labels:', len(y_test))
+
+# impute with mean all 0 readings as they don't make sense at all
+# but what about categorical columns having 1 and 0? they are changed
+# as well?
+# also you should not fit_transform on test set
+# you should just use transform for test set
+fill = Imputer(missing_values=0, strategy='mean', axis=0)
+
+X_train = fill.fit_transform(X_train)
+X_test = fill.fit_transform(X_test)
+
+#########################################################################################
+
 
 
 
