@@ -1,19 +1,23 @@
 ## Run
 > STEP 1
-#### Uploading Files to Google Cloud Storage
+#### Building docker container from dockerfile 
 
-Upload all files in `/src` directory along with [trained model](https://www.google.com) and [vocabulary](https://www.google.com) to Google Cloud Storage Bucket.
-
-In my case bucket is located at `gs://mayank-sentimentflaskapp/`. 
+Docker will search dockerfile in the present folder itself if we put "." at end
+```
+sudo docker build -t mpi_api_final .
+```
 
 > STEP 2
-#### Getting Files into Current Cloud Shell
+#### Display docker images 
 
-Open the Cloud Shell and type following commands.
 ```
-ls 
-gsutil ls
-gsutil ls gs://mayank-sentimentflaskapp/
-gsutil cp -r gs://mayank-sentimentflaskapp/ .
-ls
+docker images
+```
+
+> STEP 3
+#### TO remove running docker container and the image
+
+```
+sudo docker rm `container_num`
+sudo docker rmi `image_name`
 ```
