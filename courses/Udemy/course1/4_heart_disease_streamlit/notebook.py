@@ -72,9 +72,44 @@ print(df_tsne)
 
 
 #########################################################################################
+def fashion_scatter(x, colors):
+    # definition to be added!
+    # choose a color palette with seaborn
+    num_classes = len(np.unique(colors))
+    palette = np.array(sns.color_palette('deep', num_classes))
+
+    # create a scatter plot
+    f = plt.figure(figsize=(8, 8))
+    ax = plt.subplot(aspect='equal')
+    sc = ax.scatter(
+        x[:, 0],
+        x[:, 1],
+        lw=0,
+        s=40,
+        c=palette[colors.astype(np.int)]
+    )
+    plt.xlim(-25, 25)
+    plt.ylim(-25, 25)
+    ax.axis('off')
+    ax.axis('tight')
+
+    # add the labels for each digit corresponding to the label
+    txts = []
+
+    for i in range(num_classes):
+        # position of each label as median of data points
+        xtext, ytext = np.median(x[colors == i, :], axis=0)
+        txt = ax.text(xtext, ytext, str(i), fontsize=24)
+        txt.set_path_effects([
+            PathEffects.Stroke(linewidth=5, foreground='w'),
+            PathEffects.Normal()
+        ])
+        txts.append(txt)
+
+    return f, ax, sc, txts
 
 
-
+#########################################################################################
 
 
 
