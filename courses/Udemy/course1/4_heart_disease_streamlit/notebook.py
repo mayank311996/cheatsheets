@@ -154,11 +154,13 @@ X_test = fill.fit_transform(X_test)
 
 
 #########################################################################################
-def fitmodel(x, y, algo_name, algorithm, gridsearchparams, cv):
+def fitmodel(x_train, y_train, x_test, y_test, algo_name, algorithm, gridsearchparams, cv):
     """
     Trains the model and predicts on test data
-    :param x: data
-    :param y: labels
+    :param x_train: train data
+    :param y_train: train labels
+    :param x_test: test data
+    :param y_test: test labels
     :param algo_name: name of the algorithm
     :param algorithm: algorithm to be used
     :param gridsearchparams: grid parameters
@@ -166,9 +168,6 @@ def fitmodel(x, y, algo_name, algorithm, gridsearchparams, cv):
     :return: none
     """
     np.random.seed(10)
-    x_train, x_test, y_train, y_test = \
-        train_test_split(x, y, test_size=0.2)
-
     grid = GridSearchCV(
         estimator=algorithm,
         param_grid=gridsearchparams,
@@ -190,8 +189,38 @@ def fitmodel(x, y, algo_name, algorithm, gridsearchparams, cv):
 
 
 #########################################################################################
+# Model building and evaluation
+# Logistic Regression
+penalty = ['l1', 'l2']
+C = np.logspace(0, 4, 10)
+hyperparameters = dict(C=C, penalty=penalty)
+fitmodel(X_train, y_train, X_test, y_test, 'Logistic Regression',
+         LogisticRegression(), hyperparameters, cv=5)
 
+# XGBoost
+param = {
+    'n_estimators': [100, 500, 1000, 1500, 2000],
+    'max_depth': [2, 3, 4, 5, 6, 7],
+    'learning_rate': np.arange(0.01, 0.1, 0.01).tolist()
+}
+fitmodel(X_train, y_train, X_test, y_test, 'XGBoost',
+         XGBClassifier(), param, cv=5)
 
+# Random Forest
+param = {
+    'n_estimators': [100, 500, 1000, 1500, 2000],
+    'max_depth': [2, 3, 4, 5, 6, 7]
+}
+fitmodel(X_train, y_train, X_test, y_test, 'Random Forest',
+         RandomForestClassifier(), param, cv=5)
+
+# SVC
+param = {
+    'C': [0.1, 1, 100, 1000],
+    'gamma': [0.0001, 0.001, 0.005, 0.1, 1, 3, 5]
+}
+fitmodel(X_train, y_train, X_test, y_test, 'SVC',
+         SVC(), param, cv=5)
 
 
 
