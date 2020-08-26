@@ -13,4 +13,10 @@ pip install streamlit
 streamlit hello
 ```
 
+> STEP 3
+#### Running file using streamlit 
+
+```
+streamlit run `file_name`
+```
 
