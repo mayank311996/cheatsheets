@@ -42,3 +42,17 @@ floor = st.slider(
 )
 
 #########################################################################################
+X = data.drop('price', axis=1)
+y = data.price
+
+model = LinearRegression()
+model.fit(X, y)
+
+pred = model.predict(
+    [[sqft, bath, bed, floor]]
+)[0]
+
+if st.button("Get House Price"):
+    st.header(f"Estimated House Price is USD {pred}")
+
+#########################################################################################
