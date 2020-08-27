@@ -17,7 +17,7 @@ sls
 #### Configure the serverless
 
 ```
-sls config --provider aws --key 'key_from_AWS' --secret 'secret_key_from_AWS'
+sls config credentials --provider aws --key 'key_from_AWS' --secret 'secret_key_from_AWS'
 ```
 
 > STEP 4
