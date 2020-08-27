@@ -28,3 +28,10 @@ mkdir demo_sls
 cd demo_sls/
 sls create --template aws-python3 --name 'name'
 ```
+
+> STEP 5
+#### Deploying the serverless function
+
+```
+sls deploy 
+```
