@@ -26,5 +26,5 @@ sls config --provider aws --key 'key_from_AWS' --secret 'secret_key_from_AWS'
 ```
 mkdir demo_sls
 cd demo_sls/
-sls create --template aws-python --name 'name'
+sls create --template aws-python3 --name 'name'
 ```
