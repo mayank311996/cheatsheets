@@ -17,6 +17,7 @@ from sklearn.metrics import confusion_matrix, \
 from sklearn.model_selection import GridSearchCV
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import Imputer
+from imblearn.over_sampling import SMOTE
 import pickle
 from lightgbm import LGBMClassifier
 print('Library Loaded')
@@ -255,10 +256,69 @@ X_train = fill.fit_transform(X_train)
 X_test = fill.fit_transform(X_test)
 
 #########################################################################################
+# Refitting the model
+# Logistic Regression
+penalty = ['l1', 'l2']
+C = np.logspace(0, 4, 10)
+hyperparameters = dict(C=C, penalty=penalty)
+fitmodel(X_train, y_train, X_test, y_test, 'Logistic Regression',
+         LogisticRegression(), hyperparameters, cv=5)
 
+# XGBoost
+param = {
+    'n_estimators': [100, 500, 1000, 1500, 2000],
+    'max_depth': [2, 3, 4, 5, 6, 7],
+    'learning_rate': np.arange(0.01, 0.1, 0.01).tolist()
+}
+fitmodel(X_train, y_train, X_test, y_test, 'XGBoost',
+         XGBClassifier(), param, cv=5)
 
+# Random Forest
+param = {
+    'n_estimators': [100, 500, 1000, 1500, 2000],
+    'max_depth': [2, 3, 4, 5, 6, 7]
+}
+fitmodel(X_train, y_train, X_test, y_test, 'Random Forest',
+         RandomForestClassifier(), param, cv=5)
 
+# SVC
+param = {
+    'C': [0.1, 1, 100, 1000],
+    'gamma': [0.0001, 0.001, 0.005, 0.1, 1, 3, 5]
+}
+fitmodel(X_train, y_train, X_test, y_test, 'SVC',
+         SVC(), param, cv=5)
+# after changing the imputation columns our accuracy decrease but
+# the model is correct now. Also, ebst parameters for different models
+# changed from past experiment.
 
+#########################################################################################
+# Balancing the dataset
+X = df.drop('target', axis=1)
+y = df.target
+print(y.value_counts())
+
+sm = SMOTE(random_state=42)
+X_res_OS, Y_res_OS = sm.fit_resample(X, y)
+pd.Series(Y_res_OS).value_counts()
+
+# by default it gives us the numpy arrays so we need to convert back
+# to pandas dataframe
+
+X_res_OS = pd.DataFrame(
+    X_res_OS,
+    columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
+             'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+)
+Y_res_OS = pd.DataFrame(
+    Y_res_OS,
+    columns=['target']
+)
+
+# now follow same procedure as above for splitting the data
+# and training the model
+
+#########################################################################################
 
 
 
