@@ -222,6 +222,40 @@ param = {
 fitmodel(X_train, y_train, X_test, y_test, 'SVC',
          SVC(), param, cv=5)
 
+#########################################################################################
+# Correcting the mistakes
+print(f"# rows in dataset {len(df)}")
+print("----------------------------")
+for col in cols:
+    print(
+        f"# rows in {len(df.loc[df[col] == 0])} with ZERO value: {col}"
+    )
+
+final_cols = cols
+final_cols = list(final_cols)
+final_cols.remove('sex')
+final_cols.remove('target')
+final_cols.remove('age')
+print(final_cols)
+
+X = df.drop('target', axis=1)
+y = df.target
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.1,
+    random_state=10
+)
+
+# still need to change the imputer stuff
+fill = Imputer(missing_values=0, strategy='mean', axis=0)
+
+X_train = fill.fit_transform(X_train)
+X_test = fill.fit_transform(X_test)
+
+#########################################################################################
+
 
 
 
