@@ -1,12 +1,12 @@
 FROM continuumio/anaconda3:4.4.0
 MAINTAINER UNP, https://unp.education
 
-COPY ["breast_cancer_API", "data.csv", "/templates/", "/usr/local/python/"]
+COPY ["predict_heart_disease.py", "requirements.txt", "*.pkl", "/usr/local/python/"]
 
-EXPOSE 5000
+EXPOSE 8501
 
 WORKDIR /usr/local/python/
 
 RUN pip install -r requirements.txt
 
-CMD python breast_cancer_API.py
+CMD streamlit run predict_heart_disease.py
