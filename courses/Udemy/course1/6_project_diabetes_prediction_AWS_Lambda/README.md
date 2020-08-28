@@ -11,7 +11,8 @@ sls plugin install -n serverless-python-requirements@4.2.4
 
 ```
 sls create --template aws-python3 --name diabetes_prediction_final
+sls deploy
 ```
 
-
+use postman to make request to the end point 
 
