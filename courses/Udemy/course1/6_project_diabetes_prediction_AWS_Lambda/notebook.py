@@ -116,7 +116,39 @@ def fitmodel(x_train, y_train, x_test, y_test, algo_name, algorithm, gridsearchp
 
 #########################################################################################
 # Model building and evaluation
+# Logistic Regression
+penalty = ['l1', 'l2']
+C = np.logspace(0, 4, 10)
+hyperparameters = dict(C=C, penalty=penalty)
+fitmodel(X_train, y_train, X_test, y_test, 'Logistic Regression',
+         LogisticRegression(), hyperparameters, cv=5)
 
+# XGBoost
+param = {
+    'n_estimators': [100, 500, 1000, 1500, 2000],
+    'max_depth': [2, 3, 4, 5, 6, 7],
+    'learning_rate': np.arange(0.01, 0.1, 0.01).tolist()
+}
+fitmodel(X_train, y_train, X_test, y_test, 'XGBoost',
+         XGBClassifier(), param, cv=5)
+
+# Random Forest
+param = {
+    'n_estimators': [100, 500, 1000, 1500, 2000]
+}
+fitmodel(X_train, y_train, X_test, y_test, 'Random Forest',
+         RandomForestClassifier(), param, cv=5)
+
+# SVC
+param = {
+    'C': [0.1, 1, 100, 1000],
+    'gamma': [0.0001, 0.001, 0.005, 0.1, 1, 3, 5]
+}
+fitmodel(X_train, y_train, X_test, y_test, 'SVC',
+         SVC(), param, cv=5)
+
+#########################################################################################
+# Balancing the dataset - over sampling
 
 
 
