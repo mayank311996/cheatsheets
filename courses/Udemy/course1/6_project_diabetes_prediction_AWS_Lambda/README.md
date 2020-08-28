@@ -1,11 +1,9 @@
 ## Run
 > STEPS
-#### Building and running docker container 
+#### Creating and deploying the serverless project
 
 ```
-docker build -t streamlit_api .
-docker images
-docker run -p 8501:8501 streamlit_api
+sls create --template aws-python3 --name diabetes_prediction_final
 ```
 
 
