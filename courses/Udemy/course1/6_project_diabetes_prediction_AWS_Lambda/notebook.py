@@ -149,7 +149,23 @@ fitmodel(X_train, y_train, X_test, y_test, 'SVC',
 
 #########################################################################################
 # Balancing the dataset - over sampling
+print(y.value_counts())
 
+sm = SMOTE(random_state=42)
+X_res_OS, Y_res_OS = sm.fit_resample(X, y)
+pd.Series(Y_res_OS).value_counts()
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X_res_OS, Y_res_OS, test_size=0.2, random_state=10
+)
+
+fill = Imputer(missing_values=0, strategy="mean", axis=0)
+
+X_train = fill.fit_transform(X_train)
+X_test = fill.fit_transform(X_test)
+
+# Now again fit all models and check accuracy and other matrices
+#########################################################################################
 
 
 
