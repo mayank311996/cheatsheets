@@ -45,6 +45,20 @@ plt.show()
 # removing correlated features
 
 #########################################################################################
+# Feature Engineering
+SS = StandardScaler()
+X['normAmount'] = SS.fit_transform(X['Amount'].values.reshape(-1, 1))
+# because amount column was not normalized
+X = X.drop(['Time', 'Amount'], axis=1)
+X.head()
+
+np.random.seed(10)
+x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
+# we should use stratified split as data is not balanced
+print(x_train.shape, x_test.shape)
+
+#########################################################################################
+
 
 
 
