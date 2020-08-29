@@ -74,6 +74,31 @@ def fitmodel(x_train, y_train, x_test, y_test, algo_name, algorithm, gridsearchp
     :param cv: number of cross validations
     :return: none
     """
+
+    # Adding below to dump separate csv for train and test for
+    # sagemaker
+    # taken after performing under sampling of the data
+    train = pd.concat([y_train, x_train], axis=1)
+    train.to_csv(
+        './trainCreditUS.csv',
+        index=False,
+        header=False,
+        columns=columns
+    )
+    y_train.to_csv(
+        './Y-train.csv'
+    )
+    test = pd.concat([y_test, x_test], axis=1)
+    test.to_csv(
+        './testCreditUS.csv',
+        index=False,
+        header=False,
+        columns=columns
+    )
+    y_test.to_csv(
+        './Y-test.csv'
+    )
+
     np.random.seed(10)
     grid = GridSearchCV(
         estimator=algorithm,
