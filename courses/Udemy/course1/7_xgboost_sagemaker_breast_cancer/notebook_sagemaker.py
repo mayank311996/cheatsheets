@@ -46,10 +46,59 @@ write_to_s3(
 )
 
 #########################################################################################
+# Start the Training
+sess = sagemaker.Session()
+role = get_execution_role()
+print(role)
 
+container = sagemaker.amazon.amazon_estimator.get_image_uri(
+    sess.boto_region_name,
+    "xgboost",
+    "latest"
+)
+print(f"SageMaker XGBoost Info : {container} ({sess.boto_region_name})")
 
+# Building the model
+estimator = sagemaker.estimator.Estimator(
+    container,
+    role,
+    train_instance_count=1,
+    train_instance_type='ml.m4.xlarge',
+    output_path=s3_model_output_location,
+    sagemaker_session=sess,
+    base_job_name='v1-xgboost-bcancer'
+)
 
+estimator.set_hyperparameters(
+    max_depth=3,
+    objective='binary:logistic',
+    num_round=500  # same as n_estimators in sklearn
+)
+print(estimator.hyperparameters())
 
+# specify the files for training and validation
+training_input_config = sagemaker.session.s3_input(
+    s3_data=s3_training_file_location,
+    content_type='csv',
+    s3_data_type='S3Prefix'
+)
+validation_input_config = sagemaker.session.s3_input(
+    s3_data=s3_validation_file_location,
+    content_type='csv',
+    s3_data_type='S3Prefix'
+)
+
+data_channels = {
+    'train': training_input_config,
+    'validation': validation_input_config
+}
+print(training_input_config.config)
+print(validation_input_config.config)
+
+# start the training
+estimator.fit(data_channels)
+
+#########################################################################################
 
 
 
