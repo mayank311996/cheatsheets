@@ -176,6 +176,10 @@ print(X_res.shape, X.shape)
 sm = SMOTE(random_state=42)
 X_res_OS, Y_res_OS = sm.fit_resample(X, Y)
 pd.Series(Y_res_OS).value_counts()
+# also we are creating too much synthetic data from very
+# small minority class which can lead to not so good models
+# so under-sampling can be preferred in this case as imbalance is
+# too much
 
 # Again fit the models
 #########################################################################################
