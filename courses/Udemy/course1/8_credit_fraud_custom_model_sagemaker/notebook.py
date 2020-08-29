@@ -20,6 +20,8 @@ from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Dropout
+from imblearn.under_sampling import NearMiss
+from imblearn.over_sampling import SMOTE
 print("Library Loaded")
 
 #########################################################################################
@@ -149,13 +151,34 @@ param = {
 }
 fitmodel(X_train, y_train, X_test, y_test, 'SVC',
          SVC(), param, cv=5)
+# svc is not good for small dataset
+# it will give very good matrices but will be flawed
 
 #########################################################################################
+# Balancing the dataset
+# Under Sampling
+# remember under sampling is not good for critical domains
+# like finance in this case
+# it can loose some valuable information
+sm = NearMiss(
+    version=2,  # total 3 versions but 2nd is most popular
+    random_state=42
+)
+# other methods: addicted nearest neighbours, cluster based
+# under-sampling etc.
+X_res, Y_res = sm.fit_resample(X, Y)
+pd.Series(Y_res).value_counts()
+print(X_res.shape, X.shape)
 
+# Again fit the models
 
+# Over sampling
+sm = SMOTE(random_state=42)
+X_res_OS, Y_res_OS = sm.fit_resample(X, Y)
+pd.Series(Y_res_OS).value_counts()
 
-
-
+# Again fit the models
+#########################################################################################
 
 
 
