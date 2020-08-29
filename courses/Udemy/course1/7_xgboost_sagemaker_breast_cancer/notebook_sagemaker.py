@@ -1,5 +1,6 @@
 import sagemaker
 from sagemaker import get_execution_role
+from sagemaker.predictor import csv_serializer, json_deserializer
 import numpy as np
 import pandas as pd
 import boto3
@@ -99,6 +100,45 @@ print(validation_input_config.config)
 estimator.fit(data_channels)
 
 #########################################################################################
+# deploy the model
+predictor = estimator.deploy(
+    initial_instance_count=1,
+    instance_type='ml.m4.xlarge',
+    endpoint_name='v2-xgboost-bcancer'
+)
+
+predictor.serializer = csv_serializer
+predictor.deserializer = None
+predictor.content_type = 'text/csv'
+
+# get a realtime endpoint
+endpoint_name = 'v2-xgboost-bcancer'
+predictor = sagemaker.predictor.RealTimePredictor(
+    endpoint=endpoint_name
+)
+
+df_test = pd.read_csv('test.csv', header=None)
+df_test.head()
+arr_test = df_test[df_test.columns[1:]].values  # removed first column
+# that is labels
+print(arr_test.shape)
+print(arr_test[0])
+
+result = predictor.predict(arr_test[0])
+print(result)
+
+#########################################################################################
+
+
+
+
+
+
+
+
+
+
+
 
 
 
