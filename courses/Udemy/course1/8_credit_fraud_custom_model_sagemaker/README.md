@@ -8,4 +8,5 @@ Files in SageMaker jupyter folder
 - testCreditUS.csv
 - trainCreditUS.csv
 
+AWS SageMaker uses Lambda functions for model deployment!
 
