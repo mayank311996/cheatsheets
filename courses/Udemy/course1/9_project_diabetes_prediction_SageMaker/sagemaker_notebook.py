@@ -143,6 +143,7 @@ result = predictor.predict(data)
 np.round(float(result))
 
 predictor.delete_endpoint()
+# make endpoint with GUI this time
 
 #########################################################################################
 
