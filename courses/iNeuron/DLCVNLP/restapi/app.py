@@ -29,6 +29,25 @@ def math_operation():
         return render_template('results.html', result=result)
 
 
+# For calling the API from postman
+@app.route('/via_postman', methods=['POST'])
+def math_operation():
+    if request.method == 'POST':
+        operation = request.json['operation']
+        num1 = int(request.json['num1'])
+        num2 = int(request.json['num2'])
+        if operation == 'add':
+            r = num1 + num2
+            result = 'the sum of ' + str(num1) + ' and ' + str(num2) \
+                     + ' is ' + str(r)
+        if operation == 'substract':
+            r = num1 - num2
+            result = 'the difference of ' + str(num1) + ' and ' \
+                     + str(num2) + ' is ' + str(r)
+        # write same function for multiplication and division
+        return jsonify(result)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
