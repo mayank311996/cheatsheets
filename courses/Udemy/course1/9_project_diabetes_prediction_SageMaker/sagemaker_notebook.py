@@ -1,5 +1,6 @@
 import sagemaker
 from sagemaker import get_execution_role
+from sagemaker.predictor import csv_serializer, json_deserializer
 import numpy as np
 import pandas as pd
 import boto3
@@ -72,7 +73,78 @@ write_to_s3(
 )
 
 #########################################################################################
+# Start the Training
+sess = sagemaker.Session()
+role = get_execution_role()
+print(role)
 
+container = sagemaker.amazon.amazon_estimator.get_image_uri(
+    sess.boto_region_name,
+    "xgboost",
+    "latest"
+)
+print(f"SageMaker XGBoost Info : {container} ({sess.boto_region_name})")
+
+# Building the model
+estimator = sagemaker.estimator.Estimator(
+    container,
+    role,
+    train_instance_count=1,
+    train_instance_type='ml.m4.xlarge',
+    output_path=s3_model_output_location,
+    sagemaker_session=sess,
+    base_job_name='v1-xgboost-diabetes'
+)
+
+estimator.set_hyperparameters(
+    max_depth=7,
+    objective='binary:logistic',
+    num_round=100  # same as n_estimators in sklearn
+)
+print(estimator.hyperparameters())
+
+# specify the files for training and validation
+training_input_config = sagemaker.session.s3_input(
+    s3_data=s3_training_file_location,
+    content_type='csv',
+    s3_data_type='S3Prefix'
+)
+validation_input_config = sagemaker.session.s3_input(
+    s3_data=s3_validation_file_location,
+    content_type='csv',
+    s3_data_type='S3Prefix'
+)
+
+data_channels = {
+    'train': training_input_config,
+    'validation': validation_input_config
+}
+print(training_input_config.config)
+print(validation_input_config.config)
+
+# start the training
+estimator.fit(data_channels)
+
+#########################################################################################
+# deploy the model
+predictor = estimator.deploy(
+    initial_instance_count=1,
+    instance_type='ml.m4.xlarge',
+    endpoint_name='v2-xgboost-diabetes'
+)
+
+predictor.serializer = csv_serializer
+predictor.deserializer = None
+# predictor.content_type = 'text/csv'
+
+data = [4, 9.4, 0.5, 2, 0, 2, 1, 2]
+
+result = predictor.predict(data)
+np.round(float(result))
+
+predictor.delete_endpoint()
+
+#########################################################################################
 
 
 
