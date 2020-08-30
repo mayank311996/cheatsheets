@@ -40,4 +40,9 @@ npm -v
 sudo npm install -g severless
 serverless
 ```
+
 After this configure the serverless as mentioned in course1.
+```
+cd .aws
+cat credentials
+```
