@@ -1,12 +1,8 @@
 ## Run
 
-Files in SageMaker jupyter folder
-- sagemaker_notebook.ipynb
-- sklearn_fraud_detection.py
-- setup.sh
-- daemon.json
-- testCreditUS.csv
-- trainCreditUS.csv
+After creating endpoint through SageMaker GUI ...
+```
+sls create --template aws-python3 --name diabetes_prediction
 
-AWS SageMaker uses Lambda functions for model deployment!
+```
 
