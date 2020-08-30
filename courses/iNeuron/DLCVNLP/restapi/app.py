@@ -25,4 +25,12 @@ def math_operation():
             r = num1 - num2
             result = 'the difference of ' + str(num1) + ' and ' \
                      + str(num2) + ' is ' + str(r)
-         
+        # write same function for multiplication and division
+        return render_template('results.html', result=result)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
