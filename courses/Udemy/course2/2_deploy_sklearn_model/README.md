@@ -15,3 +15,7 @@ Installing on plugin
 ```bash
 sls plugin install -n serverless-python-requirements@4.2.4 
 ```
+
+- When you have backend and frontend on different domains 
+you need to specify "Access-Control-Allow-Origin" in 
+handler.py
