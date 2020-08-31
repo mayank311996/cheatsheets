@@ -17,5 +17,7 @@ sls plugin install -n serverless-python-requirements@4.2.4
 ```
 
 - When you have backend and frontend on different domains 
-you need to specify "Access-Control-Allow-Origin" in 
-handler.py
+you need to specify "Access-Control-Allow-Origin": "*" in 
+handler.py. For now this means we allow any domain to query our 
+backend but in production you should specify only one domain that can 
+query your backend.
