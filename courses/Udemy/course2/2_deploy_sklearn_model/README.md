@@ -13,5 +13,5 @@ sls create --template aws-python3 --name california-housing
 
 Installing on plugin
 ```bash
-sls plugin install -n serverless-python-requirements 
+sls plugin install -n serverless-python-requirements@4.2.4 
 ```
