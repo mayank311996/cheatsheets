@@ -48,3 +48,50 @@ def predict(event, context):
     return response
 
 
+# this is just to check function locally
+def do_main():
+    event = {
+        "queryStringParameters": {
+            "medInc": 200000,
+            "houseAge": 10,
+            "aveRooms": 4,
+            "aceBedrms": 1,
+            "population": 800,
+            "aveOccup": 3,
+            "latitude": 32.54,
+            "longitude": -121.72
+        }
+    }
+
+    response = predict(event, None)
+    body = json.loads(response['body'])
+    print('Price', body["predictedPrice"])
+
+    with open('event.json', 'w') as event_file:
+        event_file.write(json.dumps(event))
+
+
+do_main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
