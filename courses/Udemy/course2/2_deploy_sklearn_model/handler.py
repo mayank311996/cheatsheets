@@ -71,7 +71,8 @@ def do_main():
         event_file.write(json.dumps(event))
 
 
-do_main()
+# run this line below to check function locally
+# do_main()
 
 
 
