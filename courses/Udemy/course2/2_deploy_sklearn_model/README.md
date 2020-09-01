@@ -12,6 +12,7 @@ sls create --template aws-python3 --name california-housing
 ```
 
 Installing on plugin
+
 ```bash
 sls plugin install -n serverless-python-requirements@4.2.4 
 ```
@@ -23,6 +24,7 @@ backend but in production you should specify only one domain that can
 query your backend.
 
 To test function locally with serverless 
+
 ```bash
 sls invoke local --function predict-price --path event.json
 ```
@@ -53,3 +55,16 @@ at regular interval to always have warm start.
     6. Name - eg. ping-predict-price.
     7. State - tick yes for enabled.
     8. Click on create rule. 
+- You can disable the CloudWatch event before deploying the function
+and enable after deployment is done. Good practice. Check!
+- Also, your endpoint url will not change doesn't matter how many times 
+you redeploy function using sls as long as you don't change or remove 
+the whole stack using `sls remove` command. Works as long as function
+size is less than 70MB. Check!
+
+Redeploy the function as we changed the handler.py file by adding 
+if else rule for invocation.
+
+```bash
+sudo sls deploy --function predict-price
+```
