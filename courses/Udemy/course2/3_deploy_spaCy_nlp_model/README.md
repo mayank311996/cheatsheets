@@ -33,5 +33,10 @@ inside []. If you leave it empty then it omits default libraries.
 This also improves the speed of subsequent deployments.
 - The useStaticCache option in custom section caches the output of 
 pip after compiling everything for you and requirements.txt. 
+
+```bash
+sls invoke local --function recognize-named-entities --path event.json
+sudo sls deploy 
+```
  
  
