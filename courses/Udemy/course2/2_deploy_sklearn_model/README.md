@@ -21,3 +21,10 @@ you need to specify "Access-Control-Allow-Origin": "*" in
 handler.py. For now this means we allow any domain to query our 
 backend but in production you should specify only one domain that can 
 query your backend.
+
+To test function locally with serverless 
+```bash
+sls invoke local --function predict-price --path event.json
+```
+
+- You can also use unit test to test your function. Explore more!
