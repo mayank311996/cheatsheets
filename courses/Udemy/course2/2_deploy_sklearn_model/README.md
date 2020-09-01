@@ -68,3 +68,14 @@ if else rule for invocation.
 ```bash
 sudo sls deploy --function predict-price
 ```
+
+- Go through entire Section 6 few times. Especially last two 
+lectures.
+- You specify "Control-type" in headers in handler.py because now you have 
+CORS functionality in API. 
+
+Redeploy the function
+
+```bash
+sudo sls deploy
+```
