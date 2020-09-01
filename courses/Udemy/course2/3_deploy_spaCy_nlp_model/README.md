@@ -15,4 +15,5 @@ python -m spacy download en_core_web_sm
 
 ```bash
 sls create --template aws-python3 --name ner-api
+sls plugin install -n serverless-python-requirements@4.2.4
 ```
