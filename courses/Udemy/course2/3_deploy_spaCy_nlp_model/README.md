@@ -17,3 +17,9 @@ python -m spacy download en_core_web_sm
 sls create --template aws-python3 --name ner-api
 sls plugin install -n serverless-python-requirements@4.2.4
 ```
+
+- In this case we are zipping requirements as well. So, it is zip inside
+another zip. This is to reduce the size of the package. And to unzip
+the requirements when Lambda functions cold starts we need try and except
+block in the beginning. The import unzip_requirements comes from 
+sls plugin we installed. 
