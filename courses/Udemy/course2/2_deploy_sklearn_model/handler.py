@@ -47,6 +47,7 @@ def predict(event, context):
         "statusCode": 200,
         "body": json.dumps(body),
         "headers": {
+            "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*"
         }
     }
