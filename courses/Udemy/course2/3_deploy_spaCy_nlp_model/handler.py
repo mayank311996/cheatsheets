@@ -1,24 +1,55 @@
+print('container start')
+
+try:
+    import unzip_requirements
+except ImportError as error:
+    pass
+
+print('unzipped')
+
 import json
+# import spacy
+import en_core_web_sm  # this way of import is recommended
+# by github issues for spaCy for AWS Lambda rather than
+# import spacy
+
+# MODEL = spacy.load('en_core_web_sm')
+MODEL = en_core_web_sm.load()
+print("model loaded")
 
 
-def hello(event, context):
+def create_ner_spans(text):
+    doc = MODEL(text)
+    spans = []
+    for ent in doc.ents:
+        span = {
+            'start': ent.start_char,
+            'end': ent.end_char,
+            'type': ent.label_
+        }
+        spans.append(span)
+    return spans
+
+
+def handle_request(event, context):
+    text = event['body']
+    print(text)
+    spans = []
+    if text is not None:
+        spans = create_ner_spans(text)
+    print(spans)
+
     body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
+        "spans": spans
     }
 
     response = {
         "statusCode": 200,
-        "body": json.dumps(body)
+        "body": json.dumps(body),
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        }
     }
 
     return response
-
-    # Use this code if you don't use the http event with the LAMBDA-PROXY
-    # integration
-    """
-    return {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "event": event
-    }
-    """
