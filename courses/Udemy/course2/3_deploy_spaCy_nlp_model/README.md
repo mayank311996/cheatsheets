@@ -37,6 +37,12 @@ pip after compiling everything for you and requirements.txt.
 ```bash
 sls invoke local --function recognize-named-entities --path event.json
 sudo sls deploy 
+sls invoke --function recognize-named-entities --path event.json --log
 ```
- 
- 
+--log flag enables us to see output of CloudWatch in the terminal 
+- one problem with zipping the requirements is that it slows down the 
+process (I think for cold start only! Check! but will be terrible for 
+parallel functions). However, zipping is necessary when deployment package gets too 
+big. 
+
+Now connect end point url to web-gui code. 
