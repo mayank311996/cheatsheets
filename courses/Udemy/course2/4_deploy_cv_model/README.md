@@ -24,3 +24,12 @@ buckets check s3.py
 sls create --template aws-python3 --name resnet50
 sls plugin install -n serverless-python-requirements@4.2.4
 ```
+
+- Read about iamRoleStatements option in serverless.yml file in detail. 
+For example s3:* is used for any operation on s3 bucket (Resource: *) 
+too. 
+- slimPatterns in custom section in serverless.yml allows you to specify
+additional directories to remove from install packages. For example we 
+don't need tensorboard during prediction so that can be mentioned here.
+This can be also written in exclude section under package. 
+ 
