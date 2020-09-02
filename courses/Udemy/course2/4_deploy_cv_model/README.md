@@ -47,5 +47,27 @@ conda activate keras-deploy
 pip install tensorflow==1.12.0 keras=2.2.4
 pip freeze
 pip freeze >> requirements.txt
+sudo sls package
 ```
+
+- Now go through section 8, video 59.
+- Show hidden files. Extract .requirements.zip and copy tensorflow folder 
+outside. Delete .requirements.zip and extracted folder. 
+- In most cases this is not necessary but in this case our zip requirement
+will have more than 300MB after unzipping to the tmp directory and 
+tensorflow alone would have around 160MB except requirements we will
+also download a large model about 100MB and together with unzip requirements 
+this will take more than 400MB in tmp directory, whose space is limited to 
+500MB in theory but in practice it won't work (will give memory error).
+- Luckily tensorflow package without it's dependencies is less than 
+250MB so it can be moved to the root of deployment package folder.
+- Will do the same for pillow 
+- Go to `miniconda3/envs/keras-dev/lib/python3.6/site-packages`, 
+copy pillow to the root folder of serverless project where we 
+just pasted the tensorflow folder. 
+- For pillow if we put in requirements.txt, you will get error in 
+Lambda function saying cannot import PIL (pillow), so to avoide that
+we explicitly copied and pasted it. (Not for size as in case of 
+tensorflow)   
+
  
