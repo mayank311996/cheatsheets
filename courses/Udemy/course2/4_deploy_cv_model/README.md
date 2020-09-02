@@ -36,4 +36,16 @@ This can be also written in exclude section under package.
 ```bash
 sls invoke local --function resnet50-classify --path event.json
 ```
+
+This time we will add requirements.txt in different way as the 
+tensorflow package is big. The thing is in previous environment we 
+installed jupyter and other packages which are not needed now.
+
+```bash
+conda create -n keras-deploy python=3.6
+conda activate keras-deploy
+pip install tensorflow==1.12.0 keras=2.2.4
+pip freeze
+pip freeze >> requirements.txt
+```
  
