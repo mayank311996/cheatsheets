@@ -17,3 +17,10 @@ image-upload-3521, and 2) ml-models-3512
 - To see how to programmatically access those objects saved in s3
 buckets check s3.py
 
+> STEP 2
+>#### Create serverless project
+
+```bash
+sls create --template aws-python3 --name resnet50
+sls plugin install -n serverless-python-requirements@4.2.4
+```
