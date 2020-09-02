@@ -68,6 +68,15 @@ just pasted the tensorflow folder.
 - For pillow if we put in requirements.txt, you will get error in 
 Lambda function saying cannot import PIL (pillow), so to avoide that
 we explicitly copied and pasted it. (Not for size as in case of 
-tensorflow)   
+tensorflow)
 
+- Now delete tensorflow==1.12.0 from requirements.txt as we already 
+have it in the root folder. 
+
+```bash
+sudo sls deploy
+sls invoke --function resnet50-classify --path event.json --log  
+```
+
+- Now setup the web-gui-code.
  
