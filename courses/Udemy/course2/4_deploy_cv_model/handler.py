@@ -60,7 +60,7 @@ def classify(event, context):
 
         # predict image classes and decode predictions
         predictions = model.predict(x)
-        decoded_predictions = decode_predictions(predictions, top=5)[0]
+        decoded_predictions = decode_predictions(predictions, top=3)[0]
         predictions_list = []
         for pred in decoded_predictions:
             predictions_list.append(
@@ -70,8 +70,8 @@ def classify(event, context):
                 }
             )
 
-    body['message'] = 'OK'
-    body['predictions'] = predictions_list
+        body['message'] = 'OK'
+        body['predictions'] = predictions_list
 
     response = {
         "statusCode": 200,
