@@ -32,4 +32,8 @@ too.
 additional directories to remove from install packages. For example we 
 don't need tensorboard during prediction so that can be mentioned here.
 This can be also written in exclude section under package. 
+
+```bash
+sls invoke local --function resnet50-classify --path event.json
+```
  
