@@ -112,6 +112,19 @@ docker push 882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images
 > STEP 5
 #### Creating role for SageMaker training jobs
 
+```bash
+cat role-policy.json
+aws iam create-role --role-name SagemakerRole --assume-role-policy-document file://./role-policy.json
+aws iam attach-role-policy --role-name SagemakerRole --policy-arn arn:aws:iam::aws:policy/AmazonSageMakerFullAccess
+```
+
+
+
+
+
+
+
+
 
 
 
