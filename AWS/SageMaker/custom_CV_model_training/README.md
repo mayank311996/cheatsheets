@@ -109,6 +109,9 @@ docker build -t 882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images .
 docker push 882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images
 ```
 
+> STEP 5
+#### Creating role for SageMaker training jobs
+
 
 
 
