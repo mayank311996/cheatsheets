@@ -132,7 +132,12 @@ cat training-job-config.json
 ```
 
 
+> STEP 7
+#### Launching SageMaker job
 
+```bash
+aws sagemaker create-training-job --cli-input-json file:// training-job-config.json
+```
 
 
 
