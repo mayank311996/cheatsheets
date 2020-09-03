@@ -38,9 +38,21 @@ unzip flowers-recognition.zip
 aws s3 sync flowers s3://template-sagemaker-cv-custom-data
 ```
 
+> STEP 3
+#### Writing train.py and requirements.txt
 
+```bash
+cat train.py
+cat requirements.txt
+```
 
+> STEP 4
+#### Creating docker image for training container
 
+Creating dockerfile 
+```bash
+cat Dockerfile
+```
 
 
 
