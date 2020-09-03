@@ -118,9 +118,18 @@ aws iam create-role --role-name SagemakerRole --assume-role-policy-document file
 aws iam attach-role-policy --role-name SagemakerRole --policy-arn arn:aws:iam::aws:policy/AmazonSageMakerFullAccess
 ```
 
+Adding additional permissions regarding s3
+```bash
+cat s3-policy.json
+aws iam put-role-policy --role-name SagemakerRole --policy-document file://./s3-policy.json
+```
 
+>STEP 6
+#### Configure the SageMaker training job
 
-
+```bash
+cat training-job-config.json
+```
 
 
 
