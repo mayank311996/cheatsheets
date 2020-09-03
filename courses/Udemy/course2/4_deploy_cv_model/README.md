@@ -81,7 +81,9 @@ sls invoke --function resnet50-classify --path event.json --log
 - Now setup the web-gui-code. Go through section 8, video 61. Also, setup
 the AWS Cognito service as shown in the video.
 
-
+```bash
+sls info
+```
 
 
  
