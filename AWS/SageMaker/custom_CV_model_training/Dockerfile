@@ -99,6 +99,8 @@ RUN pip install --no-cache-dir --upgrade \
     wheel
 
 RUN pip install --no-cache-dir --upgrade sagemaker-training
+COPY requirements.txt /tmp
+WORKDIR /tmp
 RUN pip install -r requirements.txt
 
 # code and data files
