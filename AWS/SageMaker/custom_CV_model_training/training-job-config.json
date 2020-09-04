@@ -1,5 +1,5 @@
 {
-    "TrainingJobName": "custom-CV-model-training-2",
+    "TrainingJobName": "custom-CV-model-training-4",
     "AlgorithmSpecification": {
         "TrainingImage": "882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images:latest",
         "TrainingInputMode": "File"
@@ -11,7 +11,7 @@
             "DataSource": {
                 "S3DataSource": {
                     "S3DataType": "S3Prefix",
-                    "S3Uri": "s3://template-sagemaker-cv-custom-data",
+                    "S3Uri": "s3://template-sagemaker-cv-custom-data/flowers",
                     "S3DataDistributionType": "FullyReplicated"
                 }
             },
