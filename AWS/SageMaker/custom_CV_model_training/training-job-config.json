@@ -1,5 +1,5 @@
 {
-    "TrainingJobName": "custom-CV-model-training",
+    "TrainingJobName": "custom-CV-model-training-1",
     "AlgorithmSpecification": {
         "TrainingImage": "882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images:latest",
         "TrainingInputMode": "File"
