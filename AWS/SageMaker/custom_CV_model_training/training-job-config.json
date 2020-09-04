@@ -11,7 +11,7 @@
             "DataSource": {
                 "S3DataSource": {
                     "S3DataType": "S3Prefix",
-                    "S3Uri": "s3://template-sagemaker-cv-custom-data/flowers",
+                    "S3Uri": "s3://template-sagemaker-cv-custom-data",
                     "S3DataDistributionType": "FullyReplicated"
                 }
             },
