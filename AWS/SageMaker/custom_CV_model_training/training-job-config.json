@@ -1,5 +1,5 @@
 {
-    "TrainingJobName": "custom-CV-model-training-5",
+    "TrainingJobName": "custom-CV-model-training-6",
     "AlgorithmSpecification": {
         "TrainingImage": "882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images:latest",
         "TrainingInputMode": "File"
@@ -22,7 +22,7 @@
         "S3OutputPath": "s3://template-sagemaker-cv-custom-model"
     },
     "ResourceConfig": {
-        "InstanceType": "ml.c5.9xlarge",
+        "InstanceType": "ml.p2.xlarge",
         "InstanceCount": 1,
         "VolumeSizeInGB": 75
      },
