@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-DATA_DIR = "/opt/ml/input/flowers/"
+DATA_DIR = "/opt/ml/input/data/flowers/"
 OUTPUT_DIR = "/opt/ml/model/"
 
 IMG_SIZE = (150, 150)
