@@ -114,8 +114,8 @@ RUN mkdir -p /opt/ml/input
 
 COPY train.py $CODE_PATH
 
-# RUN ln -s $INPUT_PATH/data $CODE_PATH/data
-# RUN ln -s $MODEL_PATH $CODE_PATH/output
+RUN ln -s $INPUT_PATH/data $CODE_PATH/data
+RUN ln -s $MODEL_PATH $CODE_PATH/output
 
 ENV PYTHONPATH=$CODE_PATH
 ENV PYTHONUNBUFFERED=TRUE
