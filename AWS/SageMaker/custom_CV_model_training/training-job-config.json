@@ -22,7 +22,7 @@
         "S3OutputPath": "s3://template-sagemaker-cv-custom-model"
     },
     "ResourceConfig": {
-        "InstanceType": "ml.g4dn.xlarge",
+        "InstanceType": "ml.p2.xlarge",
         "InstanceCount": 1,
         "VolumeSizeInGB": 75
      },
