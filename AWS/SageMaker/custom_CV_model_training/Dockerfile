@@ -108,6 +108,10 @@ ENV CODE_PATH=/opt/ml/code
 ENV MODEL_PATH=/opt/ml/model
 ENV INPUT_PATH=/opt/ml/input
 
+RUN mkdir -p /opt/ml/code
+RUN mkdir -p /opt/ml/model
+RUN mkdir -p /opt/ml/input
+
 COPY train.py $CODE_PATH
 
 # RUN ln -s $INPUT_PATH/data $CODE_PATH/data
