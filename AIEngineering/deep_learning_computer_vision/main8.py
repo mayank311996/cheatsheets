@@ -160,9 +160,18 @@ loaded_model = tf.kears.models.load_model('models')
 for test_sample in rsp_test.take(10):
     image, label = test_sample[0], test_sample[1]
     image_scaled, label_arr = scale(test_sample[0], test_sample[1])
+    image_scaled = np.expand_dims(image_scaled, axis=0)
 
+    img = tf.keras.preprocessing.image.img_to_array(image)
+    pred = loaded_model.predict(image_scaled)
+    print(pred)
+    plt.figure()
+    plt.imshow(image)
+    plt.show()
+    print(f"Actual Label: {info.features['label'].names[label.numpy()]}")
+    print(f"Predicted Label: {info.features['label'].names[np.argmax(pred)]}")
 
-
+#########################################################################################
 
 
 
