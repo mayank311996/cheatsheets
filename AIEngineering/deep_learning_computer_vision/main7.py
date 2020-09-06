@@ -167,14 +167,41 @@ q_aware_model.evaluate(test_dataset, verbose=0)
 
 converter = tf.lite.TFLiteConverter.from_keras_model(q_aware_model)
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
+# over here we are choosing default optimization
+# however, you can choose to optimize for specific parameter
+# like memory or size etc.
 
 quantized_tflite_model = converter.convert()
 
 quantized_model_size = len(quantized_tflite_model)/1024
 print(f"Quantized model size = {quantized_model_size}KBs")
 
+interpreter = tf.lite.Interpreter(model_content=quantized_tflite_model)
+interpreter.allocate_tensors()
 
+input_tensor_index = interpreter.get_input_details()[0]["index"]
+output_index = interpreter.tensor(interpreter.get_output_details()[0]["index"])
 
+interpreter.get_tensor_details()
+
+prediction_output = []
+accurate_count = 0
+
+for test_image in fm_test.map(scale):
+    test_image_p = np.expand_dims(test_image[0], axis=0).astype(np.float32)
+    interpreter.set_tensor(input_tensor_index, test_image_p)
+
+    interpreter.invoke()
+    out = np.argmax(output_index()[0])
+    prediction_output.append(out)
+
+    if out == test_image[1].numpy():
+        accurate_count += 1
+
+accuracy = accurate_count/len(prediction_output)
+print(accuracy)
+
+#########################################################################################
 
 
 
