@@ -337,7 +337,31 @@ execute_query(connection, delete_course)
 
 
 #########################################################################################
+def execute_list_query(connection, sql, val):
+    cursor = connection.cursor()
+    try:
+        cursor.executemany(sql, val)
+        connection.commit()
+        print("Query successful")
+    except Error as err:
+        print(f"Error: '{err}'")
 
+
+#########################################################################################
+sql = '''
+    INSERT INTO teacher (teacher_id, first_name, last_name, language_1, language_2, dob, tax_id, phone_no) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    '''
+
+val = [
+    (7, 'Hank', 'Dodson', 'ENG', None, '1991-12-23', 11111, '+491772345678'),
+    (8, 'Sue', 'Perkins', 'MAN', 'ENG', '1976-02-02', 22222, '+491443456432')
+]
+
+connection = create_db_connection("localhost", "root", pw, db)
+execute_list_query(connection, sql, val)
+
+#########################################################################################
 
 
 
