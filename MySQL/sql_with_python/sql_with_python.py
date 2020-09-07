@@ -248,6 +248,48 @@ execute_query(connection, pop_course)
 execute_query(connection, pop_takescourse)
 
 
+#########################################################################################
+def read_query(connection, query):
+    cursor = connection.cursor()
+    result = None
+    try:
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    except Error as err:
+        print(f"Error: '{err}'")
+
+
+#########################################################################################
+q1 = """
+SELECT *
+FROM teacher;
+"""
+
+connection = create_db_connection("localhost", "root", pw, db)
+results = read_query(connection, q1)
+
+for result in results:
+    print(result)
+
+q5 = """
+SELECT course.course_id, course.course_name, course.language, client.client_name, client.address
+FROM course
+JOIN client
+ON course.client = client.client_id
+WHERE course.in_school = FALSE;
+"""
+
+connection = create_db_connection("localhost", "root", pw, db)
+results = read_query(connection, q5)
+
+for result in results:
+    print(result)
+
+#########################################################################################
+
+
+
 
 
 
