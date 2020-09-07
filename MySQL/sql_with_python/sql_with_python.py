@@ -305,6 +305,41 @@ for result in results:
     from_db.append(result)
 
 #########################################################################################
+# Returns a list of lists and then creates a pandas DataFrame
+from_db = []
+
+for result in results:
+    result = list(result)
+    from_db.append(result)
+
+columns = ["course_id", "course_name", "language", "client_name", "address"]
+df = pd.DataFrame(from_db, columns=columns)
+print(df)
+
+#########################################################################################
+update = """
+UPDATE client 
+SET address = '23 Fingiertweg, 14534 Berlin' 
+WHERE client_id = 101;
+"""
+
+connection = create_db_connection("localhost", "root", pw, db)
+execute_query(connection, update)
+
+#########################################################################################
+delete_course = """
+DELETE FROM course 
+WHERE course_id = 20;
+"""
+
+connection = create_db_connection("localhost", "root", pw, db)
+execute_query(connection, delete_course)
+
+
+#########################################################################################
+
+
+
 
 
 
