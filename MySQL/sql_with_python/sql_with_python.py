@@ -287,15 +287,24 @@ for result in results:
     print(result)
 
 #########################################################################################
+# Initialise empty list
+from_db = []
 
+# Loop over the results and append them into our list
 
+# Returns a list of tuples
+for result in results:
+    result = result
+    from_db.append(result)
 
+# Returns a list of lists
+from_db = []
 
+for result in results:
+    result = list(result)
+    from_db.append(result)
 
-
-
-
-
+#########################################################################################
 
 
 
