@@ -42,8 +42,29 @@ def load_image_into_numpy_array(path):
 
 
 #########################################################################################
+polar_image_path = '/content/downloads/polar bear in arctic/*'
+polar_image_np = []
+for iname in glob.glob(polar_image_path):
+    polar_image_np.append(load_image_into_numpy_array(iname))
 
+plt.rcParams['figure.figsize'] = [14, 7]
+for idx, polar_image_np in enumerate(polar_image_np):
+    plt.subplot(2, 3, idx+1)
+    plt.imshow(polar_image_np)
+plt.show()
 
+penguin_image_path = '/content/downloads/penguin in antartica/*'
+penguin_image_np = []
+for iname in glob.glob(penguin_image_path):
+    penguin_image_np.append(load_image_into_numpy_array(iname))
+
+plt.rcParams['figure.figsize'] = [14, 7]
+for idx, penguin_image_np in enumerate(penguin_image_np):
+    plt.subplot(2, 3, idx+1)
+    plt.imshow(penguin_image_np)
+plt.show()
+
+#########################################################################################
 
 
 
