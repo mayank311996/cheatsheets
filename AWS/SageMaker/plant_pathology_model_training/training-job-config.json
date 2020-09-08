@@ -1,5 +1,5 @@
 {
-    "TrainingJobName": "plant-pathology-training-3",
+    "TrainingJobName": "plant-pathology-training-4",
     "AlgorithmSpecification": {
         "TrainingImage": "882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images:latest",
         "TrainingInputMode": "File"
