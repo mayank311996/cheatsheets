@@ -118,7 +118,7 @@ if __name__ == "__main__":
         model.compile(optimizer='adam',
                       loss='categorical_crossentropy',
                       metrics=['categorical_accuracy'])
-        model.summary()
+        # model.summary()
 
     history = model.fit(train_dataset,
                         epochs=EPOCHS,
