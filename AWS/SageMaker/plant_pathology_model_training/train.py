@@ -7,9 +7,9 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 
 #########################################################################################
-TEST_PATH = "/opt/ml/input/data/test.csv"
-TRAIN_PATH = "/opt/ml/input/data/train.csv"
-IMAGE_DIR = "/opt/ml/input/data/images/"
+TEST_PATH = "/opt/ml/input/data/plant-pathology-2020-fgvc7/test.csv"
+TRAIN_PATH = "/opt/ml/input/data/plant-pathology-2020-fgvc7/train.csv"
+IMAGE_DIR = "/opt/ml/input/data/plant-pathology-2020-fgvc7/images/"
 OUTPUT_DIR = "/opt/ml/model/"
 
 test_data = pd.read_csv(TEST_PATH)
