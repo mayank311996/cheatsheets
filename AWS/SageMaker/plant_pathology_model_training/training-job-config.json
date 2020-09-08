@@ -1,0 +1,32 @@
+{
+    "TrainingJobName": "custom-CV-model-training-6",
+    "AlgorithmSpecification": {
+        "TrainingImage": "882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images:latest",
+        "TrainingInputMode": "File"
+    },
+    "RoleArn": "arn:aws:iam::882207224999:role/SagemakerRole",
+    "InputDataConfig": [
+        {
+            "ChannelName": "flowers",
+            "DataSource": {
+                "S3DataSource": {
+                    "S3DataType": "S3Prefix",
+                    "S3Uri": "s3://template-sagemaker-cv-custom-data/flowers",
+                    "S3DataDistributionType": "FullyReplicated"
+                }
+            },
+            "ContentType": "image/jpg"
+        }
+    ],
+    "OutputDataConfig": {
+        "S3OutputPath": "s3://template-sagemaker-cv-custom-model"
+    },
+    "ResourceConfig": {
+        "InstanceType": "ml.p2.xlarge",
+        "InstanceCount": 1,
+        "VolumeSizeInGB": 75
+     },
+    "StoppingCondition": {
+        "MaxRuntimeInSeconds": 86400
+    }
+}
