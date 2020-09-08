@@ -18,7 +18,7 @@ train_data = pd.read_csv(TRAIN_PATH)
 # IMG_SIZE = (150, 150)
 EPOCHS = 50
 strategy = tf.distribute.MirroredStrategy()
-BATCH_SIZE = 32 * strategy.num_replicas_in_sync
+BATCH_SIZE = 8 * strategy.num_replicas_in_sync
 AUTO = tf.data.experimental.AUTOTUNE
 
 
