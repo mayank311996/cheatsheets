@@ -11,5 +11,7 @@ dataset
     5. https://www.tensorflow.org/guide/data
     6. https://www.tensorflow.org/tutorials/distribute/custom_training
     7. https://www.tensorflow.org/guide/data_performance
+    8. https://towardsdatascience.com/choosing-the-right-gpu-for-deep-learning-on-aws-d69c157d8c86
+    
 
  
