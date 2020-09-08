@@ -1,11 +1,22 @@
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import pandas as pd
+from sklearn.model_selection import train_test_split
 
-DATA_DIR = "/opt/ml/input/data/flowers/"
+TEST_PATH = "/opt/ml/input/data/test.csv"
+TRAIN_PATH = "/opt/ml/input/data/train.csv"
+IMAGE_DIR = "/opt/ml/input/data/images/"
 OUTPUT_DIR = "/opt/ml/model/"
+
+test_data = pd.read_csv(TEST_PATH)
+train_data = pd.read_csv(TRAIN_PATH)
 
 IMG_SIZE = (150, 150)
 BATCH_SIZE = 128
+
+
+def format_path(st):
+    return IMAGE_DIR + st + '.jpg'
 
 
 def train():
@@ -60,4 +71,12 @@ def train():
 
 
 if __name__ == "__main__":
+
+    test_paths = test_data.image_id.apply(format_path).values
+    train_paths = train_data.image_id.apply(format_path).values
+
+    train_labels = np.float32(train_data.loc[:, 'healthy':'scab'].values)
+    train_paths, valid_paths, train_labels, valid_labels = \
+        train_test_split(train_paths, train_labels, test_size=0.15, random_state=2020)
+
     train()
