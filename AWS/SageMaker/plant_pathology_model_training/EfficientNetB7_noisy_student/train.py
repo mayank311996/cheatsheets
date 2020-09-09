@@ -109,8 +109,8 @@ if __name__ == "__main__":
     lr_schedule = tf.keras.callbacks.LearningRateScheduler(lrfn, verbose=1)
 
     with strategy.scope():
-        model = tf.keras.Sequential([efn.EfficientNetB7(input_shape=(128, 128, 3),
-                                                        weights='imagenet',
+        model = tf.keras.Sequential([efn.EfficientNetB7(input_shape=(512, 512, 3),
+                                                        weights='noisy-student',
                                                         include_top=False),
                                      L.GlobalAveragePooling2D(),
                                      L.Dense(train_labels.shape[1],
