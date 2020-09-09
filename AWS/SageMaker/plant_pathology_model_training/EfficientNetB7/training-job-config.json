@@ -1,5 +1,5 @@
 {
-    "TrainingJobName": "plant-pathology-training-efficientnetb7-1",
+    "TrainingJobName": "plant-pathology-training-efficientnetb7-2",
     "AlgorithmSpecification": {
         "TrainingImage": "882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images:latest",
         "TrainingInputMode": "File"
