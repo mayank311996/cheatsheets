@@ -28,7 +28,7 @@ def format_path(st):
     return IMAGE_DIR + st + '.jpg'
 
 
-def decode_image(filename, label=None, image_size=(512, 512)):
+def decode_image(filename, label=None, image_size=(128, 128)):
     bits = tf.io.read_file(filename)
     image = tf.image.decode_jpeg(bits, channels=3)
     image = tf.cast(image, tf.float32) / 255.0
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     lr_schedule = tf.keras.callbacks.LearningRateScheduler(lrfn, verbose=1)
 
     with strategy.scope():
-        model = tf.keras.Sequential([efn.EfficientNetB7(input_shape=(512, 512, 3),
+        model = tf.keras.Sequential([efn.EfficientNetB7(input_shape=(128, 128, 3),
                                                         weights='imagenet',
                                                         include_top=False),
                                      L.GlobalAveragePooling2D(),
