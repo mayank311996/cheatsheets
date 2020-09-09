@@ -5,6 +5,7 @@ import tensorflow.keras.layers as L
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
+import efficientnet.tfkeras as efn
 
 #########################################################################################
 TEST_PATH = "/opt/ml/input/data/plant-pathology-2020-fgvc7/test.csv"
@@ -108,9 +109,9 @@ if __name__ == "__main__":
     lr_schedule = tf.keras.callbacks.LearningRateScheduler(lrfn, verbose=1)
 
     with strategy.scope():
-        model = tf.keras.Sequential([DenseNet121(input_shape=(512, 512, 3),
-                                                 weights='imagenet',
-                                                 include_top=False),
+        model = tf.keras.Sequential([efn.EfficientNetB7(input_shape=(512, 512, 3),
+                                                        weights='imagenet',
+                                                        include_top=False),
                                      L.GlobalAveragePooling2D(),
                                      L.Dense(train_labels.shape[1],
                                              activation='softmax')])
@@ -129,4 +130,4 @@ if __name__ == "__main__":
     # test_loss, test_accuracy = model.evaluate(test_dataset)
     # print(f"Test accuracy: {test_accuracy}")
 
-    model.save(OUTPUT_DIR + "model_DenseNet121.h5")
+    model.save(OUTPUT_DIR + "model_EfficientNetB7.h5")
