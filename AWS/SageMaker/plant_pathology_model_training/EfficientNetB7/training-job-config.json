@@ -1,5 +1,5 @@
 {
-    "TrainingJobName": "plant-pathology-training-4",
+    "TrainingJobName": "plant-pathology-training-efficientnetb7-1",
     "AlgorithmSpecification": {
         "TrainingImage": "882207224999.dkr.ecr.us-east-2.amazonaws.com/sagemaker-images:latest",
         "TrainingInputMode": "File"
@@ -23,7 +23,7 @@
     },
     "ResourceConfig": {
         "InstanceType": "ml.p2.xlarge",
-        "InstanceCount": 2,
+        "InstanceCount": 1,
         "VolumeSizeInGB": 75
      },
     "StoppingCondition": {
