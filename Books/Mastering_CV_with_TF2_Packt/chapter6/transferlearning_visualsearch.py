@@ -8,6 +8,9 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing import image
 import numpy as np
+import os
+from scipy.spatial import distance as dist
+from sklearn.metrics.pairwise import cosine_distances
 
 # For ResNet and VGG16
 # from tensorflow.keras.applications.resnet50 import ResNet50, \
@@ -135,8 +138,88 @@ plt.xlabel('epoch')
 plt.show()
 
 ##############################################################################
+# the below path shows the full path for uploaded image, adjust it for your
+# specific path
+img_path = 'furniture_images/train/bed/bed00000002train.jpg'
+# img_path ='/home/krish/visual_search/furniture-detector/img/train/chair
+# /00000009.jpg'
+# img_path ='/home/krish/visual_search/furniture-detector/img/train/sofa/
+# 00000016.jpg'
+img = image.load_img(img_path, target_size=(img_width, img_height))
+img_data = image.img_to_array(img)
+img_data = np.expand_dims(img_data, axis=0)
+img_data1 = preprocess_input(img_data)
+
+pretrained_feature = final_model.predict(img_data, verbose=0)
+pretrained_feature_np = np.array(pretrained_feature)
+pretrained_feature1D = pretrained_feature_np.flatten()
+
+pretrained_feature_base = base_model.predict(img_data1)
+pretrained_feature_np_base = np.array(pretrained_feature_base)
+pretrained_feature1D_base = pretrained_feature_np_base.flatten()
 
 
+print(pretrained_feature1D)
+y_prob = final_model.predict(img_data)
+
+y_classes = y_prob.argmax(axis=-1)
+
+print(y_classes)
+
+##############################################################################
+# Below shows the full path for test images, adjust it for your specific path
+if y_classes == [0]:
+    path = 'furniture_images/val/bed'
+elif y_classes == [1]:
+    path = 'furniture_images/val/chair'
+else:
+    path = 'furniture_images/val/sofa'
+
+mindist = 10000
+maxcosine = 0
+i = 0
+for filename in os.listdir(path):
+    image_train = os.path.join(path, filename)
+    i += 1
+    imgtrain = image.load_img(
+        image_train,
+        target_size=(img_width, img_height)
+    )
+    img_data_train = image.img_to_array(imgtrain)
+    img_data_train = np.expand_dims(img_data_train, axis=0)
+    img_data_train = preprocess_input(img_data_train)
+
+    pretrained_feature_train = base_model.predict(img_data_train)
+    pretrained_feature_np_train = np.array(pretrained_feature_train)
+    pretrained_feature_train1D = pretrained_feature_np_train.flatten()
+    eucldist = dist.euclidean(
+        pretrained_feature1D_base,
+        pretrained_feature_train1D)
+
+    if mindist > eucldist:
+        mindist = eucldist
+        minfilename = filename
+    # print (vgg16_feature_np)
+
+    dot_product = np.dot(pretrained_feature1D_base,
+                         pretrained_feature_train1D)
+    # normalize the results, to achieve similarity measures independant
+    # of the scale of the vectors
+    norm_Y = np.linalg.norm(pretrained_feature1D_base)
+    norm_X = np.linalg.norm(pretrained_feature_train1D)
+    cosine_similarity = dot_product / (norm_X * norm_Y)
+
+    if maxcosine < cosine_similarity:
+        maxcosine = cosine_similarity
+        cosfilename = filename
+
+    print("%s filename %f euclediandist %f cosine_similarity"
+          % (filename, eucldist, cosine_similarity))
+    print("%s minfilename %f mineuclediandist %s cosfilename "
+          "%f maxcosinesimilarity" % (minfilename, mindist,
+                                      cosfilename, maxcosine))
+
+##############################################################################
 
 
 
