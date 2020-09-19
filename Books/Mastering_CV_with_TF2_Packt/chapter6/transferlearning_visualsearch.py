@@ -220,9 +220,26 @@ for filename in os.listdir(path):
                                       cosfilename, maxcosine))
 
 ##############################################################################
+image_result = os.path.join(path, minfilename)
+imgresult = image.load_img(image_train, target_size=(224, 224))
+plt.imshow(img)
 
+fig = plt.figure(figsize=(8, 8))
+fig.add_subplot(2, 2, 1)
+image_result1 = os.path.join(path, minfilename)
+imgresult1 = image.load_img(image_result1, target_size=(224, 224))
+plt.imshow(imgresult1)
+eucledian5d ="%.7f" % mindist
+plt.title("Eucledian_Distance " + str(eucledian5d))
 
+fig.add_subplot(2,2,2)
+image_result2 = os.path.join(path, cosfilename)
+imgresult2 = image.load_img(image_result2, target_size=(224, 224))
+plt.imshow(imgresult2)
+cosine5d ="%.7f" % maxcosine
+plt.title("Cosine_Similarity " + str(cosine5d))
 
+##############################################################################
 
 
 
