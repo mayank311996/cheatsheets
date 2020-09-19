@@ -4,6 +4,7 @@ from tensorflow.keras.layers import Dense, Activation, Flatten, Dropout, \
     GlobalAveragePooling2D
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.optimizers import SGD, Adam
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # For ResNet and VGG16
 # from tensorflow.keras.applications.resnet50 import ResNet50, \
@@ -14,6 +15,60 @@ from tensorflow.keras.optimizers import SGD, Adam
 ##############################################################################
 # ResNet and VGG16, img_width, img_height = 224, 224
 img_width, img_height = 299, 299
+
+NUM_EPOCHS = 5
+batchsize = 10
+num_train_images = 900
+num_val_images = 100
+
+base_model = InceptionV3(
+    weights='imagenet',
+    include_top=False,
+    input_shape=(img_height, img_width, 3)
+)
+
+##############################################################################
+train_dir = 'train_dir'
+train_datagen = ImageDataGenerator(
+    preprocessing_function=preprocess_input,
+    rotation_range=90,
+    horizontal_flip=True,
+    vertical_flip=True
+)
+train_generator = train_datagen.flow_from_directory(
+    train_dir,
+    target_size=(img_height, img_width),
+    batch_size=batchsize
+)
+
+val_dir = 'val_dir'
+val_datagen = ImageDataGenerator(
+    preprocessing_function=preprocess_input,
+    rotation_range=90,
+    horizontal_flip=True,
+    vertical_flip=True
+)
+val_generator = val_datagen.flow_from_directory(
+    val_dir,
+    target_size=(img_height, img_width),
+    batch_size=batchsize
+)
+
+##############################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
