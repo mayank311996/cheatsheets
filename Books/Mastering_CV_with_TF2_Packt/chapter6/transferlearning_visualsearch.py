@@ -5,6 +5,9 @@ from tensorflow.keras.layers import Dense, Activation, Flatten, Dropout, \
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import matplotlib.pyplot as plt
+from tensorflow.keras.preprocessing import image
+import numpy as np
 
 # For ResNet and VGG16
 # from tensorflow.keras.applications.resnet50 import ResNet50, \
@@ -78,11 +81,60 @@ def build_final_model(base_model, dropout, fc_layers, num_classes):
 
 
 ##############################################################################
+class_list = ["bed", "chair", "sofa"]
+FC_LAYERS = [1024, 1024]
+dropout = 0.3
 
+final_model = build_final_model(
+    base_model,
+    dropout=dropout,
+    fc_layers=FC_LAYERS,
+    num_classes=len(class_list)
+)
 
+adam = Adam(lr=0.00001)
+final_model.compile(
+    adam,
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+history = final_model.fit_generator(
+    train_generator,
+    epochs=NUM_EPOCHS,
+    workers=0,
+    steps_per_epoch=num_train_images//batchsize,
+    shuffle=True,
+    validation_data=val_generator,
+    validation_steps=num_val_images//batchsize
+)
 
+##############################################################################
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
 
+loss = history.history['loss']
+val_loss = history.history['val_loss']
 
+plt.figure(figsize=(8, 8))
+plt.subplot(2, 1, 1)
+plt.plot(acc, label='Training Accuracy')
+plt.plot(val_acc, label='Validation Accuracy')
+plt.legend(loc='lower right')
+plt.ylabel('Accuracy')
+plt.ylim([min(plt.ylim()), 1])
+plt.title('Training and Validation Accuracy')
+
+plt.subplot(2, 1, 2)
+plt.plot(loss, label='Training Loss')
+plt.plot(val_loss, label='Validation Loss')
+plt.legend(loc='upper right')
+plt.ylabel('Cross Entropy')
+plt.ylim([0, 5.0])
+plt.title('Training and Validation Loss')
+plt.xlabel('epoch')
+plt.show()
+
+##############################################################################
 
 
 
