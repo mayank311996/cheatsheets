@@ -54,8 +54,30 @@ val_generator = val_datagen.flow_from_directory(
     batch_size=batchsize
 )
 
-##############################################################################
 
+##############################################################################
+def build_final_model(base_model, dropout, fc_layers, num_classes):
+    for layer in base_model.layers:
+        layer.trainable = False
+
+    x = base_model.output
+    x = GlobalAveragePooling2D()(x)
+    x = Flatten()(x)
+
+    for fc in fc_layers:
+        x = Dense(fc, activation='relu')(x)
+        x = Dropout(dropout)(x)
+
+    predictions = Dense(num_classes, activation='softmax')(x)
+    final_model = Model(
+        inputs=base_model.input,
+        outputs=predictions
+    )
+
+    return final_model
+
+
+##############################################################################
 
 
 
