@@ -14,6 +14,8 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 from scipy.spatial import distance as dist
 from sklearn.metrics.pairwise import cosine_similarity
+import time
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 ##############################################################################
 img_width, img_height = 299, 299
@@ -290,8 +292,8 @@ image_result = os.path.join(path, minfilename)
 imgresult = image.load_img(image_train, target_size=(224, 224))
 plt.imshow(img)
 
-fig = plt.figure(figsize=(8,8))
-fig.add_subplot(2,2,1)
+fig = plt.figure(figsize=(8, 8))
+fig.add_subplot(2, 2, 1)
 image_result1 = os.path.join(path, minfilename)
 imgresult1 = image.load_img(image_result1, target_size=(224, 224))
 plt.imshow(imgresult1)
@@ -306,4 +308,37 @@ cosine5d ="%.7f" % maxcosine
 plt.title("Cosine_Similarity " + str(cosine5d))
 
 ##############################################################################
+default_timeit_steps = 1000
 
+
+def timeit(ds, steps=default_timeit_steps):
+    start = time.time()
+    it = iter(ds)
+    for i in range(steps):
+        batch = next(it)
+        if i % 10 == 0:
+            print('.', end='')
+    print()
+    end = time.time()
+
+    duration = end-start
+    print("{} batches: {} s".format(steps, duration))
+    print("{:0.5f} Images/s".format(batchsize*steps/duration))
+
+
+train_datagen = ImageDataGenerator(
+      preprocessing_function=preprocess_input,
+      rotation_range=90,
+      horizontal_flip=True,
+      vertical_flip=True
+    )
+
+train_generator = train_datagen.flow_from_directory(
+    train_dir,
+    target_size=(img_height, img_width),
+    batch_size=batchsize
+)
+
+timeit(train_generator)
+timeit(train_ds)
+##############################################################################
