@@ -1,4 +1,4 @@
-## Run
+## Object Detection using R-CNN, SSD, and R-FCN
 
 #### Resources 
 
@@ -7,4 +7,9 @@
 - https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/training.html
 - Follow section `Detecting objects using TensorFlow on Google Cloud` on page 279
 - https://cloud.google.com/solutions/creating-object-detection-application-tensorflow
+- Follow section `Detecting objects using TensorFlow Hub` on page 282
+- https://www.tensorflow.org/hub
+- https://github.com/tensorflow/hub/blob/master/examples/colab/object-detection.ipynb
+- https://www.tensorflow.org/hub/tutorials/object_detection
+
 
