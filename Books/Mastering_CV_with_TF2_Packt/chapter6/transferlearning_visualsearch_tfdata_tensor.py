@@ -9,6 +9,11 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import os
 import pathlib
+import matplotlib.pyplot as plt
+from tensorflow.keras.preprocessing import image
+import numpy as np
+from scipy.spatial import distance as dist
+from sklearn.metrics.pairwise import cosine_similarity
 
 ##############################################################################
 img_width, img_height = 299, 299
@@ -174,6 +179,32 @@ history = final_model.fit(
     validation_data=val_ds,
     validation_steps=num_val_images // batchsize
 )
+
+##############################################################################
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+plt.figure(figsize=(8, 8))
+plt.subplot(2, 1, 1)
+plt.plot(acc, label='Training Accuracy')
+plt.plot(val_acc, label='Validation Accuracy')
+plt.legend(loc='lower right')
+plt.ylabel('Accuracy')
+plt.ylim([min(plt.ylim()),1])
+plt.title('Training and Validation Accuracy')
+
+plt.subplot(2, 1, 2)
+plt.plot(loss, label='Training Loss')
+plt.plot(val_loss, label='Validation Loss')
+plt.legend(loc='upper right')
+plt.ylabel('Cross Entropy')
+plt.ylim([0,5.0])
+plt.title('Training and Validation Loss')
+plt.xlabel('epoch')
+plt.show()
 
 ##############################################################################
 
