@@ -64,13 +64,118 @@ def process_path(file_path):
 
 
 ##############################################################################
+# Set `num_parallel_calls` so multiple images are loaded/processed in parallel.
+train_labeled_ds = train_ds.map(process_path, num_parallel_calls=AUTOTUNE)
+# I think this will dump entire data to the memory what if you have
+# really big data set?
+
+for image, label in train_labeled_ds.take(1):
+    print("Image shape: ", image.numpy().shape)
+    print("Label: ", label.numpy())
+
+val_labeled_ds = val_ds.map(process_path, num_parallel_calls=AUTOTUNE)
+
+for image, label in val_labeled_ds.take(1):
+    print("Image shape: ", image.numpy().shape)
+    print("Label: ", label.numpy())
 
 
+def prepare_for_training(ds, cache=True, shuffle_buffer_size=1000):
+    # This is a small dataset, only load it once, and keep it in memory.
+    # use `.cache(filename)` to cache preprocessing work for datasets that don't
+    # fit in memory.
+    if cache:
+        if isinstance(cache, str):
+            ds = ds.cache(cache)
+        else:
+            ds = ds.cache()
+
+    ds = ds.shuffle(buffer_size=shuffle_buffer_size)
+
+    # Repeat forever
+    ds = ds.repeat()
+
+    ds = ds.batch(batchsize)
+
+    # `prefetch` lets the dataset fetch batches in the background while the model
+    # is training.
+    ds = ds.prefetch(buffer_size=AUTOTUNE)
+
+    return ds
 
 
+train_ds = prepare_for_training(train_labeled_ds)
+
+train_image_batch, label_batch = next(iter(train_ds))
+
+val_ds = prepare_for_training(val_labeled_ds)
+
+val_image_batch, label_batch = next(iter(val_ds))
 
 
+##############################################################################
+def build_final_model(base_model, dropout, fc_layers, num_classes):
+    for layer in base_model.layers:
+        layer.trainable = True
 
+    x = base_model.output
+
+    x = GlobalAveragePooling2D()(x)
+
+    x = Flatten()(x)
+
+    # Fine-tune from this layer onwards
+    layer_adjust = 100
+
+    # Freeze all the layers before the `fine_tune_at` layer
+    for layer in base_model.layers[:layer_adjust]:
+        layer.trainable = False
+
+    for fc in fc_layers:
+        # New FC layer, random init
+        x = Dense(fc, activation='relu')(x)
+        x = Dropout(dropout)(x)
+
+    # New softmax layer
+    predictions = Dense(num_classes, activation='softmax')(x)
+
+    final_model = Model(inputs=base_model.input, outputs=predictions)
+
+    return final_model
+
+
+class_list = ["bed", "chair", "sofa"]
+FC_LAYERS = [1024, 1024]
+dropout = 0.3
+
+final_model = build_final_model(base_model,
+                                dropout=dropout,
+                                fc_layers=FC_LAYERS,
+                                num_classes=len(class_list))
+
+outputpath=output_dir+"/model-{epoch:02d}-{val_accuracy:.2f}.hdf5"
+
+checkpoint_callback = ModelCheckpoint(
+    outputpath,
+    monitor='val_accuracy',
+    verbose=1,
+    save_best_only=False,
+    save_weights_only=False,
+    save_frequency=1
+)
+
+adam = Adam(lr=0.00001)
+final_model.compile(adam, loss='categorical_crossentropy', metrics=['accuracy'])
+history = final_model.fit(
+    train_ds,
+    epochs=NUM_EPOCHS,
+    steps_per_epoch=num_train_images // batchsize,
+    callbacks=[checkpoint_callback],
+    validation_data=val_ds,
+    validation_steps=num_val_images // batchsize
+)
+
+##############################################################################
 
 
 
