@@ -13,3 +13,12 @@
 - https://www.tensorflow.org/hub/tutorials/object_detection
 
 
+#### Resources 2
+
+- Follow section `Training a custom object detector using TensorFlow and Google Colab` on page 283
+- https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md
+- https://github.com/tensorflow/models/tree/master/research/object_detection/samples/configs
+- Follow section `Collecting and formatting images as .jpg files` on page 285
+
+
+
