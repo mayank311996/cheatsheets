@@ -24,6 +24,11 @@
 - Follow section `Configuring parameters and installing the required packages` on page 290
 - Follow section `Creating TensorFlow records` on page 292
 - Follow section `Preparing the model and configuring the training pipeline` on page 294
+- Follow section `Monitoring training progress using TensorBoard` on page 295
+- https://www.tensorflow.org/tensorboard
+- Follow section `Training the model` on page 296
+- Follow section `Running an inference test` on page 298
 
-
+This was for TF1.x version please check (https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/training.html)
+for new version (TF2.x) and use that. 
 
