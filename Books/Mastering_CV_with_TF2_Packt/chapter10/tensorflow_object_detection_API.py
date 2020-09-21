@@ -149,3 +149,28 @@ image_load = load_img('hamburger_410.jpg')
 display_image(image_load)
 
 ##############################################################################
+# module_handle =
+# "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1"
+module_handle = "https://tfhub.dev/google/openimages_v4/ssd/mobilenet_v2/1"
+detector = hub.load(module_handle).signatures['default']
+
+##############################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
