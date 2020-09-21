@@ -1,6 +1,10 @@
 import tensorflow as tf
 import os
 from google.colab import drive
+import shutil
+import glob
+import urllib.request
+import tarfile
 
 ##############################################################################
 # Configs and Hyper-parameters
@@ -83,7 +87,31 @@ label_map_pbtxt_fname = '/content/drive/My Drive/Chapter10_RCNN/' \
                         'data/annotations/label_map.pbtxt'
 
 ##############################################################################
+# Download the base model
 
+# %cd /content/models/research
+MODEL_FILE = MODEL + '.tar.gz'
+DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
+DEST_DIR = '/content/models/research/pretrained_model'
+
+if not (os.path.exists(MODEL_FILE)):
+    urllib.request.urlretrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
+
+tar = tarfile.open(MODEL_FILE)
+tar.extractall()
+tar.close()
+
+os.remove(MODEL_FILE)
+if os.path.exists(DEST_DIR):
+    shutil.rmtree(DEST_DIR)
+os.rename(MODEL, DEST_DIR)
+
+# !echo {DEST_DIR}
+# !ls -alh {DEST_DIR}
+
+fine_tune_checkpoint = os.path.join(DEST_DIR, "model.ckpt")
+
+##############################################################################
 
 
 
