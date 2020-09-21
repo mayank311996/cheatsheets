@@ -137,3 +137,4 @@ dmypy.json
 
 # Some folders
 /customs/CV/object_detection/tf2_object_detection_api/TensorFlow/models/*
+/customs/CV/object_detection/tf2_object_detection_api/TensorFlow/cocoapi/*
