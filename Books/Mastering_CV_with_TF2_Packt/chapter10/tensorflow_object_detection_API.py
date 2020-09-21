@@ -138,5 +138,14 @@ def draw_boxes(
                 display_str_list=[display_str])
             np.copyto(image, np.array(image_pil))
     return image
-##############################################################################
 
+
+##############################################################################
+# image_url =
+# "https://farm1.staticflickr.com/4032/4653948754_c0d768086b_o.jpg"
+# downloaded_image_path =
+# download_and_resize_image(image_url, 1280, 856, True)
+image_load = load_img('hamburger_410.jpg')
+display_image(image_load)
+
+##############################################################################
