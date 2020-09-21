@@ -19,6 +19,9 @@
 - https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md
 - https://github.com/tensorflow/models/tree/master/research/object_detection/samples/configs
 - Follow section `Collecting and formatting images as .jpg files` on page 285
-
+- Follow section `Annotating images to create a .xml file` on page 286
+- Follow section `Separating the file by train and test folders` on page 288
+- Follow section `Configuring parameters and installing the required packages` on page 290
+- 
 
 
