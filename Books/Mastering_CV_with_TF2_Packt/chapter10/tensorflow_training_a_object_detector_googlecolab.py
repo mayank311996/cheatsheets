@@ -173,7 +173,41 @@ model_dir = 'training/'
 os.makedirs(model_dir, exist_ok=True)
 
 ##############################################################################
+# TensorBoard running on a local machine
 
+# tensorboard_callback = tf.keras.callbacks.TensorBoard(
+#     log_dir=log_dir,
+#     histogram_freq=1
+# )
+# history = model.fit(
+#     x=x_train,
+#     y=y_train,
+#     epochs=25,
+#     validation_data=(x_test, y_test),
+#     callbacks=[tensorboard_callback]
+# )
+
+# %tensorboard --logdir logs/fit
+
+##############################################################################
+# TensorBoard running on Google Colab
+
+# !wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+# !unzip -o ngrok-stable-linux-amd64.zip
+
+LOG_DIR = model_dir
+get_ipython().system_raw(
+    'tensorboard --logdir {} --host 0.0.0.0 --port 6006 &'
+    .format(LOG_DIR)
+)
+
+get_ipython().system_raw('./ngrok http 6006 &')
+
+# ! curl -s http://localhost:4040/api/tunnels | python3 -c \
+#     "import sys, json;
+#     print(json.load(sys.stdin)['tunnels'][0]['public_url'])"
+
+##############################################################################
 
 
 
