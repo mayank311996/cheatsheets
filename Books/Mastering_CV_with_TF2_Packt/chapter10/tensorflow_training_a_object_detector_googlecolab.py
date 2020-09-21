@@ -1,5 +1,6 @@
 import tensorflow as tf
 import os
+from google.colab import drive
 
 ##############################################################################
 # Configs and Hyper-parameters
@@ -51,6 +52,50 @@ os.environ['PYTHONPATH'] += ':/content/models/research/:/content/models/' \
 # !python object_detection/builders/model_builder_test.py
 
 ##############################################################################
+# Prepare TFrecords files
+
+# drive.mount('/content/drive')
+# %cd /content/drive/My Drive/Chapter10_RCNN
+
+# Convert train folder annotation xml files to a single csv file,
+# !python xml_to_csv.py -i data/images/train -o data/annotations/
+# train_labels.csv -l data/annotations
+
+# Convert test folder annotation xml files to a single csv.
+# !python xml_to_csv.py -i data/images/test -o data/annotations/
+# test_labels.csv
+
+# Generate `train.record`
+# !python generate_tfrecord.py --csv_input=data/annotations/
+# train_labels.csv --output_path=data/annotations/train.record
+# --img_path=data/images/train --label_map data/annotations/label_map.pbtxt
+
+# Generate `test.record`
+# !python generate_tfrecord.py --csv_input=data/annotations/test_labels.csv
+# --output_path=data/annotations/test.record --img_path=data/images/test
+# --label_map data/annotations/label_map.pbtxt
+
+test_record_fname = '/content/drive/My Drive/Chapter10_RCNN/' \
+                    'data/annotations/test.record'
+train_record_fname = '/content/drive/My Drive/Chapter10_RCNN/' \
+                     'data/annotations/train.record'
+label_map_pbtxt_fname = '/content/drive/My Drive/Chapter10_RCNN/' \
+                        'data/annotations/label_map.pbtxt'
+
+##############################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

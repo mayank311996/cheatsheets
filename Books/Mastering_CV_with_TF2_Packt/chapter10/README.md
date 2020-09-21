@@ -22,6 +22,7 @@
 - Follow section `Annotating images to create a .xml file` on page 286
 - Follow section `Separating the file by train and test folders` on page 288
 - Follow section `Configuring parameters and installing the required packages` on page 290
-- 
+- Follow section `Creating TensorFlow records` on page 292
+
 
 
