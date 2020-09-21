@@ -218,9 +218,26 @@ get_ipython().system_raw('./ngrok http 6006 &')
 #     --num_eval_steps={num_eval_steps}
 
 ##############################################################################
+# Exporting a trained inference graph
 
+output_directory = './fine_tuned_model'
 
+lst = os.listdir(model_dir)
+lst = [l for l in lst if 'model.ckpt-' in l and '.meta' in l]
+steps=np.array([int(re.findall('\d+', l)[0]) for l in lst])
+last_model = lst[steps.argmax()].replace('.meta', '')
 
+last_model_path = os.path.join(model_dir, last_model)
+print(last_model_path)
+
+# !python /content/models/research/object_detection/
+# export_inference_graph.py \
+#     --input_type=image_tensor \
+#     --pipeline_config_path={pipeline_fname} \
+#     --output_directory={output_directory} \
+#     --trained_checkpoint_prefix={last_model_path}
+
+##############################################################################
 
 
 
