@@ -23,6 +23,7 @@
 - Follow section `Separating the file by train and test folders` on page 288
 - Follow section `Configuring parameters and installing the required packages` on page 290
 - Follow section `Creating TensorFlow records` on page 292
+- Follow section `Preparing the model and configuring the training pipeline` on page 294
 
 
 
