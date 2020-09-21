@@ -4,12 +4,12 @@
 
 > STEP 1 TensorFlow Installation 
 
-##### To install TensorFlow
+To install TensorFlow
 ```bash
 pip install --ignore-installed --upgrade tensorflow==2.2.0
 ```
 
-##### Verify installation 
+Verify installation 
 ```bash
 python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 ```
@@ -18,7 +18,7 @@ Check out GPU driver installation on https://tensorflow-object-detection-api-tut
 
 > STEP 2 TF Object Detection API Installation
 
-##### Cloning TF model garden
+#### Cloning TF model garden
 ```bash
 mkdir TensorFlow
 cd TensorFlow
@@ -72,3 +72,9 @@ python -m pip install .
 ```
 
 >STEP 5 Test Your Installation 
+
+Go to TensorFlow/models/research and run
+```bash
+python object_detection/builders/model_builder_tf2_test.py
+```
+
