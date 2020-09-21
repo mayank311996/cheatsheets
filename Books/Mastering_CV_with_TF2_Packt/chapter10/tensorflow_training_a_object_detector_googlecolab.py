@@ -208,10 +208,16 @@ get_ipython().system_raw('./ngrok http 6006 &')
 #     print(json.load(sys.stdin)['tunnels'][0]['public_url'])"
 
 ##############################################################################
+# Training the model
 
+# !python /content/models/research/object_detection/model_main.py \
+#     --pipeline_config_path={pipeline_fname} \
+#     --model_dir={model_dir} \
+#     --alsologtostderr \
+#     --num_train_steps={num_steps} \
+#     --num_eval_steps={num_eval_steps}
 
-
-
+##############################################################################
 
 
 
