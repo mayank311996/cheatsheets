@@ -37,16 +37,20 @@ pipeline_file = MODELS_CONFIG[selected_model]['pipeline_file']
 batch_size = MODELS_CONFIG[selected_model]['batch_size']
 
 ##############################################################################
+# Install required packages
 
+# %cd /content
+# !git clone --quiet https://github.com/tensorflow/models.git
+# !apt-get install -qq protobuf-compiler python-pil python-lxml python-tk
+# !pip install -q Cython contextlib2 pillow lxml matplotlib
+# !pip install -q pycocotools
+# %cd /content/models/research
+# !protoc object_detection/protos/*.proto --python_out=.
+os.environ['PYTHONPATH'] += ':/content/models/research/:/content/models/' \
+                            'research/slim/'
+# !python object_detection/builders/model_builder_test.py
 
-
-
-
-
-
-
-
-
+##############################################################################
 
 
 
