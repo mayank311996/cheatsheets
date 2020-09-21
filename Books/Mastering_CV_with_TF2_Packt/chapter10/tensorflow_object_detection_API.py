@@ -184,3 +184,20 @@ def run_detector(detector, path):
 
 
 ##############################################################################
+run_detector(detector, image_load)
+
+image_urls = ["https://farm7.staticflickr.com/8092/"
+              "8592917784_4759d3088b_o.jpg",
+              "https://farm6.staticflickr.com/2598/"
+              "4138342721_06f6e177f3_o.jpg",
+              "https://c4.staticflickr.com/9/8322/"
+              "8053836633_6dc507f090_o.jpg"]
+
+for image_url in image_urls:
+    # start_time = time.time()
+    image_path = download_and_resize_image(image_url, 640, 480)
+    run_detector(detector, image_path)
+    # end_time = time.time()
+    print("Inference time:")
+
+##############################################################################
