@@ -1,6 +1,6 @@
-## TF2 Object Detection API
+# TF2 Object Detection API
 
-#### Installation 
+## Installation 
 
 > STEP 1 TensorFlow Installation 
 
@@ -62,3 +62,4 @@ cd cocoapi/PythonAPI
 make
 cp -r pycocotools <PATH_TO_TF>/TensorFlow/models/research/
 ```
+
