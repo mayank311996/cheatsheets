@@ -63,3 +63,12 @@ make
 cp -r pycocotools <PATH_TO_TF>/TensorFlow/models/research/
 ```
 
+>STEP 4 Install the Object Detection API
+
+Go to TensorFlow/models/research and run
+```bash
+cp object_detection/packages/tf2/setup.py .
+python -m pip install .
+```
+
+>STEP 5 Test Your Installation 
