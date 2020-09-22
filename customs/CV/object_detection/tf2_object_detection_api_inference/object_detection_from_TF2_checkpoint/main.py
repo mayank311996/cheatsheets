@@ -110,6 +110,14 @@ elapsed_time = end_time - start_time
 print('Done! Took {} seconds'.format(elapsed_time))
 
 
+##############################################################################
+# STEP 5 Load label map data (for plotting)
+category_index = label_map_util.create_category_index_from_labelmap(
+    PATH_TO_LABELS,
+    use_display_name=True
+)
+
+
 
 
 
