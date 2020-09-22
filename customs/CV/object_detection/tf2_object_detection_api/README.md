@@ -184,7 +184,37 @@ Change `pipeline.config` according to [doc](https://tensorflow-object-detection-
 
 >STEP 4 Training the Model
 
+Copy `TensorFlow/models/research/object_detection/model_main_tf2.py`
+inside `training_demo` folder
 
+```bash
+cd training_demo
+python model_main_tf2.py --model_dir=models/my_ssd_resnet50_v1_fpn --pipeline_config_path=models/my_ssd_resnet50_v1_fpn/pipeline.config
+```
+
+>STEP 5 Evaluating the Model (Optional)
+
+Supported [matrices](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/evaluation_protocols.md)
+
+The training process will occasionally create checkpoint files inside the `training_demo/training`
+folder 
+
+As we already installed COCO API, we just need to modify lines 
+178-179 in `pipeline.config` script 
+
+To actually run the evaluation
+```bash
+cd training_demo
+python model_main_tf2.py --model_dir=models/my_ssd_resnet50_v1_fpn --pipeline_config_path=models/my_ssd_resnet50_v1_fpn/pipeline.config --checkpoint_dir=models/my_ssd_resnet50_v1_fpn
+```
+
+Evaluation process will take the latest `models/my_ssd_resnet50_v1_fpn/ckpt-*` 
+checkpoint to evaluate the performance of the model
+
+The results are stored in the form of tf event files `events.out.tfevents.*`
+inside `models/my_ssd_resnet50_v1_fpn/eval_0`
+
+>STEP 6 Monitor Training Job Progress using TensorBoard
 
 
 
