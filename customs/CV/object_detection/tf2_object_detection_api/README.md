@@ -216,8 +216,25 @@ inside `models/my_ssd_resnet50_v1_fpn/eval_0`
 
 >STEP 6 Monitor Training Job Progress using TensorBoard
 
+```bash
+cd training_demo
+tensorboard --logdir=models/my_ssd_resnet50_v1_fpn
+```
 
+Go to `http://localhost:6006/` to access TensorBoard
 
+>STEP 7 Exporting a Trained Model
+
+After training, we need to extract newly trained inference graph, which will
+be later used to perform the object detection
+
+Copy `TensorFlow/models/research/object_detection/exporter_main_v2.py`
+into `training_demo` folder
+
+```bash
+cd training_demo
+python .\exporter_main_v2.py --input_type image_tensor --pipeline_config_path .\models\my_efficientdet_d1\pipeline.config --trained_checkpoint_dir .\models\my_efficientdet_d1\ --output_directory .\exported-models\my_model
+```
 
 
 
