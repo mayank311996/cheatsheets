@@ -125,12 +125,64 @@ mkdir scripts
 cd scripts 
 mkdir preprocessing
 ```
-save partition_dataset.py inside preprocessing folder.
+save `partition_dataset.py` (https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/_downloads/d0e545609c5f7f49f39abc7b6a38cec3/partition_dataset.py) inside `preprocessing` folder
 
+```bash
+cd preprocessing 
+python partition_dataset.py -x -i [PATH_TO_IMAGES_FOLDER] -r 0.1
 
+# For example
+# python partition_dataset.py -x -i C:/Users/sglvladi/Documents/Tensorflow/workspace/training_demo/images -r 0.1
+```
 
+##### Create Label Map
 
+save `label_map.pbtxt` inside `training_demo/annotations` folder 
 
+##### Create TensorFlow Records
+
+Convert `*.xml` to `*.record`
+
+save `generate_tfrecord.py` (https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/_downloads/da4babe668a8afb093cc7776d7e630f3/generate_tfrecord.py)
+inside `TensorFlow/scripts/preprocessing` folder
+
+```bash
+cd preprocessing
+python generate_tfrecord.py -x [PATH_TO_IMAGES_FOLDER]/train -l [PATH_TO_ANNOTATIONS_FOLDER]/label_map.pbtxt -o [PATH_TO_ANNOTATIONS_FOLDER]/train.record
+python generate_tfrecord.py -x [PATH_TO_IMAGES_FOLDER]/test -l [PATH_TO_ANNOTATIONS_FOLDER]/label_map.pbtxt -o [PATH_TO_ANNOTATIONS_FOLDER]/test.record
+
+# For example
+# python generate_tfrecord.py -x C:/Users/sglvladi/Documents/Tensorflow/workspace/training_demo/images/train -l C:/Users/sglvladi/Documents/Tensorflow/workspace/training_demo/annotations/label_map.pbtxt -o C:/Users/sglvladi/Documents/Tensorflow/workspace/training_demo/annotations/train.record
+# python generate_tfrecord.py -x C:/Users/sglvladi/Documents/Tensorflow/workspace/training_demo/images/test -l C:/Users/sglvladi/Documents/Tensorflow2/workspace/training_demo/annotations/label_map.pbtxt -o C:/Users/sglvladi/Documents/Tensorflow/workspace/training_demo/annotations/test.record
+```
+
+>STEP 3 Configuring a Training Job
+
+To train entirely new model (https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/configuring_jobs.md)
+
+Model Zoo (https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md)
+
+##### Download Pre-Trained Model
+
+Download [SSD ResNet50 V1 FPN 640x640](http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_resnet50_v1_fpn_640x640_coco17_tpu-8.tar.gz)
+and extract inside `training_demo/pre-trained-models` folder
+
+Download [EfficientDet D1 640x640](http://download.tensorflow.org/models/object_detection/tf2/20200711/efficientdet_d1_coco17_tpu-32.tar.gz)
+and extract inside `training_demo/pre-trained-models` folder
+
+##### Configuring the Training Pipeline
+
+```bash
+cd training_demo/models
+mkdir my_ssd_resnet50_v1_fpn
+```
+
+Copy `training_demo/pre-trained-models/ssd_resnet50_v1_fpn_640x640_coco17_tpu-8/pipeline.config`
+inside `training_demo/models/my_ssd_resnet50_v1_fpn` directory
+
+Change `pipeline.config` according to [doc](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/training.html)
+
+>STEP 4 Training the Model
 
 
 
