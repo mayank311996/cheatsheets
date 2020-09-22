@@ -18,7 +18,7 @@ Check out GPU driver installation on https://tensorflow-object-detection-api-tut
 
 > STEP 2 TF Object Detection API Installation
 
-#### Cloning TF model garden
+##### Cloning TF model garden
 ```bash
 mkdir TensorFlow
 cd TensorFlow
@@ -77,4 +77,74 @@ Go to TensorFlow/models/research and run
 ```bash
 python object_detection/builders/model_builder_tf2_test.py
 ```
+
+
+## Training Custom Object Detector
+
+>STEP 1 Preparing the Workspace
+
+```bash
+cd <PATH_TO_TensorFlow>
+mkdir workspace
+cd workspace
+mkdir training_demo
+```
+
+```bash
+cd training_demo
+mkdir annotations
+mkdir exported-models
+mkdir images 
+mkdir models
+mkdir pre-trained-models
+cd images
+mkdir test
+mkdir train
+```
+
+>STEP 2 Preparing the Dataset
+
+##### Annotate the Dataset
+
+Install LabelImg
+```bash
+pip install labelImg
+```
+
+Annotate Images 
+```bash
+labelImg <PATH_TO_TF>/TensorFlow/workspace/training_demo/images
+```
+[video](https://youtu.be/K_mFnvzyLvc)
+
+##### Partition the Dataset
+
+```bash
+cd <PATH_TO_TensorFlow>
+mkdir scripts
+cd scripts 
+mkdir preprocessing
+```
+save partition_dataset.py inside preprocessing folder.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
