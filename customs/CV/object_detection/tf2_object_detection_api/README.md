@@ -236,8 +236,8 @@ cd training_demo
 python .\exporter_main_v2.py --input_type image_tensor --pipeline_config_path .\models\my_efficientdet_d1\pipeline.config --trained_checkpoint_dir .\models\my_efficientdet_d1\ --output_directory .\exported-models\my_model
 ```
 
-
-
+After this you will find a new folder `my_model` under the 
+`training_demo/exported-models`
 
 
 
