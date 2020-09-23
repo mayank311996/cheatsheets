@@ -76,7 +76,7 @@ functions:
     handler: handler.char_reco
     events:
       - s3:
-          bucket: $(self:custom.bucket)
+          bucket: ${self:custom.bucket}
           event: s3:ObjectCreated:*
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
