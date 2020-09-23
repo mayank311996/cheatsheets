@@ -9,3 +9,8 @@
 ```bash
 sls create --template aws-python3
 ```
+
+## Notes
+
+- "s3:*", * means to allow everything
+ 
