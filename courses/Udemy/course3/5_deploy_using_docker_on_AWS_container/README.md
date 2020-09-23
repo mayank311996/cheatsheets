@@ -38,9 +38,23 @@ Running Ubuntu container
 sudo docker run -p 5000:5000 -it ubuntu bash
 ```
 
+```bash
+apt-get update
+apt-get install -y python3-pip
+pip3 install scikit-learn
+pip3 install flask
+```
 
+In another terminal type
+```bash
+sudo docker cp flower-v1.pkl <CONTAINER ID>:flower-v1.pkl
+sudo docker cp predict_flower.py <CONTAINER ID>:predict_flower.py
+```
 
-
+Back to container terminal
+```bash
+python3 predict_flower.py
+```
 
 
 
