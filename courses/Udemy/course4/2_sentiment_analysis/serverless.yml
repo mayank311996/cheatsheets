@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: service-2-sentiment-analysis
+service: sentiment-analysis
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -22,11 +22,28 @@ service: service-2-sentiment-analysis
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.6
 
 # you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  stage: dev
+  region: ap-south-1
+
+  environment:
+    #DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}-p2reviews
+    DYNAMODB_TABLE: reviewsp2  
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"                
+                 
+    - Effect: "Allow"
+      Action:
+           - comprehend:DetectSentiment
+      Resource: "*"
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -56,13 +73,18 @@ provider:
 #  exclude:
 #    - exclude-me.py
 #    - exclude-me-dir/**
-
+ 
 functions:
   hello:
-    handler: handler.hello
+    handler: handler.detect_sentiment
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
+    
+    events:
+     - stream: "arn:aws:dynamodb:ap-south-1:185271616071:table/reviewsp2/stream/2020-05-16T12:56:30.367"
+                   
+
 #    events:
 #      - http:
 #          path: users/create
@@ -111,3 +133,27 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+
+# resources:
+#   Resources:
+#     TodosDynamoDbTable:
+#       Type: 'AWS::DynamoDB::Table'
+#       DeletionPolicy: Delete
+#       Properties:
+#         AttributeDefinitions:
+#           -
+#             AttributeName: pid
+#             AttributeType: S
+#         KeySchema:
+#           -
+#             AttributeName: pid
+#             KeyType: HASH
+#         ProvisionedThroughput:
+#           ReadCapacityUnits: 1
+#           WriteCapacityUnits: 1
+
+#         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+
+#         StreamSpecification:
+#           StreamViewType: NEW_IMAGE
