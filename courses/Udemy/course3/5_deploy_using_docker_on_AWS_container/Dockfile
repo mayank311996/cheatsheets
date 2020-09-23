@@ -1,0 +1,34 @@
+Docker Installation : 
+
+sudo apt install curl
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
+sudo apt update
+
+sudo apt-cache policy docker-ce
+
+sudo apt install docker-ce 
+
+
+
+sudo docker run -p 5000:5000 -it ubuntu bash
+
+apt-get update
+apt-get install -y python3-pip
+pip3 install scikit-learn
+pip3 install flask
+
+sudo docker cp flower 31675c5d9cfa:flower-v1.pkl
+sudo docker cp predict_flower.py 31675c5d9cfa:predict_flower.py
+
+
+sudo docker build -t ml_flower_app .
+
+sudo docker login
+sudo docker tag ml_flower_app ankit25587/flower_app
+sudo docker images
+sudo docker push ankit25587/v1
+
