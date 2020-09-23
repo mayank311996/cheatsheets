@@ -22,11 +22,25 @@ service: service-1-character-recognition
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.7
 
 # you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  stage: dev
+  region: us-east-2
+  memorySize: 128
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "*"
+
+    - Effect: "Allow"
+      Action:
+        - "rekognition:*"
+      Resource: "*"
+
+custom:
+  bucket: nayank-character-reko
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -58,8 +72,12 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  reco-character:
+    handler: handler.char_reco
+    events:
+      - s3:
+          bucket: $(self:custom.bucket)
+          event: s3:ObjectCreated:*
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -111,3 +129,6 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+plugins:
+  - serverless-python-requirements
