@@ -40,7 +40,7 @@ provider:
       Resource: "*"
 
 custom:
-  bucket: nayank-character-reko
+  bucket: mayank-character-reko
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
