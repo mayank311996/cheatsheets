@@ -10,3 +10,16 @@ average views.
 ```bash
 sls create --template aws-python3
 ```
+
+After editing all files 
+
+```bash
+sudo apt install virtualenv
+virtualenv venv --python=python3
+source venv/bin/activate
+sudo apt install python3-pip
+pip3 install -r requirements.txt
+npm install --save serverless-python-requirements 
+serverless invoke local --function hello
+sudo sls deploy -v
+```
