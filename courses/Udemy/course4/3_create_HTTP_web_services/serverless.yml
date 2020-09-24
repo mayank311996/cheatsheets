@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: service-3-create-http-web-services
+service: api-lambda
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -22,11 +22,11 @@ service: service-3-create-http-web-services
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.6
 
 # you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  stage: dev
+  region: ap-south-1
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -56,10 +56,19 @@ provider:
 #  exclude:
 #    - exclude-me.py
 #    - exclude-me-dir/**
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+
 
 functions:
   hello:
     handler: handler.hello
+    events:
+      - http:
+          path: web/report/{name}
+          method: get
+          cors: true
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -111,3 +120,9 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+
+
+plugins:
+  - serverless-python-requirements
+  

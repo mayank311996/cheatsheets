@@ -1,12 +1,21 @@
 import json
+import requests
+from bs4 import BeautifulSoup
 
-
-def hello(event, context):
+def hello(event=None, context=None):
+    
+    print("event :: " + str(event))
+    searchTerm = event["pathParameters"]["name"]
+    avgViews, totalViews = findTitalViews(searchTerm)
+    
+    #body = {}
+    
     body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
+        "searchterm": searchTerm,
+        "totalviews": totalViews,
+        "avgviews": avgViews
     }
-
+    
     response = {
         "statusCode": 200,
         "body": json.dumps(body)
@@ -14,11 +23,29 @@ def hello(event, context):
 
     return response
 
-    # Use this code if you don't use the http event with the LAMBDA-PROXY
-    # integration
-    """
-    return {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "event": event
-    }
-    """
+    
+def findTitalViews(searchTerm):
+
+
+    url = "https://www.youtube.com/results?search_query="+searchTerm
+
+    res = requests.get(url)
+    
+    bs = BeautifulSoup(res.text, 'lxml')
+
+    elements = bs.find_all('ul', class_='yt-lockup-meta-info')
+
+    print(len(elements))
+
+    totalViews = 0
+    for ele in elements:
+        lis = ele.findChildren()
+        for li in lis:
+            if li.string.endswith('views'):
+                temp = li.text
+                temp = temp.replace(' views','')
+                temp = temp.replace(',','')
+                totalViews = totalViews + int(temp)
+    print(totalViews)
+
+    return totalViews/len(elements) , totalViews
