@@ -48,3 +48,20 @@ def preprocess_image(image_path, resize=False):
     if resize:
         img = cv2.resize(img, (224, 224))
     return img
+
+
+def get_plate(image_path, Dmax=608, Dmin = 608):
+    """
+    Function to extract license plate from the given picture
+    :param image_path: Path to input image
+    :param Dmax: Max boundary dimension
+    :param Dmin: Min boundary dimension
+    :return: Original image, extracted image, coordinates of the plate
+    """
+    vehicle = preprocess_image(image_path)
+    ratio = float(max(vehicle.shape[:2])) / min(vehicle.shape[:2])
+    side = int(ratio * Dmin)
+    bound_dim = min(side, Dmax)
+    _ , LpImg, _, cor = detect_lp(wpod_net, vehicle, bound_dim, lp_threshold=0.5)
+    return vehicle, LpImg, cor
+
