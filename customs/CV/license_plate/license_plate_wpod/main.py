@@ -13,6 +13,8 @@ import os
 from utils_plate import load_model
 from utils_plate import get_plate
 from utils_plate import emphasize_image
+from utils_plate import sort_contours
+from utils_plate import predict_from_model
 
 # remove warning message
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -25,7 +27,7 @@ if __name__ == '__main__':
     test_image_path = "Plate_examples/germany_car_plate.jpg"
     vehicle, LpImg, cor = get_plate(test_image_path)
 
-    binary, thre_mor = emphasize_image(LpImg)
+    plate_image, binary, thre_mor = emphasize_image(LpImg)
 
     cont, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL,
                                cv2.CHAIN_APPROX_SIMPLE)
@@ -57,5 +59,25 @@ if __name__ == '__main__':
                                             cv2.THRESH_OTSU)
                 crop_characters.append(curr_num)
 
+    # Load model architecture, weight and labels
+    json_file = open('MobileNets_character_recognition.json', 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    model = model_from_json(loaded_model_json)
+    model.load_weights("License_character_recognition_weight.h5")
+    print("[INFO] Model loaded successfully...")
+
+    labels = LabelEncoder()
+    labels.classes_ = np.load('license_character_classes.npy')
+    print("[INFO] Labels loaded successfully...")
+
+    final_string = ''
+    for i, character in enumerate(crop_characters):
+        title = np.array2string(predict_from_model(character, model, labels))
+        final_string += title.strip("'[]")
+
+    print(final_string)
+
+##############################################################################
 
 
