@@ -34,4 +34,17 @@ def load_model(path):
         print(e)
 
 
-
+def preprocess_image(image_path, resize=False):
+    """
+    Function to pre-process and resize image to be fed into the model for
+    plate extraction
+    :param image_path: Path to input image
+    :param resize: Resize (True or False)
+    :return: pre-processed image
+    """
+    img = cv2.imread(image_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = img / 255
+    if resize:
+        img = cv2.resize(img, (224, 224))
+    return img
