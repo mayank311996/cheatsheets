@@ -50,10 +50,11 @@ def preprocess_image(image_path, resize=False):
     return img
 
 
-def get_plate(image_path, Dmax=608, Dmin = 608):
+def get_plate(image_path, wpod_net, Dmax=608, Dmin = 608):
     """
     Function to extract license plate from the given picture
     :param image_path: Path to input image
+    :param wpod_net: Loaded model to extract license plate
     :param Dmax: Max boundary dimension
     :param Dmin: Min boundary dimension
     :return: Original image, extracted image, coordinates of the plate

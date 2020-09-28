@@ -25,7 +25,7 @@ if __name__ == '__main__':
     wpod_net = load_model(wpod_net_path)
 
     test_image_path = "1.jpg"
-    vehicle, LpImg, cor = get_plate(test_image_path)
+    vehicle, LpImg, cor = get_plate(test_image_path, wpod_net)
 
     plate_image, binary, thre_mor = emphasize_image(LpImg)
 
