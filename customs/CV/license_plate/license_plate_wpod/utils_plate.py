@@ -65,3 +65,26 @@ def get_plate(image_path, Dmax=608, Dmin = 608):
     _ , LpImg, _, cor = detect_lp(wpod_net, vehicle, bound_dim, lp_threshold=0.5)
     return vehicle, LpImg, cor
 
+
+def emphasize_image(extracted_image):
+    """
+    Function to reduce noise and emphasize features of license plate
+    :param extracted_image: Extracted image by get_plate function
+    :return: Processed emphasized image
+    """
+    # Scales, calculates absolute values, and converts the result to 8-bit.
+    plate_image = cv2.convertScaleAbs(extracted_image[0], alpha=(255.0))
+
+    # convert to grayscale and blur the image
+    gray = cv2.cvtColor(plate_image, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (7, 7), 0)
+
+    # Applied inversed thresh_binary
+    binary = cv2.threshold(blur, 180, 255,
+                           cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+
+    kernel3 = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    thre_mor = cv2.morphologyEx(binary, cv2.MORPH_DILATE, kernel3)
+
+    return thre_mor
+
