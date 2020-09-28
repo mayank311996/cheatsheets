@@ -119,3 +119,5 @@ def predict_from_model(image, model, labels):
     ])
     return prediction
 
+
+##############################################################################
