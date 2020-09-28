@@ -24,7 +24,7 @@ if __name__ == '__main__':
     wpod_net_path = "input/wpod-net.json"
     wpod_net = load_model(wpod_net_path)
 
-    test_image_path = "Plate_examples/germany_car_plate.jpg"
+    test_image_path = "1.jpg"
     vehicle, LpImg, cor = get_plate(test_image_path)
 
     plate_image, binary, thre_mor = emphasize_image(LpImg)
@@ -60,15 +60,15 @@ if __name__ == '__main__':
                 crop_characters.append(curr_num)
 
     # Load model architecture, weight and labels
-    json_file = open('MobileNets_character_recognition.json', 'r')
+    json_file = open('input/MobileNets_character_recognition.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     model = model_from_json(loaded_model_json)
-    model.load_weights("License_character_recognition_weight.h5")
+    model.load_weights("input/License_character_recognition_weight.h5")
     print("[INFO] Model loaded successfully...")
 
     labels = LabelEncoder()
-    labels.classes_ = np.load('license_character_classes.npy')
+    labels.classes_ = np.load('input/license_character_classes.npy')
     print("[INFO] Labels loaded successfully...")
 
     final_string = ''
