@@ -70,7 +70,7 @@ def emphasize_image(extracted_image):
     """
     Function to reduce noise and emphasize features of license plate
     :param extracted_image: Extracted image by get_plate function
-    :return: Processed emphasized image
+    :return: Processed emphasized images binary and thre_mor
     """
     # Scales, calculates absolute values, and converts the result to 8-bit.
     plate_image = cv2.convertScaleAbs(extracted_image[0], alpha=(255.0))
@@ -86,7 +86,7 @@ def emphasize_image(extracted_image):
     kernel3 = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
     thre_mor = cv2.morphologyEx(binary, cv2.MORPH_DILATE, kernel3)
 
-    return thre_mor
+    return binary, thre_mor
 
 
 def sort_contours(cnts, reverse=False):
@@ -99,6 +99,7 @@ def sort_contours(cnts, reverse=False):
     i = 0
     boundingBoxes = [cv2.boundingRect(c) for c in cnts]
     (cnts, boundingBoxes) = zip(*sorted(zip(cnts, boundingBoxes),
-                                        key=lambda b: b[1][i], reverse=reverse))
+                                        key=lambda b: b[1][i], reverse=reverse)
+                                )
     return cnts
 
