@@ -103,3 +103,19 @@ def sort_contours(cnts, reverse=False):
                                 )
     return cnts
 
+
+def predict_from_model(image, model, labels):
+    """
+    Function for detecting characters from segmented characters
+    :param image: Input cropped characters images
+    :param model: Pre-trained model
+    :param labels: Numpy labels
+    :return:
+    """
+    image = cv2.resize(image, (80, 80))
+    image = np.stack((image,)*3, axis=-1)
+    prediction = labels.inverse_transform([
+        np.argmax(model.predict(image[np.newaxis, :]))
+    ])
+    return prediction
+
