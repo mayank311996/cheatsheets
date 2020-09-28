@@ -88,3 +88,17 @@ def emphasize_image(extracted_image):
 
     return thre_mor
 
+
+def sort_contours(cnts, reverse=False):
+    """
+    Function to grab the contour of each digit from left to right
+    :param cnts: Contours
+    :param reverse: Reverse (True or False)
+    :return: sorted contours
+    """
+    i = 0
+    boundingBoxes = [cv2.boundingRect(c) for c in cnts]
+    (cnts, boundingBoxes) = zip(*sorted(zip(cnts, boundingBoxes),
+                                        key=lambda b: b[1][i], reverse=reverse))
+    return cnts
+
