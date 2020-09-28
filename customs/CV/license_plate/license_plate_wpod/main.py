@@ -27,10 +27,13 @@ if __name__ == '__main__':
     test_image_path = "1.jpg"
     vehicle, LpImg, cor = get_plate(test_image_path, wpod_net)
 
-    plate_image, binary, thre_mor = emphasize_image(LpImg)
+    if len(LpImg):
+        plate_image, binary, thre_mor = emphasize_image(LpImg)
+        cv2.imwrite('binary.jpg', binary)
 
     cont, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL,
                                cv2.CHAIN_APPROX_SIMPLE)
+    print(cont)
 
     # creat a copy version "test_roi" of plat_image to draw bounding box
     test_roi = plate_image.copy()
@@ -58,6 +61,9 @@ if __name__ == '__main__':
                                             cv2.THRESH_BINARY +
                                             cv2.THRESH_OTSU)
                 crop_characters.append(curr_num)
+
+    for i in range(len(crop_characters)):
+        cv2.imwrite('trial' + str(i) + '.jpg', crop_characters[i])
 
     # Load model architecture, weight and labels
     json_file = open('input/MobileNets_character_recognition.json', 'r')
