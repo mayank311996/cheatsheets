@@ -42,8 +42,8 @@ def preprocess_image(image, resize=False):
     :param resize: Resize (True or False)
     :return: pre-processed image
     """
-    # img = cv2.imread(image_path)
-    img = img_to_array(image)
+    img = cv2.imread(image)
+    # img = img_to_array(image)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = img / 255
     if resize:

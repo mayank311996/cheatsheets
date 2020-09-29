@@ -28,6 +28,7 @@ uploaded_file = st.file_uploader("Choose an image...",
                                  key="1")  # , type="jpg")
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
+    image.save('test.jpg')
     st.image(image, caption='Uploaded Image for License Plate Detection',
              width=300)
     st.write("")
@@ -40,15 +41,15 @@ if uploaded_file is not None:
     wpod_net = load_model(wpod_net_path)
 
     # test_image_path = "1.jpg"
-    vehicle, LpImg, cor = get_plate(image, wpod_net)
+    vehicle, LpImg, cor = get_plate('test.jpg', wpod_net)
 
     if len(LpImg):
         plate_image, binary, thre_mor = emphasize_image(LpImg)
-        # cv2.imwrite('binary.jpg', binary)
+        cv2.imwrite('binary.jpg', binary)
 
     cont, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL,
                                cv2.CHAIN_APPROX_SIMPLE)
-    # print(cont)
+    print(cont)
 
     # creat a copy version "test_roi" of plat_image to draw bounding box
     test_roi = plate_image.copy()
@@ -77,8 +78,8 @@ if uploaded_file is not None:
                                             cv2.THRESH_OTSU)
                 crop_characters.append(curr_num)
 
-    # for i in range(len(crop_characters)):
-    #     cv2.imwrite('trial' + str(i) + '.jpg', crop_characters[i])
+    for i in range(len(crop_characters)):
+        cv2.imwrite('trial' + str(i) + '.jpg', crop_characters[i])
 
     # Load model architecture, weight and labels
     json_file = open('MobileNets_character_recognition.json', 'r')
