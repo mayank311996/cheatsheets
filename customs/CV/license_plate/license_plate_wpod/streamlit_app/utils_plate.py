@@ -5,7 +5,7 @@ import matplotlib.gridspec as gridspec
 from local_utils import detect_lp
 from os.path import splitext, basename
 from tensorflow.keras.models import model_from_json
-from keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from keras.applications.mobilenet_v2 import preprocess_input
 from sklearn.preprocessing import LabelEncoder
 import glob
@@ -34,15 +34,16 @@ def load_model(path):
         print(e)
 
 
-def preprocess_image(image_path, resize=False):
+def preprocess_image(image, resize=False):
     """
     Function to pre-process and resize image to be fed into the model for
     plate extraction
-    :param image_path: Path to input image
+    :param image: Uploaded image
     :param resize: Resize (True or False)
     :return: pre-processed image
     """
-    img = cv2.imread(image_path)
+    # img = cv2.imread(image_path)
+    img = img_to_array(image)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = img / 255
     if resize:
