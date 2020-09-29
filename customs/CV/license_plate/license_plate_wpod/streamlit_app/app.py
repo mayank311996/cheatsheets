@@ -36,7 +36,7 @@ if uploaded_file is not None:
     # image = load_img(uploaded_file)
     # image = img_to_array(image)
 
-    wpod_net_path = "input/wpod-net.json"
+    wpod_net_path = "wpod-net.json"
     wpod_net = load_model(wpod_net_path)
 
     # test_image_path = "1.jpg"
@@ -81,15 +81,15 @@ if uploaded_file is not None:
     #     cv2.imwrite('trial' + str(i) + '.jpg', crop_characters[i])
 
     # Load model architecture, weight and labels
-    json_file = open('input/MobileNets_character_recognition.json', 'r')
+    json_file = open('MobileNets_character_recognition.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     model = model_from_json(loaded_model_json)
-    model.load_weights("input/License_character_recognition_weight.h5")
+    model.load_weights("License_character_recognition_weight.h5")
     print("[INFO] Model loaded successfully...")
 
     labels = LabelEncoder()
-    labels.classes_ = np.load('input/license_character_classes.npy')
+    labels.classes_ = np.load('license_character_classes.npy')
     print("[INFO] Labels loaded successfully...")
 
     final_string = ''
