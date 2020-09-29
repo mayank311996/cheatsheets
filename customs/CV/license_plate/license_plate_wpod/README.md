@@ -18,3 +18,8 @@
 - https://gurus.pyimagesearch.com/lesson-sample-segmenting-characters-from-license-plates/
 - https://medium.com/programming-fever/license-plate-recognition-using-opencv-python-7611f85cdd6c
 - https://github.com/madmaze/pytesseract
+- https://github.com/openalpr/openalpr/wiki/Integrating-OpenALPR
+- https://github.com/openalpr/openalpr
+- https://pypi.org/project/openalpr/1.1.0/
+- https://www.geeksforgeeks.org/license-plate-recognition-with-opencv-and-tesseract-ocr/
+- https://www.pyimagesearch.com/2020/09/21/opencv-automatic-license-number-plate-recognition-anpr-with-python/
