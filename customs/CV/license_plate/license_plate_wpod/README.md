@@ -23,3 +23,6 @@
 - https://pypi.org/project/openalpr/1.1.0/
 - https://www.geeksforgeeks.org/license-plate-recognition-with-opencv-and-tesseract-ocr/
 - https://www.pyimagesearch.com/2020/09/21/opencv-automatic-license-number-plate-recognition-anpr-with-python/
+- https://wells12.com/en/tecogan-super-resolution-2/
+- https://www.youtube.com/watch?v=zC0fiWnO2P4
+- https://towardsdatascience.com/deploy-python-tesseract-opencv-fast-api-using-aws-ec2-instance-ed3c0e3f2888
