@@ -7,13 +7,14 @@ from PIL import Image
 from utils_detection import draw_image_with_boxes
 
 ##############################################################################
+st.set_option('deprecation.showfileUploaderEncoding', False)
 st.header("Upload here for Face Detection")
 
 uploaded_file = st.file_uploader("Choose an image...",
                                  key="1")  # , type="jpg")
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    image.save('test.jpg')
+    image.save('test.png')
     st.image(image, caption='Uploaded Image for Face Detection',
              width=300)
     st.write("")
