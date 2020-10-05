@@ -30,5 +30,10 @@ if uploaded_file is not None:
     # display faces on the original image
     draw_image_with_boxes('test.jpg', faces)
     st.write(f"Number of faces: {len(faces)}")
+    st.write("")
+    st.write("")
+    result = Image.open('result.png')
+    st.image(result, caption='Detected Faces',
+             width=300)
 
 ##############################################################################
