@@ -12,3 +12,6 @@
 - https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml
 - [Multi-Task Cascaded Convolutional Neural Network,” or MTCNN for short](https://arxiv.org/abs/1604.02878)
 - https://arxiv.org/abs/1604.02878
+- https://github.com/kpzhang93/MTCNN_face_detection_alignment
+- https://github.com/ipazc/mtcnn
+- https://github.com/jbrownlee/mtcnn
