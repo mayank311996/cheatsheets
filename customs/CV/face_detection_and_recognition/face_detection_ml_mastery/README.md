@@ -3,6 +3,9 @@
 ```bash
 conda create -n face_detection_ml_mastery python=3.7 anaconda matplotlib 
 conda activate face_detection_ml_mastery
+pip install streamlit
+pip install mtcnn
+pip install tensorflow
 conda deactivate
 ```
 
