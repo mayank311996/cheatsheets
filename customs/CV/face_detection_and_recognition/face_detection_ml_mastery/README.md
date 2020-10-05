@@ -1,5 +1,10 @@
 ## Run
 
+```bash
+conda create -n face_detection_ml_mastery python=3.7 anaconda matplotlib 
+conda activate face_detection_ml_mastery
+conda deactivate
+```
 
 ## Resources 
 
