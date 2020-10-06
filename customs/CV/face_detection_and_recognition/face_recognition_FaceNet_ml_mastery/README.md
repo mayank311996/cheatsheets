@@ -14,3 +14,7 @@
 - https://arxiv.org/abs/1604.02878
 - https://github.com/ipazc/mtcnn
 - https://machinelearningmastery.com/support-vector-machines-for-machine-learning/
+- https://machinelearningmastery.com/vector-norms-machine-learning/
+- https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Normalizer.html
+- https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html
+- https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
