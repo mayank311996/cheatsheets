@@ -13,4 +13,6 @@
 - https://machinelearningmastery.com/how-to-perform-face-detection-with-classical-and-deep-learning-methods-in-python-with-keras/
 - https://arxiv.org/abs/1604.02878
 - https://github.com/ipazc/mtcnn
+- http://www.robots.ox.ac.uk/~vgg/data/vgg_face2/meta/identity_meta.csv
+- https://www.microsoft.com/en-us/research/project/ms-celeb-1m-challenge-recognizing-one-million-celebrities-real-world/
 
