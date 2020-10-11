@@ -7,3 +7,4 @@
 - https://jovian.ml/aakashns/04-feedforward-nn
 - https://jovian.ml/aakashns/05-cifar10-cnn
 - https://jovian.ml/aakashns/05b-cifar10-resnet
+- https://jovian.ml/aakashns/06-mnist-gan
