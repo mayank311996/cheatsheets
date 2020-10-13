@@ -10,6 +10,11 @@ To unzip
 unzip file.zip
 ```
 
+To activate pytorch env
+```bash
+source activate pytorch_p36
+```
+
 ## Requirements
 - Python3
 - numpy
