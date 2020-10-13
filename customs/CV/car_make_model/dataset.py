@@ -10,6 +10,7 @@ from PIL import Image
 from os import path
 from glob import glob
 import random
+import pandas as pd
 
 from config import *
 
@@ -141,9 +142,13 @@ class LocalDataset(Dataset):
 
     def __init__(self, base_path, txt_list, transform=None):
         self.base_path = base_path
-        self.images = np.loadtxt(txt_list, delimiter=',',
-                                 dtype='str')  # use np.genfrom() instead of
+        # self.images = np.loadtxt(txt_list, delimiter=',',
+        #                         dtype='str')  # use np.genfrom() instead of
         # np.loadtxt() to skip errors
+        # The above numpy will not detect multiple dots in filenames
+        # so load it first using pandas and then convert to numpy
+        self.df = pd.read_csv(txt_list)
+        self.images = self.df.to_numpy(dtype='str')
 
         self.transform = transform
 
