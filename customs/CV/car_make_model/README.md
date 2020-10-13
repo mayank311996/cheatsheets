@@ -142,3 +142,4 @@ python3 main.py -i path/file.jpg
 - https://github.com/spectrico/car-make-model-classifier-yolo3-python
 - https://github.com/faezetta/VMMRdb
 - https://www.dropbox.com/s/uwa7c5uz7cac7cw/VMMRdb.zip?dl=0
+- https://docs.aws.amazon.com/dlami/latest/devguide/tutorial-pytorch.html
