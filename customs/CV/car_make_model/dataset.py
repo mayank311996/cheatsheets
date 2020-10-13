@@ -24,11 +24,11 @@ for d in dirs:
     if " " in d:
         d = d.replace(" ", "_")
     num_classes[d] = i
-    i+=1
+    i += 1
 
-print ("Classes: ")
-print (num_classes)
-print ("")
+print("Classes: ")
+print(num_classes)
+print("")
 
 # read mean and dev. standard pre-computed
 m = 0
@@ -41,59 +41,67 @@ if os.path.isfile('./mean_devstd.txt'):
         m_s = m_s.replace("(", "")
         m_s = m_s.replace(")", "")
         m_s = m_s.split(",")
-        m = torch.Tensor( [float(m_s[0]), float(m_s[1]), float(m_s[2])] )
-        s = torch.Tensor( [float(m_s[3]), float(m_s[4]), float(m_s[5])] )
+        m = torch.Tensor([float(m_s[0]), float(m_s[1]), float(m_s[2])])
+        s = torch.Tensor([float(m_s[3]), float(m_s[4]), float(m_s[5])])
+
 
 def get_class(idx):
-    #print (num_classes)
+    # print (num_classes)
     for key in num_classes:
         if idx == num_classes[key]:
             return key
 
+
 def preprocessing():
     train_csv = ""
-    test_csv  = ""
+    test_csv = ""
     train_csv_supp = []
     test_csv_supp = []
     class_files_training = []
-    class_files_testing  = []
+    class_files_testing = []
 
     for key in num_classes:
         if " " in key:
-            os.rename(IMAGES_PATH+"/"+key, IMAGES_PATH+"/"+key.replace(" ", "_"))
+            os.rename(IMAGES_PATH + "/" + key,
+                      IMAGES_PATH + "/" + key.replace(" ", "_"))
             key = key.replace(" ", "_")
 
-        class_files = glob(IMAGES_PATH+"/"+str(key)+"/*")
-        class_files = [w.replace(IMAGES_PATH+"/"+str(key)+"/", "") for w in class_files]
+        class_files = glob(IMAGES_PATH + "/" + str(key) + "/*")
+        class_files = [w.replace(IMAGES_PATH + "/" + str(key) + "/", "") for w
+                       in class_files]
         class_files.sort()
 
-        class_files_training = class_files[: int(len(class_files)*.66)] # get 66% class images fo training
-        class_files_testing = class_files[int(len(class_files)*.66)+1 :] # get 33% class images fo testing
+        class_files_training = class_files[: int(
+            len(class_files) * .66)]  # get 66% class images fo training
+        class_files_testing = class_files[int(
+            len(class_files) * .66) + 1:]  # get 33% class images fo testing
 
         for f in class_files_training:
             if "," in f or "#" in f or " " in f:
                 tmp_f = f.replace(",", "")
                 tmp_f = tmp_f.replace("#", "")
                 tmp_f = tmp_f.replace(" ", "_")
-                os.rename(IMAGES_PATH+"/"+key+"/"+f, IMAGES_PATH+"/"+key+"/"+tmp_f)
+                os.rename(IMAGES_PATH + "/" + key + "/" + f,
+                          IMAGES_PATH + "/" + key + "/" + tmp_f)
                 f = tmp_f
-            train_csv_supp.append(f + ","+str(key))
+            train_csv_supp.append(f + "," + str(key))
 
         for f in class_files_testing:
             if "," in f or "#" in f or " " in f:
                 tmp_f = f.replace(",", "")
                 tmp_f = tmp_f.replace("#", "")
                 tmp_f = tmp_f.replace(" ", "_")
-                os.rename(IMAGES_PATH+"/"+key+"/"+f, IMAGES_PATH+"/"+key+"/"+tmp_f)
+                os.rename(IMAGES_PATH + "/" + key + "/" + f,
+                          IMAGES_PATH + "/" + key + "/" + tmp_f)
                 f = tmp_f
-            test_csv_supp.append(f + ","+str(key))
+            test_csv_supp.append(f + "," + str(key))
 
     random.shuffle(train_csv_supp)
     random.shuffle(test_csv_supp)
 
     for t in train_csv_supp:
         train_csv += t + "\n"
-    
+
     for t in test_csv_supp:
         test_csv += t + "\n"
 
@@ -107,35 +115,40 @@ def preprocessing():
 
     # Algorithms to calculate mean and standard_deviation
     print("Loading dataset...")
-    dataset = LocalDataset(IMAGES_PATH, TRAINING_PATH, transform=transforms.ToTensor())
+    dataset = LocalDataset(IMAGES_PATH, TRAINING_PATH,
+                           transform=transforms.ToTensor())
     print("Calculating mean & dev std...")
-    
-    m = torch.zeros(3) # Mean
-    s = torch.zeros(3) # Standard Deviation
+
+    m = torch.zeros(3)  # Mean
+    s = torch.zeros(3)  # Standard Deviation
     for sample in dataset:
         m += sample['image'].sum(1).sum(1)
-        s += ((sample['image']-m.view(3,1,1))**2).sum(1).sum(1)
-    m /= len(dataset)*256*144    
-    s = torch.sqrt(s/(len(dataset)*256*144))
+        s += ((sample['image'] - m.view(3, 1, 1)) ** 2).sum(1).sum(1)
+    m /= len(dataset) * 256 * 144
+    s = torch.sqrt(s / (len(dataset) * 256 * 144))
 
     print("Calculated mean and standard deviation!")
-    str_m = str(m[0])+","+str(m[1])+","+str(m[2])
-    str_s = str(s[0])+","+str(s[1])+","+str(s[2])
+    str_m = str(m[0]) + "," + str(m[1]) + "," + str(m[2])
+    str_s = str(s[0]) + "," + str(s[1]) + "," + str(s[2])
     file = open("mean_devstd.txt", "w+")
-    file.write(str(str_m)+","+str(str_s))
+    file.write(str(str_m) + "," + str(str_s))
     file.close()
-#preprocessing()
+
+
+# preprocessing()
 
 class LocalDataset(Dataset):
 
     def __init__(self, base_path, txt_list, transform=None):
-        self.base_path=base_path
-        self.images = np.loadtxt(txt_list,delimiter=',',dtype='str') # use np.genfrom() instead of np.loadtxt() to skip errors
+        self.base_path = base_path
+        self.images = np.loadtxt(txt_list, delimiter=',',
+                                 dtype='str')  # use np.genfrom() instead of
+        # np.loadtxt() to skip errors
 
         self.transform = transform
 
     def __getitem__(self, index):
-        f,c = self.images[index]
+        f, c = self.images[index]
 
         image_path = path.join(self.base_path + "/" + str(c), f)
         im = Image.open(image_path).convert('RGB')
@@ -145,7 +158,7 @@ class LocalDataset(Dataset):
 
         label = num_classes[c]
 
-        return { 'image' : im, 'label':label, 'img_name': f }
+        return {'image': im, 'label': label, 'img_name': f}
 
     def __len__(self):
         return len(self.images)
