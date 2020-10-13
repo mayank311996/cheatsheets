@@ -15,6 +15,11 @@ To activate pytorch env
 source activate pytorch_p36
 ```
 
+Running Jupyter notebook from AMI
+```bash
+ssh -L localhost:8888:localhost:8888 -i <your .pem file name> ubuntu@<Your instance DNS>
+```
+
 ## Requirements
 - Python3
 - numpy
