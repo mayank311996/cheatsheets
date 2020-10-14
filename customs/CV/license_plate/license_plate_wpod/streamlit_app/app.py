@@ -22,6 +22,7 @@ from PIL import Image
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 ##############################################################################
+st.set_option('deprecation.showfileUploaderEncoding', False)
 st.header("Upload here for License Plate Detection")
 
 uploaded_file = st.file_uploader("Choose an image...",
