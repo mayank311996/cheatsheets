@@ -1,39 +1,40 @@
-from matplotlib import pyplot
-from matplotlib.patches import Rectangle
-from matplotlib.patches import Circle
-from mtcnn.mtcnn import MTCNN
+import fastbook
+from fastbook import *
+from fastai.vision.widgets import *
+import cv2
 import streamlit as st
-from PIL import Image
-from utils_detection import draw_image_with_boxes
+
+from dataset import torch, os, LocalDataset, transforms, np, get_class, \
+    num_classes, preprocessing, Image, m, s
+from config import *
+
+# remove warning message
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 ##############################################################################
-st.set_option('deprecation.showfileUploaderEncoding', False)
-st.header("Upload here for Face Detection")
+st.header("Upload here for Car Make and Model Detection")
 
 uploaded_file = st.file_uploader("Choose an image...",
                                  key="1")  # , type="jpg")
+
+learn_inf = load_learner(path/'export.pkl')
+
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
     image.save('test.jpg')
-    st.image(image, caption='Uploaded Image for Face Detection',
+    st.image(image, caption='Uploaded Image for License Plate Detection',
              width=300)
     st.write("")
-#    st.write("Predicted:")
+    st.write("Predicted:")
 
-    # load image from file
-    pixels = pyplot.imread('test.jpg')
-    # create the detector, using default weights
-    detector = MTCNN()
-    # detect faces in the image
-    faces = detector.detect_faces(pixels)
-    print(faces)
-    # display faces on the original image
-    draw_image_with_boxes('test.jpg', faces)
-    st.write(f"Number of faces: {len(faces)}")
-    st.write("")
-    st.write("")
-    result = Image.open('result.png')
-    st.image(result, caption='Detected Faces',
-             width=300)
+    # image = load_img(uploaded_file)
+    # image = img_to_array(image)
+
+    img = cv2.imread('test.jpg')
+    # img = img_to_array(image)
+    pred, pred_idx, probs = learn_inf.predict(img)
+
+    st.write(f"Prediction: {pred}")
+    st.write(f"Probability: {probs[pred_idx]}")
 
 ##############################################################################
