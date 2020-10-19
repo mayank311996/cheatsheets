@@ -1,6 +1,7 @@
 import os
 from PIL import Image
 from numpy import asarray
+from numpy import expand_dims
 from mtcnn.mtcnn import MTCNN
 
 # remove warning message
