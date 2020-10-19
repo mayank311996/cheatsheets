@@ -2,7 +2,7 @@ import os
 import streamlit as st
 import joblib
 from PIL import Image
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from sklearn.preprocessing import Normalizer
 from utils_face import extract_face
 from utils_face import get_embedding
