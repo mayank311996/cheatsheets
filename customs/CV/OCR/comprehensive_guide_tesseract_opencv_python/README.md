@@ -37,5 +37,3 @@
 - https://arxiv.org/pdf/1906.01969.pdf
 - https://kth.diva-portal.org/smash/get/diva2:1337270/FULLTEXT01.pdf
 - https://circuitdigest.com/microcontroller-projects/optical-character-recognition-ocr-using-tesseract-on-raspberry-pi
-
-
