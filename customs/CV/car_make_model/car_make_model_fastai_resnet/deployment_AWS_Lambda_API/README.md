@@ -28,5 +28,15 @@ Create serverless project
 sls create --template aws-python3 --name car_make_model
 ```
 
+Edit all the files. (Check alrady edited `serverless.yml` and `handler.py`)
+
+Deploy
+
+```bash
+sudo sls deploy 
+```
+
+After this configure the API gateway (follow [medium blog](https://towardsdatascience.com/aws-lambda-amazon-api-gateway-not-as-daunting-as-they-sound-part-1-d77b92f53626) for this)
+
 ## Resources 
 
