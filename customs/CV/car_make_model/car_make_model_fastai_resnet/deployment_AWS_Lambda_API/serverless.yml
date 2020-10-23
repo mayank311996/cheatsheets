@@ -19,6 +19,7 @@ package:
     - upload_s3.py
     - notebooks/**
     - aws_lambda_fastai/**
+    - node_modules/**
 
 functions:
   car_make_model_identification_ResNet:
@@ -29,8 +30,18 @@ functions:
       - http:
           path: invocations
           method: post
-    layers:
-      - "arn:aws:lambda:us-east-2:934676248949:layer:pytorchv1-py36:2"
     environment:
       MODEL_BUCKET: 'fgc-trained-models-sagemaker'
       MODEL_KEY: 'car_make_model_fastai_resnet/model.tar.gz'
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    slim: true
+    zip: true
+    noDeploy: []
+    useDownloadCache: true
+    useStaticCache: true
+
+plugins:
+  - serverless-python-requirements
