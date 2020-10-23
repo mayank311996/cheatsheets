@@ -45,6 +45,8 @@ After this configure the API gateway (follow [medium blog](https://towardsdatasc
 - However, that is pretty old and uses `pytorch 1.1.0` while we need `pytroch 1.6.0`
 otherwise we will get some "module initialization error (Cloud Log)"
 - So, now implementing as `requirements.txt` way 
+- This will not work as well because size of dependencies will be too large
+- So we will follow this [way](https://github.com/mayank311996/cheatsheets/tree/master/courses/Udemy/course2/4_deploy_cv_model)
 
 ## Resources 
 
