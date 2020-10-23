@@ -11,5 +11,7 @@ For reference, check `Exporting model and other dependencies for
 deployment on AWS Lambda` section in `car_make_model_fastai.ipynb`
 under `deployment_AWS_Lambda_API/notebooks` directory.
 
+Download the model.tar.gz file from ec2 instance 
+
  
 
