@@ -9,11 +9,15 @@ aws s3 mb s3://REPLACE_WITH_YOUR_BUCKET_NAME
 
 For reference, check `Exporting model and other dependencies for 
 deployment on AWS Lambda` section in `car_make_model_fastai.ipynb`
-under `deployment_AWS_Lambda_API/notebooks` directory.
+under `deployment_AWS_Lambda_API/notebooks` directory
 
 Download the model.tar.gz file from ec2 instance 
 
 Run `upload_s3.py` script 
 
- 
+Download and explore example project from fastai
 
+```bash
+wget https://github.com/fastai/course-v3/raw/master/docs/production/aws-lambda.zip
+unzip aws-lambda.zip
+```
