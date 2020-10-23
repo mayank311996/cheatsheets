@@ -2,7 +2,7 @@ service: car-make-model
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.6
   stage: dev
   region: us-east-2
 
@@ -24,7 +24,7 @@ functions:
   car_make_model_identification_ResNet:
     handler: handler.lambda_handler
     memorySize: 3008
-    timeout: 30
+    timeout: 300
     events:
       - http:
           path: invocations

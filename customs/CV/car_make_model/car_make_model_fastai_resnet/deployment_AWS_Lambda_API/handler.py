@@ -181,5 +181,9 @@ def lambda_handler(event, context):
     print("Returning response")
     return {
         "statusCode": 200,
-        "body": json.dumps(response)
+        "body": json.dumps(response),
+        #"headers": {
+        #    "Content-Type": "application/image",
+        #    "Access-Control-Allow-Origin": "*"
+        #}
     }
