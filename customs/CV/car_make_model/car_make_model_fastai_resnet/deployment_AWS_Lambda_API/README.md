@@ -21,3 +21,12 @@ Download and explore example project from fastai
 wget https://github.com/fastai/course-v3/raw/master/docs/production/aws-lambda.zip
 unzip aws-lambda.zip
 ```
+
+Create serverless project 
+
+```bash
+sls create --template aws-python3 --name car_make_model
+```
+
+## Resources 
+
