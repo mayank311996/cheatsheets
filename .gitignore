@@ -134,6 +134,7 @@ dmypy.json
 # trained models
 *.h5
 *.pkl
+*.tar.gz
 
 # Some folders
 /customs/CV/object_detection/tf2_object_detection_api_training/TensorFlow/models/
