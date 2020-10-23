@@ -33,7 +33,7 @@ functions:
           path: invocations
           method: post
     layers:
-      -
+      - "arn:aws:lambda:us-east-2:934676248949:layer:pytorchv1-py36:2"
     environment:
       MODEL_BUCKET: 'fgc-trained-models-sagemaker'
       MODEL_KEY: 'car_make_model_fastai_resnet/model.tar.gz'
