@@ -13,5 +13,7 @@ under `deployment_AWS_Lambda_API/notebooks` directory.
 
 Download the model.tar.gz file from ec2 instance 
 
+Run `upload_s3.py` script 
+
  
 
