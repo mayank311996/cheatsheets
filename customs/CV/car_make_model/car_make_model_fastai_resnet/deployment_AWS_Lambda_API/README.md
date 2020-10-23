@@ -26,6 +26,7 @@ Create serverless project
 
 ```bash
 sls create --template aws-python3 --name car_make_model
+sls plugin install -n serverless-python-requirements@4.2.4
 ```
 
 Edit all the files. (Check alrady edited `serverless.yml` and `handler.py`)
@@ -38,5 +39,13 @@ sudo sls deploy
 
 After this configure the API gateway (follow [medium blog](https://towardsdatascience.com/aws-lambda-amazon-api-gateway-not-as-daunting-as-they-sound-part-1-d77b92f53626) for this)
 
+## Note
+
+- Previously we were planning to use public ARN in Lambda function. Layer: `arn:aws:lambda:us-east-2:934676248949:layer:pytorchv1-py36:2`
+- However, that is pretty old and uses `pytorch 1.1.0` while we need `pytroch 1.6.0`
+otherwise we will get some "module initialization error (Cloud Log)"
+- So, now implementing as `requirements.txt` way 
+
 ## Resources 
+
 
