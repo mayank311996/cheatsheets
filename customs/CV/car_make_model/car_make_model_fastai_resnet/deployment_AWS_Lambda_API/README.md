@@ -7,3 +7,9 @@ Create a `S3 bucket`. Need to do only first time
 aws s3 mb s3://REPLACE_WITH_YOUR_BUCKET_NAME
 ```
 
+For reference, check `Exporting model and other dependencies for 
+deployment on AWS Lambda` section in `car_make_model_fastai.ipynb`
+under `deployment_AWS_Lambda_API/notebooks` directory.
+
+ 
+
