@@ -1,4 +1,4 @@
-service: car_make_model
+service: car-make-model
 
 provider:
   name: aws
