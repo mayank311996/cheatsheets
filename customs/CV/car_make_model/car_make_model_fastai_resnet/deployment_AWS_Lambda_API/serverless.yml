@@ -13,9 +13,6 @@ provider:
       Resource: "*"
 
 package:
-#  include:
-#    - include-me.py
-#    - include-me-dir/**
   exclude:
     - model.tar.gz
     - README.md
@@ -25,7 +22,7 @@ package:
 
 functions:
   car_make_model_identification_ResNet:
-    handler: handler.hello
+    handler: handler.lambda_handler
     memorySize: 3008
     timeout: 30
     events:
