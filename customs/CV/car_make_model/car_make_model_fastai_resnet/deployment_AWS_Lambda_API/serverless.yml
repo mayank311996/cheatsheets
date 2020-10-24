@@ -40,7 +40,7 @@ custom:
     slim: true
     zip: true
     noDeploy: []
-    useDownloadCache: true
+    useDownloadCache: false
     useStaticCache: true
 
 plugins:

@@ -29,7 +29,29 @@ sls create --template aws-python3 --name car_make_model
 sls plugin install -n serverless-python-requirements@4.2.4
 ```
 
-Edit all the files. (Check alrady edited `serverless.yml` and `handler.py`)
+Edit all the files. (Check already edited `serverless.yml` and `handler.py`)
+
+We will follow approach highlighted [here](https://github.com/mayank311996/cheatsheets/tree/master/courses/Udemy/course2/4_deploy_cv_model) to deploy dependencies as they
+are too large
+
+Create a conda environment (only once)
+```bash
+conda create -n pytrochdeploy python=3.6
+conda activate pytrochdeploy 
+```
+
+Now install only CPU version of pytroch (GPU version is 1.2GB, while CPU version is around 300MB)
+(As Lambda max size is 500MB, GPU version won't fit)
+
+```bash
+pip install torch==1.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+pip install torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+```
+
+Now copy `torch`, `PIL` and `torchvision` from `/home/anaconda3/envs/pytrochdeploy/
+lib/python3.6/site-packages/torch/lib`
+
+
 
 Deploy
 
