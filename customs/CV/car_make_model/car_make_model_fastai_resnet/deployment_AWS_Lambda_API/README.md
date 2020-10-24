@@ -51,7 +51,15 @@ pip install torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_sta
 Now copy `torch`, `PIL` and `torchvision` from `/home/anaconda3/envs/pytrochdeploy/
 lib/python3.6/site-packages/torch/lib`
 
+Create a package with 
 
+```bash
+sls package
+sls deploy
+```
+
+It will still not work as deployment package will be larger than 500MB.
+Searching for some other way. 
 
 Deploy
 
@@ -69,6 +77,7 @@ otherwise we will get some "module initialization error (Cloud Log)"
 - So, now implementing as `requirements.txt` way 
 - This will not work as well because size of dependencies will be too large
 - So we will follow this [way](https://github.com/mayank311996/cheatsheets/tree/master/courses/Udemy/course2/4_deploy_cv_model)
+- Even this is still large and more than 500MB. Need to check for some other way.
 
 ## Resources 
 
