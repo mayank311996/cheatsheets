@@ -139,7 +139,7 @@ dmypy.json
 # Some folders
 /customs/CV/object_detection/tf2_object_detection_api_training/TensorFlow/models/
 /customs/CV/object_detection/tf2_object_detection_api_training/TensorFlow/cocoapi/
-/customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API/PIL/
-/customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API/torch/
-/customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API/torchvision/
-/customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API/.requirements.zip
+/customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API_failed/PIL/
+/customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API_failed/torch/
+/customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API_failed/torchvision/
+/customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API_failed/.requirements.zip
