@@ -1,9 +1,3 @@
-# this import statement is needed if you want to use the AWS Lambda Layer called "pytorch-v1-py36"
-# it unzips all of the pytorch & dependency packages when the script is loaded to avoid the 250 MB unpacked limit in AWS Lambda
-try:
-    import unzip_requirements
-except ImportError:
-    pass
 
 import os
 import io
@@ -13,8 +7,8 @@ import glob
 import time
 import logging
 
-import boto3
-import requests
+# import boto3
+# import requests
 import PIL
 import base64
 
@@ -23,7 +17,7 @@ import torch.nn.functional as F
 from torchvision import models, transforms
 
 # load the S3 client when lambda execution context is created
-s3 = boto3.client('s3')
+# s3 = boto3.client('s3')
 
 # classes for the image classification
 classes = []
@@ -32,12 +26,12 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # get bucket name from ENV variable
-MODEL_BUCKET = os.environ.get('MODEL_BUCKET')
-logger.info(f'Model Bucket is {MODEL_BUCKET}')
+# MODEL_BUCKET = os.environ.get('MODEL_BUCKET')
+# logger.info(f'Model Bucket is {MODEL_BUCKET}')
 
 # get bucket prefix from ENV variable
-MODEL_KEY = os.environ.get('MODEL_KEY')
-logger.info(f'Model Prefix is {MODEL_KEY}')
+# MODEL_KEY = os.environ.get('MODEL_KEY')
+# logger.info(f'Model Prefix is {MODEL_KEY}')
 
 # processing pipeline to resize, normalize and create tensor object
 preprocess = transforms.Compose([
@@ -62,9 +56,10 @@ def load_model():
     """
     global classes
     logger.info('Loading model from S3')
-    obj = s3.get_object(Bucket=MODEL_BUCKET, Key=MODEL_KEY)
-    bytestream = io.BytesIO(obj['Body'].read())
-    tar = tarfile.open(fileobj=bytestream, mode="r:gz")
+    # obj = s3.get_object(Bucket=MODEL_BUCKET, Key=MODEL_KEY)
+    # bytestream = io.BytesIO(obj['Body'].read())
+    # tar = tarfile.open(fileobj=bytestream, mode="r:gz")
+    tar = tarfile.open(name='/mnt/inference/lib/model.tar.gz', mode="r:gz")
     for member in tar.getmembers():
         if member.name.endswith(".txt"):
             print("Classes file is :", member.name)
