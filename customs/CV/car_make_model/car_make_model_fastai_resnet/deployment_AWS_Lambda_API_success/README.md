@@ -95,8 +95,46 @@ exit ec2
 - Go to function and under it to file system tab
     - Attach file system
     - Set local mount path to `/mnt/inference`
-    
+- Configure VPC section
+    - select all subnets and security group as similar to EFS
+- In environment variable add 
+    - Key: PYTHONPATH, Value:/mnt/inference/lib
 
+> STEP 5 
+> Checking and deploying code into Lambda
+
+- First try this
+
+```
+...
+import torch 
+...
+
+...
+return {
+    'statusCode': 200,
+    'body': json.dump(f"Pytorch version: {torch.__version__}")
+}
+...
+```         
+
+If above code runs without error that means we mounted EFS successfully
+
+Now copy and paste code from `handler.py` into Lambda function
+
+Click on deploy
+
+> STEP 6
+> Setting up API Gateway
+
+- Follow this [article](https://towardsdatascience.com/aws-lambda-amazon-api-gateway-not-as-daunting-as-they-sound-part-1-d77b92f53626) to setup API gateway 
+
+> STEP 7
+> Test using Postman
+
+- Follow this [article](https://towardsdatascience.com/aws-lambda-amazon-api-gateway-not-as-daunting-as-they-sound-part-1-d77b92f53626)
+
+Enjoy!
 
 ## To Do
 
@@ -106,6 +144,7 @@ every time in Lambda function code.
 ## Resources 
 
 - https://medium.com/@mikepalei/serving-a-tensorflow-2-model-on-aws-lambda-58ce64ef7d38
+- https://towardsdatascience.com/aws-lambda-amazon-api-gateway-not-as-daunting-as-they-sound-part-1-d77b92f53626
 - https://medium.com/@rajputankit22/upgrade-python-2-7-to-3-6-and-3-7-in-ubuntu-97d2727bf911
 - https://help.dreamhost.com/hc/en-us/articles/115000699011-Using-pip3-to-install-Python3-modules
 - https://aws.amazon.com/blogs/compute/building-deep-learning-inference-with-aws-lambda-and-amazon-efs/
