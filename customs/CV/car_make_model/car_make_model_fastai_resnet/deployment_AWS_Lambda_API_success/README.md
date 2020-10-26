@@ -1,5 +1,55 @@
 ## Run 
 
+In this deployment we are following [this](https://medium.com/@mikepalei/serving-a-tensorflow-2-model-on-aws-lambda-58ce64ef7d38) article. 
+
+By default we are choosing default VPC for our deployment and choosing 
+default subnets and all zones in a region. Later when in production this 
+can be changed according to [this](https://medium.com/@mikepalei/serving-a-tensorflow-2-model-on-aws-lambda-58ce64ef7d38) article for security purpose. 
+
+> STEP 1 
+> Creating a Lambda function 
+
+- Create a Lambda function with following details
+    - Runtime: python3.6
+    - Memory: Max (3GB)
+    - Time out: 30 secs
+    - Have default role (First time) or existing role (Not first time) 
+
+- Create function 
+
+- Go to IAM roles (Only for first time) and add these policies to AWS
+Lambda role
+    - S3 Full access 
+    - AWS Lambda VPC Access Execution Role 
+    - Amazon Elastic File System Client Read Write Access 
+    
+- Get User id by running sample snippet in Lambda function. We will need 
+that to configure the EFS.
+
+```
+return {
+    'statusCode': 200,
+    'body': json.dump(f"Current user id: {os.getuid()}")
+}
+```
+
+> STEP 2 
+> Creating a EFS 
+
+- Create a EFS with name as extended version of Lambda function name
+    - Name: FUNCTIONNAME_Lambda_EFS
+    - Choose same VPC as Lambda
+- Create access point
+    - Choose created file system
+    - Name: Lambda_access_point_FUNCTIONNAME
+    - In Root directory permission section
+        - Owner ID: UID from Lambda eg. 994
+        - Owner group ID: 994
+        - Permissions: 777
+- Check network section for created EFS, if empty fill details 
+
+> STEP 3 
+
 Create a `S3 bucket`. Need to do only first time
 (In our case the name is "fgc-trained-models-sagemaker")
 
@@ -81,4 +131,5 @@ otherwise we will get some "module initialization error (Cloud Log)"
 
 ## Resources 
 
+- https://medium.com/@mikepalei/serving-a-tensorflow-2-model-on-aws-lambda-58ce64ef7d38
 
