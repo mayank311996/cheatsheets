@@ -104,13 +104,13 @@ exit ec2
 
 ```
 ...
-import torch 
+import tensorflow 
 ...
 
 ...
 return {
     'statusCode': 200,
-    'body': json.dump(f"Pytorch version: {torch.__version__}")
+    'body': json.dump(f"TensorFlow version: {tensorflow.__version__}")
 }
 ...
 ```         
@@ -135,8 +135,8 @@ Enjoy!
 
 ## To Do
 
-- To improve inference time extract models in EFS rather that extracting 
-every time in Lambda function code. 
+- Not sure but dependencies take too long to load from EFS. For example, 
+TF2 takes 97secs to load. Please check
 
 ## Resources 
 
