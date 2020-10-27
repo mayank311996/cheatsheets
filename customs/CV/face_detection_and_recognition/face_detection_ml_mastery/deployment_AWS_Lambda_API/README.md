@@ -75,9 +75,9 @@ sudo apt install python3-pip
 pip3 --version
 python3 -m pip install --upgrade pip
 pip3 install scikit-learn
-pip3 show scikit-learn
-pip3 install torch
-pip3 install torchvision
+pip3 install tensorflow
+pip3 install mtcnn
+pip3 install matplotlib
 pip3 install boto3
 pip3 install requests
 sudo cp -r /home/ubuntu/.local/lib/python3.6/site-packages/* /mnt/efs/fs1/ml/lib/
