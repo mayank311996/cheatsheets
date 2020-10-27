@@ -53,6 +53,7 @@ return {
 > Creating EC2 instance 
 
 - This is needed to fill EFS with dependencies and trained ML model
+- Name: Lambda_EFS_FUNCTIONNAME
 - Create EC2 instance with t2.xlarge and attach EFS in step 3
     - Select same security group as created EFS 
     
