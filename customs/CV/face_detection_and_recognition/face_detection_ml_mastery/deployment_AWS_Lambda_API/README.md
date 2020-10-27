@@ -75,7 +75,7 @@ sudo apt install python3-pip
 pip3 --version
 python3 -m pip install --upgrade pip
 pip3 install scikit-learn
-pip3 install tensorflow
+pip3 install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.3.0-cp36-cp36m-manylinux2010_x86_64.whl
 pip3 install mtcnn
 pip3 install matplotlib
 pip3 install boto3
@@ -141,6 +141,7 @@ every time in Lambda function code.
 ## Resources 
 
 - https://medium.com/@mikepalei/serving-a-tensorflow-2-model-on-aws-lambda-58ce64ef7d38
+- https://www.tensorflow.org/install/pip#package-location
 - https://towardsdatascience.com/aws-lambda-amazon-api-gateway-not-as-daunting-as-they-sound-part-1-d77b92f53626
 - https://medium.com/@rajputankit22/upgrade-python-2-7-to-3-6-and-3-7-in-ubuntu-97d2727bf911
 - https://help.dreamhost.com/hc/en-us/articles/115000699011-Using-pip3-to-install-Python3-modules
