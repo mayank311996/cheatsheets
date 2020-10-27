@@ -42,6 +42,7 @@ return {
 - Create access point
     - Choose created file system
     - Name: Lambda_access_point_FUNCTIONNAME
+    - Path: /ml
     - In Root directory permission section
         - Owner ID: UID from Lambda eg. 994
         - Owner group ID: 994
