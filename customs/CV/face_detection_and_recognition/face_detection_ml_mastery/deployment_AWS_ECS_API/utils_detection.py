@@ -2,6 +2,7 @@ from matplotlib import pyplot
 from matplotlib.patches import Rectangle
 from matplotlib.patches import Circle
 from mtcnn.mtcnn import MTCNN
+import base64
 
 
 ##############################################################################
@@ -56,3 +57,19 @@ def draw_faces(filename, result_list):
         pyplot.imshow(data[y1:y2, x1:x2])
     # show the plot
     pyplot.savefig('result.png')
+
+
+def write_to_file(save_path, data):
+    """
+    This function writes input image to temporary file for further processing
+    :param save_path: Output path
+    :param data: Input image
+    :return: None
+    """
+    with open(save_path, "wb") as f:
+        f.write(base64.b64decode(data))
+
+
+def allowed_file(filename, ALLOWED_EXTENSIONS):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
