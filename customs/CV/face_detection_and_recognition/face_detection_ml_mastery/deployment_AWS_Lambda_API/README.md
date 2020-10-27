@@ -84,11 +84,6 @@ sudo cp -r /home/ubuntu/.local/lib/python3.6/site-packages/* /mnt/efs/fs1/ml/lib
 sudo cp -r /usr/lib/python3/dist-packages/* /mnt/efs/fs1/ml/lib/
 ```
 
-Now upload `model.tar.gz` file to ec2 home then
-```bash
-sudo cp model.tar.gz /mnt/efs/fs1/ml/lib/
-```
-
 exit ec2
 
 > STEP 4
