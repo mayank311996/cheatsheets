@@ -8,6 +8,7 @@ RUN pip3 install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_
 RUN pip3 install mtcnn
 RUN pip3 install matplotlib
 RUN pip3 install boto3
+RUN mkdir test
 COPY ./app.py app.py
 COPY ./utils_detection.py utils_detection.py
 EXPOSE 5000
