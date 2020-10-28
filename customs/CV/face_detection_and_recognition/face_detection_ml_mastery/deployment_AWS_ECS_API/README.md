@@ -1,5 +1,13 @@
 ## Run 
 
+```bash
+sudo docker build -t face_detection_ml_mastery .
+sudo docker images
+sudo docker tag face_detection_ml_mastery 882207224999.dkr.ecr.us-east-2.amazonaws.com/fgc-phase1
+sudo docker images
+sudo docker push 882207224999.dkr.ecr.us-east-2.amazonaws.com/fgc-phase1
+```
+
 ## To Do 
 
 - later incorporate requirements.txt rather than typing manually in 
