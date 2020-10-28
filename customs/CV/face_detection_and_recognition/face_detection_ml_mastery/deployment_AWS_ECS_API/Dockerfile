@@ -1,5 +1,8 @@
 FROM ubuntu:latest
 RUN apt-get update
+RUN apt-get install 'ffmpeg'\
+    'libsm6'\
+    'libxext6'  -y
 # RUN apt-get install python3.6
 RUN apt-get install -y python3-pip
 RUN python3 -m pip install --upgrade pip
@@ -8,6 +11,7 @@ RUN pip3 install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_
 RUN pip3 install mtcnn
 RUN pip3 install matplotlib
 RUN pip3 install boto3
+RUN pip3 install flask
 RUN mkdir test
 COPY ./app.py app.py
 COPY ./utils_detection.py utils_detection.py
