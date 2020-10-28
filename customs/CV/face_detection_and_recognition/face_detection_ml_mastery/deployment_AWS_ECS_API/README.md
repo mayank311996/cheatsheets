@@ -8,10 +8,13 @@ sudo docker images
 sudo docker push 882207224999.dkr.ecr.us-east-2.amazonaws.com/fgc-phase1
 ```
 
+After this follow steps mentioned [here](https://github.com/mayank311996/cheatsheets/tree/master/courses/Udemy/course3/5_deploy_using_docker_on_AWS_container#run-docker-image-on-amazon-container-service-ecs)
+
 ## To Do 
 
 - later incorporate requirements.txt rather than typing manually in 
 dockerfile 
+- edit app.py. Remove all comments and add functions 
 
 ## Resources 
 
