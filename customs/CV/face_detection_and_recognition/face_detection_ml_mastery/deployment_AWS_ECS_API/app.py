@@ -9,9 +9,12 @@ from werkzeug.utils import secure_filename
 import os
 import io
 import base64
+import boto3
+from datetime import datetime
 
 ##############################################################################
 app = Flask(__name__)
+
 
 # UPLOAD_FOLDER = '/test'
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -42,6 +45,15 @@ def api_predict():
         # print(faces)
         # display faces on the original image
         # draw_image_with_boxes('/test/test.jpg', faces)
+        now = datetime.now()
+
+        table = boto3.resource('dynamodb').Table('face_detection_ml_mastery')
+        response = table.put_item(
+            Item={
+                'id': now.strftime("%d/%m/%Y %H:%M:%S"),
+                'no faces': len(faces)
+            }
+        )
 
         return str(len(faces))
 
