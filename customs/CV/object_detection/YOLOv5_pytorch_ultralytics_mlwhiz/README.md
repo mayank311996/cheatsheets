@@ -65,6 +65,14 @@ Or we could have created another environment using Conda
 
 Both should work fine
 
+Now creating data folders for training 
+
+```bash
+mkdir training 
+```
+
+Run `dataset.ipynb` inside `training` folder 
+
 
 
 
