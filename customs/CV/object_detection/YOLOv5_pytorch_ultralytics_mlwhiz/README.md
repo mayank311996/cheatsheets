@@ -25,6 +25,10 @@ cd OID
 ls
 ```
 
+Create a notebook file called `data.ipynb` inside `OIDv4_Toolkit` folder
+
+All files and folder are synced to this Github repo from EC2 instance for reference
+
 
 
 ## To Do
