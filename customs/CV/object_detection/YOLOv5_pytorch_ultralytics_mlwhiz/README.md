@@ -39,7 +39,33 @@ ls -l . | egrep -c '^-'
 Now we are good with the dataset. Everything is under one folder but later
 we will create folders like train, validation and test according to YOLOv5
 requirements and also delete previously downloaded duplicate data to save 
-some space. 
+some space
+
+Now we will setup the project YOLOv5
+
+```bash
+cd YOLOv5_pytorch_ultralytics_mlwhiz
+git clone https://github.com/ultralytics/yolov5
+cd yolov5
+```
+
+Take a look at `requirements.txt` before installing as we might have 
+all in `pytorch_p36` env provided by AWS
+
+So we will first enable `pytorch_p36` and download dependencies from 
+`requirements.txt` to avoid duplication 
+
+```bash
+cat requirements.txt
+source activate pytorch_p36
+pip install -U -r requirements.txt
+```
+
+Or we could have created another environment using Conda
+
+Both should work fine
+
+
 
 
 ## To Do
