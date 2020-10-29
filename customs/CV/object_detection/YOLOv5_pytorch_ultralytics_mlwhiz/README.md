@@ -73,6 +73,8 @@ mkdir training
 
 Run `dataset.ipynb` inside `training` folder 
 
+Creating `dataset.yaml` and `yolov5l.yaml` inside `training` folder 
+
 
 
 
@@ -84,6 +86,7 @@ it's easy to debug in jupyter notebooks
 ## Resources 
 
 - https://mlwhiz.com/blog/2020/08/08/yolov5/
+- https://github.com/MLWhiz/data_science_blogs/tree/master/yolov5CustomData
 - https://github.com/ultralytics/yolov5
 - https://github.com/ultralytics/yolov3
 - https://github.com/EscVM/OIDv4_ToolKit
