@@ -29,6 +29,17 @@ Create a notebook file called `data.ipynb` inside `OIDv4_Toolkit` folder
 
 All files and folder are synced to this Github repo from EC2 instance for reference
 
+Run `data.ipynb`
+
+```bash
+cd dataset 
+ls -l . | egrep -c '^-'
+```
+
+Now we are good with the dataset. Everything is under one folder but later
+we will create folders like train, validation and test according to YOLOv5
+requirements and also delete previously downloaded duplicate data to save 
+some space. 
 
 
 ## To Do
