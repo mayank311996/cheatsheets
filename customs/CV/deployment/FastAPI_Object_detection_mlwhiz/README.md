@@ -46,6 +46,46 @@ Type this in browser
 <IPV4 public IP>/docs
 ```
 
+## Troubleshooting 
+
+To see logs 
+```bash
+sudo docker logs -f mycontainer
+```
+
+To start and stop docker 
+```bash
+sudo service docker stop
+sudo service docker start
+```
+
+Listing images and containers
+```bash
+sudo docker container ls
+sudo docker image ls
+```
+
+Deleting unused docker images and containers
+the prune command removes the unused containers and images
+```bash
+sudo docker system prune
+```
+
+delete a particular container
+```bash
+sudo docker rm mycontainer
+```
+
+remove myimage
+```bash
+sudo docker image rm myimage
+```
+
+remove all images
+```bash
+sudo docker image prune — all
+```
+
 ## Note
 
 - Sending request through postman won't work as it send binary file 
