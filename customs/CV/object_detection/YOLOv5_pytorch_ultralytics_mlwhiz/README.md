@@ -75,13 +75,23 @@ Run `dataset.ipynb` inside `training` folder
 
 Creating `dataset.yaml` and `yolov5l.yaml` inside `training` folder 
 
+Let's start training 
 
+```bash
+cd yolov5
+python train.py --img 640 --batch 16 --epochs 300--data training/dataset.yaml --cfg training/yolov5l.yaml --weights ''
+```
 
 
 ## To Do
 
 - Use Docker and SageMaker to train. First trained using EC2 because 
 it's easy to debug in jupyter notebooks
+- Getting error like this 
+"WARNING: Ignoring corrupted image and/or label /home/ubuntu/custom_train/YOLOv5_pytorch_ultralytics_mlwhiz/yolov5/training/data/images/valid/fee50fd0208ffdb4.jpg: could not convert string to float: 'Football'"
+\- try to resolve 
+
+
 
 ## Resources 
 
