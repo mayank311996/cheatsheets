@@ -30,6 +30,17 @@ Docker directory structure
    |-- app
    |   |-- main.py
    |-- requirements.txt
+   
+To build docker file 
+```bash
+sudo docker build -t myimage .
+```
+
+To start docker container using an image 
+```bash
+sudo docker run -d --name mycontainer -p 80:80 myimage
+```
+
 
 ## Note
 
@@ -43,4 +54,6 @@ not string version of the image.
 - https://towardsdatascience.com/a-layman-guide-for-data-scientists-to-create-apis-in-minutes-31e6f451cd2f
 - https://fastapi.tiangolo.com/deployment/
 - https://pytorch.org/docs/stable/torchvision/models.html
+- https://github.com/tiangolo/uvicorn-gunicorn-fastapi-docker/blob/master/docker-images/python3.7.dockerfile
+- https://github.com/tiangolo/uvicorn-gunicorn-docker/blob/master/docker-images/python3.7.dockerfile
 
