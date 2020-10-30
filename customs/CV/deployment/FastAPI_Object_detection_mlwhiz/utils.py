@@ -33,6 +33,7 @@ response = requests.put(
     "[http://127.0.0.1:8000/predict](http://127.0.0.1:8000/predict)",
     data=payload)
 data_dict = response.json()
+print(data_dict)
 
 
 ##############################################################################
