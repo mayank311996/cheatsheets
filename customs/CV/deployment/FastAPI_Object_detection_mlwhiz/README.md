@@ -25,12 +25,15 @@ Now it seems like app is working fine on local PC so it's time to move
 app on the EC2 instance 
 
 Docker directory structure 
+
+```bash
 |--dockerfastapi
    |-- Dockerfile
    |-- app
    |   |-- main.py
    |-- requirements.txt
-   
+```   
+
 To build docker file 
 ```bash
 sudo docker build -t myimage .
@@ -84,6 +87,16 @@ sudo docker image rm myimage
 remove all images
 ```bash
 sudo docker image prune — all
+```
+
+To check browser output in terminal
+```bash
+curl localhost/docs
+```
+
+Develop without reloading image again and again 
+```bash
+sudo docker run -d -p 80:80 -v $(pwd):/app myimage /start-reload.sh
 ```
 
 ## Note
