@@ -9,6 +9,22 @@
 
 We will be using a Pytorch pre-trained fasterrcnn_resnet50_fpn detection model from the torchvision.models for object detection, which is trained on the COCO dataset to keep the code simple
 
+If not installed already
+```bash
+pip install fastapi
+pip install uvicorn
+```
+
+To run app
+```bash
+uvicorn fastapi_app:app --reload
+```
+
+## Note
+
+- Sending request through postman won't work as it send binary file 
+not string version of the image.
+ 
 
 ## Resources 
 
