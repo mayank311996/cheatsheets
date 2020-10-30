@@ -105,6 +105,7 @@ it's easy to debug in jupyter notebooks
 
 - https://mlwhiz.com/blog/2020/08/08/yolov5/
 - https://github.com/MLWhiz/data_science_blogs/tree/master/yolov5CustomData
+- https://www.kaggle.com/mlwhiz/detection-footballvscricketball
 - https://github.com/ultralytics/yolov5
 - https://github.com/ultralytics/yolov3
 - https://github.com/EscVM/OIDv4_ToolKit
