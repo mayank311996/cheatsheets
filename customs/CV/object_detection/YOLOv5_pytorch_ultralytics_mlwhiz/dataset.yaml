@@ -1,6 +1,6 @@
 # train and val datasets (image directory or *.txt file with image paths)
-train: training/data/images/train/ 
-val: training/data/images/valid/
+train: /home/ubuntu/custom_train/YOLOv5_pytorch_ultralytics_mlwhiz/yolov5/training/data/images/train/ 
+val: /home/ubuntu/custom_train/YOLOv5_pytorch_ultralytics_mlwhiz/yolov5/training/data/images/valid/
 
 # number of classes
 nc: 2
