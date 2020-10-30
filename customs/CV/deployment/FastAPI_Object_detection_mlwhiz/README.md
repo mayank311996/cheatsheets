@@ -41,6 +41,10 @@ To start docker container using an image
 sudo docker run -d --name mycontainer -p 80:80 myimage
 ```
 
+Type this in browser
+```bash
+<IPV4 public IP>/docs
+```
 
 ## Note
 
