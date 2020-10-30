@@ -21,6 +21,16 @@ uvicorn fastapi_app:app --reload
 ```
 Remove --reload flag when you put API in production 
 
+Now it seems like app is working fine on local PC so it's time to move 
+app on the EC2 instance 
+
+Docker directory structure 
+|--dockerfastapi
+   |-- Dockerfile
+   |-- app
+   |   |-- main.py
+   |-- requirements.txt
+
 ## Note
 
 - Sending request through postman won't work as it send binary file 
