@@ -84,6 +84,13 @@ python train.py --img 640 --batch 16 --epochs 300 --data training/dataset.yaml -
 
 If this doesn't work then run `training.ipynb` from `yolov5` directory 
 
+To check metrics 
+```bash
+tensorboard --logdir=runs
+```
+
+For prediction check repo or article by mlwhiz
+
 ## To Do
 
 - Use Docker and SageMaker to train. First trained using EC2 because 
