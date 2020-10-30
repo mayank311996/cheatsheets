@@ -79,9 +79,10 @@ Let's start training
 
 ```bash
 cd yolov5
-python train.py --img 640 --batch 16 --epochs 300--data training/dataset.yaml --cfg training/yolov5l.yaml --weights ''
+python train.py --img 640 --batch 16 --epochs 300 --data training/dataset.yaml --cfg training/yolov5l.yaml --weights ''
 ```
 
+If this doesn't work then run `training.ipynb` from `yolov5` directory 
 
 ## To Do
 
