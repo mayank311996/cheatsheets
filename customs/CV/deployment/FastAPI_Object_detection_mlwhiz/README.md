@@ -19,6 +19,7 @@ To run app
 ```bash
 uvicorn fastapi_app:app --reload
 ```
+Remove --reload flag when you put API in production 
 
 ## Note
 
