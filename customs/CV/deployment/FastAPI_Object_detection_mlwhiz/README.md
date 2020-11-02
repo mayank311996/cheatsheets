@@ -99,6 +99,12 @@ Develop without reloading image again and again
 sudo docker run -d -p 80:80 -v $(pwd):/app myimage /start-reload.sh
 ```
 
+## Streamlit app
+
+```bash
+streamlit run streamlitapp.py
+```
+
 ## Note
 
 - Sending request through postman won't work as it sends binary file 
