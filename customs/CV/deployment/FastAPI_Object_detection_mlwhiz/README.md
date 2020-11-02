@@ -101,7 +101,7 @@ sudo docker run -d -p 80:80 -v $(pwd):/app myimage /start-reload.sh
 
 ## Note
 
-- Sending request through postman won't work as it send binary file 
+- Sending request through postman won't work as it sends binary file 
 not string version of the image.
  
 
@@ -113,4 +113,6 @@ not string version of the image.
 - https://pytorch.org/docs/stable/torchvision/models.html
 - https://github.com/tiangolo/uvicorn-gunicorn-fastapi-docker/blob/master/docker-images/python3.7.dockerfile
 - https://github.com/tiangolo/uvicorn-gunicorn-docker/blob/master/docker-images/python3.7.dockerfile
+- https://towardsdatascience.com/how-to-write-web-apps-using-simple-python-for-data-scientists-a227a1a01582
+- https://towardsdatascience.com/how-to-deploy-a-streamlit-app-using-an-amazon-free-ec2-instance-416a41f69dc3
 
