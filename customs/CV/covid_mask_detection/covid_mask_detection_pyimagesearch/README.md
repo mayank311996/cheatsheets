@@ -6,6 +6,14 @@
     
 - We will be using DeepLearning EC2 instance for training.
 
+## Note
+
+- For training mask detector we are not extracting face from a picture. Still works. 
+Just note that all pictures have only one person present for training mask detector.
+I think this approach might not work when we have multiple people in an image. 
+For that we first need to extract each one of them and build a dataset and train 
+our model on that. 
+
 ## Resources 
 
 - [main](https://www.pyimagesearch.com/2020/05/04/covid-19-face-mask-detector-with-opencv-keras-tensorflow-and-deep-learning/)
