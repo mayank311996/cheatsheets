@@ -48,6 +48,9 @@ imagePaths = list(paths.list_images(args["dataset"]))
 data = []
 labels = []
 
+# this approach loads data into memory. Not Good!
+# So try implementing something like flow_from_directory to avoid this
+
 # loop over the image paths
 for imagePath in imagePaths:
     # extract the class label from the filename
