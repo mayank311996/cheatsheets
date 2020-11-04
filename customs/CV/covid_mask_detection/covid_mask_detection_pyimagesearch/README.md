@@ -11,6 +11,11 @@ To train mask detection model
 python train_mask_detector.py --dataset dataset
 ```
 
+For inference on an image 
+```bash
+python detect_mask_image.py --image examples/example_01.png 
+```
+
 ## Note
 
 - For training mask detector we are not extracting face from a picture. Still works. 
@@ -37,3 +42,4 @@ our model on that.
 - https://www.pyimagesearch.com/2019/07/08/keras-imagedatagenerator-and-data-augmentation/
 - https://www.pyimagesearch.com/tag/fine-tuning/
 - https://www.pyimagesearch.com/2019/10/14/why-is-my-validation-loss-lower-than-my-training-loss/
+- https://www.pyimagesearch.com/2017/11/06/deep-learning-opencvs-blobfromimage-works/
