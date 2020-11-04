@@ -97,5 +97,6 @@ for i in range(0, detections.shape[2]):
         cv2.rectangle(image, (startX, startY), (endX, endY), color, 2)
 
 # show the output image
-cv2.imshow("Output", image)
-cv2.waitKey(0)
+# cv2.imshow("Output", image)
+# cv2.waitKey(0)
+cv2.imwrite('output.jpg', image)
