@@ -4,7 +4,12 @@
     1) Detect faces from the picture or video (with pre-trained model)
     2) Classify them into mask or without mask category (with custom trained MobileNetV2)
     
-- We will be using DeepLearning EC2 instance for training.
+We will be using DeepLearning EC2 instance for training.
+
+To train mask detection model
+```bash
+python train_mask_detector.py --dataset dataset
+```
 
 ## Note
 
@@ -30,3 +35,5 @@ our model on that.
 - https://www.pyimagesearch.com/2019/07/22/keras-learning-rate-schedules-and-decay/
 - https://www.pyimagesearch.com/deep-learning-computer-vision-python-book/
 - https://www.pyimagesearch.com/2019/07/08/keras-imagedatagenerator-and-data-augmentation/
+- https://www.pyimagesearch.com/tag/fine-tuning/
+- https://www.pyimagesearch.com/2019/10/14/why-is-my-validation-loss-lower-than-my-training-loss/
