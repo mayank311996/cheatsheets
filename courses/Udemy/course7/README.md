@@ -112,6 +112,23 @@ python3 -m pip install --upgrade pip
 >CodePipeline
 
 - Check `145.png`
+- Create CodePipeline. Follow `146.png` to `155.png`
+- Change some code. Follow `156.png` to `160.png`
+
+>STEP 11
+>Forever and Forever-service
+
+- Check `161.png` and `162.png`
+- Forever Hands-on. Follow `163.png` to `166.png`
+
+>STEP 12
+>app.js
+
+- Global variables. Follow `167.png`
+- Main function. Follow `168.png` 
+- AWS region and DynamoDB client. Follow `169.png`
+- Parameter store. Follow `170.png`
+- pushButton. Follow `171.png`
 - 
 
 ## Login details 
@@ -129,6 +146,7 @@ RaspberryPi.
 - In CodeDeploy you need to deploy every time manually, when change code in
 GitHub repository. To avoid this we use CodePipeline, which detects changes in 
 Github directly and automatically deploys code into RaspberryPi through CodeDeploy. 
+- Try using Gunicorn instead of Forever. 
 
 
 
