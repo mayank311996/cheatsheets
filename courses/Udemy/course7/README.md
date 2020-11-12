@@ -75,7 +75,33 @@ python3 -m pip install --upgrade pip
 >STEP 6
 >Parameter Store
 
-- 
+- Setting up parameter. Follow `66.png` to `68.png`
+- Set up permissions. Follow `69.png` to `74.png`
+ 
+>STEP 7
+>Physical Connections 
+
+- Check `75.png`
+- Set up physical connections. Follow `76.png` to `83.png`
+
+>STEP 8
+>CodeDeploy Agent
+
+- Check `84.png`
+- Set up CodeDeploy agent. Follow `85.png` to `89.png`
+- Get Pi serial number. Follow `90.png` to `92.png`
+- Register RaspberryPi. Follow `93.png` to `102.png`
+- Check CodeDeploy dashboard. Follow `103.png`
+- Delete extra permissions. Follow `104.png` and `105.png`
+
+>STEP 9
+>CodeDeploy
+
+- Check `106.png`
+- GitHub code. Follow `107.png` and `108.png`
+- appspec.yml. Follow `109.png`
+- Scripts. Follow `110.png` to `114.png`. 
+`npm install` in `AfterInstall.sh` looks for `package.json` file 
 
 ## Login details 
 
@@ -86,4 +112,7 @@ To connect `ssh app@10.0.0.155`
 - Don't setup AWS on commercial RaspberryPis. Instead use AWS IoT
 - Parameter store is useful to store some crucial parameters like, you don't want to include ARNs in 
 your code that might be published to github. Instead you can mention in parameter store. 
+- CodeDeploy can be used with thousands of RaspberryPi as well. This is good 
+if you want to update your software and don't worry about updating each 
+RaspberryPi. 
 
