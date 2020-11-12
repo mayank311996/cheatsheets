@@ -38,15 +38,35 @@ store credentials at secure place
 
 >STEP 3
 
-- Install forever and forever-service on pi. Follow `30.png`
-- Install NodeJS. Follow `31.png` to `33.png`
+- Install forever and forever-service on pi. First do 
+```
+sudo apt-get install npm
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+```
+then follow `30.png`
+- Install NodeJS. Follow `31.png` to `33.png`. Replace 10.x with 14.x in `31.png`
 - Install AWS CLI. Follow `34.png` to `37.png`
+- To install pip instead follow 
+```bash
+sudo apt install python3-pip
+pip3 --version
+python3 -m pip install --upgrade pip
+```
 - Configure AWS CLI. Follow `38.png`
 
 >STEP 4
 >DynamoDB
 
 - Check `39.png`
+- Create a DynamoDB table. Follow `40.png` and `41.png`
+- Giving permission to Pi for DynamoDB. Follow `42.png` to `51.png`
+
+>STEP 5
+>SNS
+
+- Check `52.png`
 - 
 
 ## Login details 
