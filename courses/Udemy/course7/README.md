@@ -67,6 +67,14 @@ python3 -m pip install --upgrade pip
 >SNS
 
 - Check `52.png`
+- Create topic. Follow `53.png` to `57.png`
+- Try to send a message. Follow `58.png` to `60.png`
+- Set SNS permission. Follow `61.png` to `64.png`
+- Check again on Pi. Follow `65.png`
+
+>STEP 6
+>Parameter Store
+
 - 
 
 ## Login details 
@@ -76,3 +84,6 @@ To connect `ssh app@10.0.0.155`
 ## Note
 
 - Don't setup AWS on commercial RaspberryPis. Instead use AWS IoT
+- Parameter store is useful to store some crucial parameters like, you don't want to include ARNs in 
+your code that might be published to github. Instead you can mention in parameter store. 
+
