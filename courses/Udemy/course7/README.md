@@ -102,6 +102,17 @@ python3 -m pip install --upgrade pip
 - appspec.yml. Follow `109.png`
 - Scripts. Follow `110.png` to `114.png`. 
 `npm install` in `AfterInstall.sh` looks for `package.json` file 
+- Cleaning home directory. Follow `115.png`
+- Create CodeDeploy application. Follow `116.png` to `118.png`
+- Create a deployment group. Follow `119.png` to `129.png`
+- Create deployment. Follow `130.png` to `140.png`
+- Change the code and deploy again. Follow `141.png` to `144.png`
+
+>STEP 10
+>CodePipeline
+
+- Check `145.png`
+- 
 
 ## Login details 
 
@@ -115,4 +126,46 @@ your code that might be published to github. Instead you can mention in paramete
 - CodeDeploy can be used with thousands of RaspberryPi as well. This is good 
 if you want to update your software and don't worry about updating each 
 RaspberryPi. 
+- In CodeDeploy you need to deploy every time manually, when change code in
+GitHub repository. To avoid this we use CodePipeline, which detects changes in 
+Github directly and automatically deploys code into RaspberryPi through CodeDeploy. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
