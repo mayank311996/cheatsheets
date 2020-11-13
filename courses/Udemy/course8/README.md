@@ -22,6 +22,17 @@ is used to force not to have `.txt` extension in windows. Not needed for linux.
 - MQTT.fx tool. Follow `41.png` to `50.png` [link](https://github.com/sborsay/AWS-IoT/blob/master/AWSCLI_Payload_Tester)
 [link2](https://mqttfx.jensd.de/)
 
+>STEP 3
+>RaspberryPi with AWS IoT SDK in Python 
+
+- Provisioning AWS IoT to receive our JSON sensor data from our RaspberryPi. Follow 
+`51.png` to `63.png`
+- Setting up our RaspberryPi3 with the AWS SDK in Python, and the AWS CLI tool. Follow
+`64.png` to `76.png`
+- Modifying the basicPubSub.py program to send our data to AWS IoT with our Rpi3. Follow 
+`77.png` to `87.png`
+
+
 ## Note
 
 - The created IAM roles and policies are very powerful. Make sure to 
