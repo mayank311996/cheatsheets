@@ -1,0 +1,12 @@
+Troubleshooting Connection Faqs
+
+1.  Make sure you AWS Endpoint region is the same Region as your AWS IoT Core and where you created your device Certificates
+
+2.  Make sure MQTT(S) Port 8883 isnt being blocked by your Network Admin
+
+3.  Make sure your network connecting to your device is at 2.4GHz and not 5GHz
+
+Also check the monitor tab in AWS IoT Core if you arnt getting data. 
+If it shows you connected to AWS IoT Core but no data is being transmitted
+to the AWS IoT 'Test' Console than it most likly is a problem with your Certificates
+not being valif or not being formatted correctly
