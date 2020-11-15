@@ -10,9 +10,9 @@ myMQTTClient.configureEndpoint(
 )  # Provide your AWS IoT Core endpoint (
 # Example: "abcdef12345-ats.iot.us-east-1.amazonaws.com")
 myMQTTClient.configureCredentials(
-    "/home/pi/certificates/AmazonRootCA1.pem",
-    "/home/pi/certificates/7f35a63383-private.pem.key",
-    "/home/pi/certificates/7f35a63383-certificate.pem.crt"
+    "/home/app/certificates/AmazonRootCA1.pem",
+    "/home/app/certificates/7f35a63383-private.pem.key",
+    "/home/app/certificates/7f35a63383-certificate.pem.crt"
 )  # Set path for Root
 # CA and unique device credentials (use the private key and certificate
 # retrieved from the logs in Step 1)
