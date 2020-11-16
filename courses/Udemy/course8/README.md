@@ -43,6 +43,18 @@ is used to force not to have `.txt` extension in windows. Not needed for linux.
 >S3
 
 - Saving a data object directly to S3. Follow `123.png` to `135.png`
+- Exporting data to CSV or JSON. Follow `136.png` and `137.png`
+
+>STEP 6
+>Kinesis
+
+- Introduction to Kinesis Firehose from the AWS IoT panel. Follow `138.png`
+- Configuring Kinesis Firehose for data transfer. Follow `139.png` to `161.png`
+
+>STEP 7
+>DynamoDB
+
+- Introduction to DynamoDB. Follow ``
 
 ## Note
 
@@ -51,5 +63,6 @@ change and restrict them before moving to the production.
 - Directly saving data from IoT to S3 is not good because it always saves 
 one reading at a time in a separate file and overwrites the previous file that doesn't 
 make any sense. So, use other approaches. 
-
+- When you download messages from MQTT client window, it will download only the 
+messages that are being displayed on the window. 
 
