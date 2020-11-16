@@ -54,7 +54,28 @@ is used to force not to have `.txt` extension in windows. Not needed for linux.
 >STEP 7
 >DynamoDB
 
-- Introduction to DynamoDB. Follow ``
+- Introduction to DynamoDB. Follow `162.png` and `163.png` [link](https://docs.aws.amazon.com/iot/latest/developerguide/iot-ddb-rule.html)
+- Configuring the DynamoDB for our sensor data. Follow `164.png` to `185.png`
+
+>STEP 8
+>DataPipeline
+
+- Introduction to the AWS Data Pipeline. Follow `186.png` 
+- Configure and implement the Data Pipeline for data transfer to S3. 
+Follow `187.png` to `199.png`
+
+>STEP 9
+>AWS Glue 
+
+- Introduction to AWS Glue. Follow `200.png` 
+- Using Glue to crawl our data file. Follow `201.png` to `213.png`
+- Using a Glue ETL job to transform our JSON data to CSV. Follow `214.png`
+to `225.png`
+
+>STEP 10
+>AWS QuickSight
+
+- Introduction to AWS QuickSight. Follow `226.png` 
 
 ## Note
 
@@ -65,4 +86,6 @@ one reading at a time in a separate file and overwrites the previous file that d
 make any sense. So, use other approaches. 
 - When you download messages from MQTT client window, it will download only the 
 messages that are being displayed on the window. 
+- timestamp() is AWS DynamoDB built-in function. You can look into documentation
+for more built-in functions. 
 
