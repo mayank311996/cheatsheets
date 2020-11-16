@@ -32,8 +32,24 @@ is used to force not to have `.txt` extension in windows. Not needed for linux.
 - Modifying the basicPubSub.py program to send our data to AWS IoT with our Rpi3. Follow 
 `77.png` to `87.png`
 
+>STEP 4
+>SNS
+
+- Set up a text notification for our sensor data. Follow `88.png` to `103.png`
+- Set up an email notification for our sensor data. Follow `104.png` to `116.png`
+- Using conditional data testing for notifications. Follow `117.png` to `122.png`  
+
+>STEP 5
+>S3
+
+- Saving a data object directly to S3. Follow `123.png` to `135.png`
 
 ## Note
 
 - The created IAM roles and policies are very powerful. Make sure to 
 change and restrict them before moving to the production. 
+- Directly saving data from IoT to S3 is not good because it always saves 
+one reading at a time in a separate file and overwrites the previous file that doesn't 
+make any sense. So, use other approaches. 
+
+
