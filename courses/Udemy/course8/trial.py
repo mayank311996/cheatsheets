@@ -49,7 +49,7 @@ while True:
         'Humidity': random.randint(0, 50)
     }
     json_string = json.dumps(python_object)
-    myAWSIoTMQTTClient.publish(topic, json_string, 1)
+    myMQTTClient.publish(topic, json_string, 1)
 
     print('Published topic %s: %s\n' % (topic, json_string))
     loopCount += 1
