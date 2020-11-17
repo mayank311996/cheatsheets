@@ -75,7 +75,9 @@ to `225.png`
 >STEP 10
 >AWS QuickSight
 
-- Introduction to AWS QuickSight. Follow `226.png` 
+- Introduction to AWS QuickSight. Follow `226.png` [link](https://docs.aws.amazon.com/quicksight/latest/user/getting-started-create-analysis-s3.html)
+[link2](https://www.diffchecker.com/diff)
+- Editing permissions and S3 bucket access. Follow `227.png` to 
 
 ## Note
 
