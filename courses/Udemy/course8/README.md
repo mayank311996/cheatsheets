@@ -91,7 +91,19 @@ we did this to show how we can clean data using QuickSight.
 
 - Introduction to AWS Lambda for IoT. Follow `267.png`
 - Creating a Cloudlogger.js function in Lambda. `268.png` to `288.png` [link](https://github.com/sborsay/AWS-IoT/blob/master/IoTData_Pub_lambda.js)
-- Advanced Lambda: IoT Publisher from Lambda. `289.png` to 
+- Advanced Lambda: IoT Publisher from Lambda. `289.png` to `304.png`
+
+>STEP 12
+>AWS IoT Analytics
+
+- AWS IoT Analytics: Setup Channel, Pipeline, and Datastore. `305.png` to `313.png`
+- AWS IoT Anlytics: Ingesting and Displaying our IoT Data. `314.png` to `322.png`
+- AWS IoT analytics: Using AWS Sagemaker on our Dataset. `323.png` to `331.png`
+
+>STEP 13
+>AWS IoT Device Shadows 
+
+
 
 ## Note
 
