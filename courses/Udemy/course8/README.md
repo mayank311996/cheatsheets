@@ -77,7 +77,21 @@ to `225.png`
 
 - Introduction to AWS QuickSight. Follow `226.png` [link](https://docs.aws.amazon.com/quicksight/latest/user/getting-started-create-analysis-s3.html)
 [link2](https://www.diffchecker.com/diff)
-- Editing permissions and S3 bucket access. Follow `227.png` to 
+- Editing permissions and S3 bucket access. Follow `227.png` to `236.png`
+. Here we are downloading data from DynamoDB and uploading it to S3, which is not 
+professional way instead use data pipelines to dump data from DynamoDB to S3. Remember 
+we did this to show how we can clean data using QuickSight.  
+- Creating a proper manifest to import the CSV file from S3. Follow `237.png` to `243.png`
+- Cleaning our data with QuickSight functions. Follow `244.png` to `252.png`
+- Further cleaning with functions. Follow `253.png` to `259.png`
+- Designing a Line Chart with our data. `260.png` to `266.png`
+
+>STEP 11
+>AWS Lambda
+
+- Introduction to AWS Lambda for IoT. Follow `267.png`
+- Creating a Cloudlogger.js function in Lambda. `268.png` to `288.png` [link](https://github.com/sborsay/AWS-IoT/blob/master/IoTData_Pub_lambda.js)
+- Advanced Lambda: IoT Publisher from Lambda. `289.png` to 
 
 ## Note
 
