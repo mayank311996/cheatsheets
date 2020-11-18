@@ -30,4 +30,43 @@
 [link](https://github.com/sborsay/AWS-IoT/blob/master/AWS_Pandas_Sagemaker.py)
 `68.png` to `77.png`
 - Why hosting a Data Lake may be superior to just invoking our Data Set.
-`78.png` to 
+`78.png` and `79.png`
+- Configuring AWS IoT Analytics to send data to a Data Lake hosted in S3.
+`80.png` to `92.png`
+- Setting S3 permissions, bucket policy, & CORS to allow public access to our data.
+`93.png` to `106.png`
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/tree/master/PublicBucket)
+- Testing our Google Chart to ingest our IoT data on a remote host.
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/GoogleCharts_CSV.html)
+`107.png` to `112.png`
+- Moving our IoT charting webpage to S3 as a static host.
+`113.png` to `122.png`
+
+>STEP 3
+>Advanced AWS IoT Analytics 
+
+- Introduction to our advanced example. 
+`123.png`
+- Creating our advanced Lambda enhancement function.
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/Advanced_IoTAnalytics/transformLambda.js)
+`124.png` to `137.png`
+- Testing our Lambda enhancement connecting it to IoT Analytics.
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/Advanced_IoTAnalytics/test_payload.json)
+`138.png` to `157.png`
+- The Arduino Sketch to send GPS Coordinates via MQTT and filling our S3 bucket.
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/Advanced_IoTAnalytics/GPS_Sketch_ESP32.ino)
+[link2](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/Advanced_IoTAnalytics/GPS_Sketch_ESP8266.ino)
+`158.png` to `169.png`
+- Reviewing our IoT design flow thus far, and discussing next steps.
+`170.png` 
+- Connecting our second Lambda to extract CSV IoT data from our S3 data bucket.
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/Advanced_IoTAnalytics/extract_csv-data-Lambda.js)
+`171.png` to `180.png`
+- Creating a REST API endpoint with AWS API Gateway to our extraction Lambda.
+`181.png` to `197.png`
+- Creating our website in S3 to visualize our IoT Analytics data in Highcharts.
+`198.png` to `213.png`
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/Advanced_IoTAnalytics/index.html)
+- Preview: Adding Security to your visualization web sight.
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/Advanced_IoTAnalytics/API_Key_Secured_index.html)
+
