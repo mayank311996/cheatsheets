@@ -70,3 +70,21 @@
 - Preview: Adding Security to your visualization web sight.
 [link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/Advanced_IoTAnalytics/API_Key_Secured_index.html)
 
+>STEP 4
+>Level One Serverless IoT for data lakes, using IoT Core, Lambda, and S3
+
+- Levels of a Serveless design flow for IoT data.
+`214.png` and `215.png`
+- Intro to ingestion methods.
+`216.png`
+- IoT Core to S3 using Lambda part 1.
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/S3lambdaManyFolders.js)
+[link2](https://github.com/sborsay/Serverless-IoT-on-AWS/tree/master/PublicBucket)
+`217.png` to `224.png`
+- IoT Core to S3 using Lambda part 2.
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/ESP8266-to-AWS-IoT)
+[link2](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/ESP32-to-AWS-IoT)
+`225.png` to `234.png`
+- IoT Core to S3 using Lambda part 3. 
+[link](https://github.com/sborsay/Serverless-IoT-on-AWS/blob/master/myS3lambda.js)
+`235.png` to ``
