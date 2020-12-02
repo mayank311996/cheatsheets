@@ -316,10 +316,102 @@ processed = processArg(7);
 
 // ############### Stand in line
 
+function nextInLine(arr, item) {
+    // Your code here
+    arr.push(item);
+    return arr.shift();
+}
 
+var testArr = [1, 2, 3, 4, 5];
 
+console.log("Before: " + JSON.stringify(testArr));
+console.log(nextInLine(testArr, 6));
+console.log("After: " + JSON.stringify(testArr));
 
+// ################ Boolean values
 
+function welcomeToBooleans() {
+    return true;
+}
+
+// ################ Use conditional logic with if statements
+
+// Example
+function ourTrueOrFalse(isItTrue) {
+    if (isItTrue) {
+        return "Yes, it's true";
+    }
+    return "No, it's false";
+}
+
+function trueOrFalse(wasThatTrue) {
+    if (wasThatTrue) {
+        return "Yes, that was true";
+    }
+    return "No, that was false";
+}
+console.log(trueOrFalse(true));
+console.log(trueOrFalse(false));
+
+// ############### Comparison with the equality operator
+
+// Setup
+function testEqual(val) {
+    if (val == 12) {
+        return "Equal";
+    }
+    return "Not Equal";
+}
+console.log(testEqual(10));
+
+// ############### Comparison with the strict equality operator
+
+// Equality operator tries to convert both variables to same type before
+// comparing while strict equality operator doesn't do any type conversion
+
+// Setup
+function testStrict(val) {
+    if (val === 10) {
+        return "Equal";
+    }
+    return "Not Equal";
+}
+
+testStrict(10);
+
+// ############## Practice comparing different values
+
+// Setup
+function compareEquality(a, b) {
+    if (a == b) {
+        return "Equal";
+    }
+    return "Not Equal";
+}
+console.log(compareEquality(10, "10"));
+
+// ############ Comparison with inequality operator
+
+// Setup
+function testNotEqual(val) {
+    if (val != 99) {
+        return "Not Equal";
+    }
+    return "Equal";
+}
+console.log(testNotEqual(10));
+
+// ########### Comparison with the Strict Inequality Operator
+
+// Setup
+function testStrictNotEqual(val) {
+    if (val !== 17) {
+        return "Not Equal";
+    }
+    return "Equal";
+}
+
+console.log(testStrictNotEqual(10));
 
 
 
