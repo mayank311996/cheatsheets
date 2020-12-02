@@ -162,13 +162,93 @@ var removedFromOurArray = ourArray.pop();
 var myArray = [["John", 23], ["cat", 2]];
 
 var removedFromMyArray = myArray.pop();
+console.log(removedFromMyArray)
 
+// ############# Manipulate arrays with shift
 
+// Example
+var ourArray = [1, 2, 3];
+var removedFromOurArray = ourArray.shift();
 
+// Setup
+var myArray = [["John", 23], ["cat", 2]];
 
+var removedFromMyArray = myArray.shift();
+console.log(removedFromMyArray)
 
+// ############# Manipulate arrays with unshift
 
+// Example
+var ourArray = ["Stimpson", "J", "cat"];
+ourArray.shift();
+ourArray.unshift("Happy");
 
+// Setup
+var myArray = [["John", 23], ["dog", 3]];
+myArray.shift();
+myArray.unshift(["kite", 1]);
+
+// ############# Shopping list
+
+var myList = [["cereal", 3], ["milk", 2], ["bananas", 3]]
+
+// ############ Write reusable code with functions
+
+// Example
+function ourReusableFunction() {
+    console.log("Heyya", "World");
+}
+
+ourReusableFunction();
+
+// Only change code below this line
+function reusableFunction() {
+    console.log("Hi World");
+}
+
+reusableFunction();
+
+// ############ Passing values to functions with arguments
+
+// Example
+function ourFunctionWithArgs(a, b) {
+    console.log(a - b);
+}
+ourFunctionWithArgs(10, 5);
+
+// Only change code below this line
+function functionWithArgs(a, b) {
+    console.log(a + b);
+}
+functionWithArgs(10, 5);
+
+// ############# Global scope and functions
+
+// Declare your variable here
+var myGlobal = 10; // As this variable is defined outside, it has global scope
+// and can be accessed inside functions too
+
+function fun1() {
+    // Assign 5 to oopsGlobal Here
+    oopsGlobal = 5; // Here we didn't put var before oopsGlobal which makes it
+    // global and can be accessed outside function and other functions too. If
+    // we put var before oopsGlobal then scope of that is limited to present
+    // function means we cannot access it outside this function
+}
+
+// Only change code above this line
+function fun2() {
+    var output = "";
+    if (typeof myGlobal != "undefined") {
+        output += "myGlobal: " + myGlobal;
+    }
+    if (typeof oopsGlobal != "undefined") {
+        output += "oopsGlobal: " + oopsGlobal;
+    }
+    console.log(output);
+}
+fun1();
+fun2();
 
 
 
