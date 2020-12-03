@@ -551,6 +551,150 @@ console.log(caseInSwitch(2));
 
 // ############# Default option in switch statements
 
+function caseInSwitch(val) {
+    var answer = "";
+    switch (val) {
+        case "a":
+            answer = "alpha";
+            break;
+        case "b":
+            answer = "beta";
+            break;
+        case "c":
+            answer = "gamma";
+            break;
+        case "d":
+            answer = "delta";
+            break;
+        default:
+            answer = "stuff";
+            break;
+    }
+    return answer;
+}
+console.log(caseInSwitch("b"));
+
+// ############### Multiple identical options in switch statements
+
+function caseInSwitch(val) {
+    var answer = "";
+    switch (val) {
+        case "a":
+        case "b":
+        case "c":
+            answer = "gamma";
+            break;
+        case "d":
+        case "e":
+        case "f":
+            answer = "delta";
+            break;
+        default:
+            answer = "stuff";
+            break;
+    }
+    return answer;
+}
+console.log(caseInSwitch("b"));
+
+// ################## Replacing if else chains with switch
+
+// ################## Returning boolean values from functions
+
+function isLess(a, b) {
+    return a < b;
+}
+console.log(isLess(10, 15));
+
+// ################## Returning early pattern from functions
+
+function abTest(a, b) {
+    if (a < 0 || b < 0) {
+        return undefined;
+    }
+    return Math.round(Math.pow(Math.sqrt(a) + Math.sqrt(b), 2));
+}
+console.log(abTest(2, 2));
+
+// ################### Counting cards
+
+var count = 0;
+
+function cc(card) {
+    switch (card) {
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            count++;
+            break;
+        case 10;
+        case "J";
+        case "Q";
+        case "K";
+        case "A";
+            count--;
+            break;
+    }
+
+    var holdbet = "Hold";
+    if (count > 0) {
+        holdbet = "Bet"
+    }
+
+    return count + " " + holdbet;
+}
+console.log(cc(3));
+
+// #################### Build JavaScript objects
+
+var ourDog = {
+    "name": "Camper",
+    "legs": 4,
+    "tails": 1,
+    "friends": ["everything"]
+};
+
+// #################### Accessing object properties with dot notation
+
+var dogName = ourDog.name;
+var dogLegs = ourDog.legs;
+
+// #################### Accessing object properties with bracket notation
+// This becomes necessary when variables have space in names - e.g. "name 12"
+
+var dogName = ourDog["name"];
+var dogLegs = ourDog["legs"];
+
+// #################### Accessing object properties with variables
+
+var testobj = {
+    12: "Namath";
+    16: "Montana";
+    19: "unitas"
+};
+
+var playerNumber = 16;
+var player = testobj[playerNumber];
+
+// ################# Updating object properties
+
+var ourDog = {
+    "name": "Camper",
+    "legs": 4,
+    "tails": 1,
+    "friends": ["everything"]
+};
+
+ourDog.name = "Happy Camper";
+
+// ################ Add new properties to an object
+
+
+
+
+
 
 
 
