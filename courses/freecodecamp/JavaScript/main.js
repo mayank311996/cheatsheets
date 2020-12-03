@@ -883,11 +883,102 @@ console.log(myArray);
 
 // ################ Iterate through an array with a for loop
 
+var ourArray = [9, 10, 11, 12];
+var ourTotal = 0;
 
+for (var i = 0; i < ourArray.length; i++) {
+    ourTotal += ourArray[i];
+}
+console.log(ourTotal);
 
+// ############### Nesting for loops
 
+function multiplyAll(arr) {
+    var product = 1;
 
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr[i].length; j++) {
+            product *= arr[i][j];
+        }
+    }
+    return product;
+}
 
+var product = multiplyAll([[1, 2], [3, 4], [5, 6, 7]]);
+
+// ################ Iterate with do...while loops
+// A while loop checks condition first before executing even a single time
+// whereas do...while loop executes for at least one time doesn't matter if
+// condition is met or not
+
+var myArray = [];
+var i = 10;
+
+do {
+    myArray.push(i);
+    i++;
+} while (i < 5)
+console.log(i, myArray);
+
+// ################# Profile lookup
+
+var contacts = [
+    {
+        "firstName": "Akira",
+        "lastName": "Laine",
+        "number": "0568767687",
+        "likes": ["Pizza", "Coding", "Brownie Points"]
+    },
+    {
+        "firstName": "Harry",
+        "lastName": "Potter",
+        "number": "0879036784",
+        "likes": ["Hogwarts", "Magic", "Hagrid"]
+    },
+    {
+        "firstName": "Sherlock",
+        "lastName": "Holmes",
+        "number": "0484694068",
+        "likes": ["Intriguing Cases", "Violin"]
+    },
+    {
+        "firstName": "Kristian",
+        "lastName": "Vos",
+        "number": "unknown",
+        "likes": ["JavaScript", "Gaming", "Foxes"]
+    },
+]
+
+function lookUpProfile(name, prop){
+    for (var i = 0; i < contacts.length; i++) {
+        if (contacts[i].firstName === name) {
+            return contacts[i][prop] || "No such property"; // This is a fancy
+            // way to avoid one more for loop. Basically, it checks for value
+            // and if it cannot find value then return whatever is after "||"
+        }
+    }
+    return "No such contact";
+}
+
+var data = lookUpProfile("Sherlock", "lastName");
+console.log(data);
+
+// ################### Generate random fractions
+
+function randomFraction() {
+    return Math.random();
+}
+
+console.log(randomFraction());
+
+// ################### Generate random whole numbers
+
+var randomNumberBetween0and19 = Math.floor(Math.random() * 20);
+
+function randomWholeNum() {
+    return Math.floor(Math.random() * 10);
+}
+console.log(randomWholeNum());
 
 
 
