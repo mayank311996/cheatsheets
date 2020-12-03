@@ -1108,8 +1108,70 @@ function printManyTimes(str) {
 }
 printManyTimes("freeCodeCamp");
 
+// ################## Mutate an array declared with const
 
+const s = [5, 7, 2];
+function editInPlace() {
+    "use strict";
 
+    // s = [2, 5, 7]; // This will give an error
+    s[0] = 2; // but this will work
+    s[1] = 5; // this will work too
+}
+editInPlace();
+console.log(s);
+
+// ################### Prevent object mutation
+// As discussed above like array, objects can be mutated even though declared
+// as constants. To avoid that, we can freeze the object
+
+function freezeObj() {
+    "use strict";
+    const MATH_CONSTANTS = {
+        PI: 3.14
+    };
+    try {
+        MATH_CONSTANTS.PI = 99;
+    } catch (e) {
+        console.log(e);
+    }
+    return MATH_CONSTANTS.PI;
+};
+
+const PI = freezeObj();
+console.log(PI);
+
+function freezeObj() {
+    "use strict";
+    const MATH_CONSTANTS = {
+        PI: 3.14
+    };
+
+    Object.freeze(MATH_CONSTANTS); // this will freeze the object
+
+    try {
+        MATH_CONSTANTS.PI = 99;
+    } catch (e) {
+        console.log(e);
+    }
+    return MATH_CONSTANTS.PI;
+};
+
+const PI = freezeObj();
+console.log(PI);
+
+// #################### Use arrow functions to write concise anonymous
+// functions
+
+var magic = function() {
+    return new Date();
+}; // Anonymous function as name is note defined
+
+var magic = () => {
+    return new Date();
+}; // Concise anonymous function 1
+
+const magic = () => new Date(); // Concise anonymous function 2
 
 
 
