@@ -1043,7 +1043,70 @@ function catTalk() {
 catTalk();
 
 // ###################### Compare scopes of the var and let keywords
+// var can be function or global scope where as let is block scope only.
 
+function checkScope() {
+    "use strict";
+    let i = "function scope";
+    if (true) {
+        let i = "block scope";
+        console.log("Block scope i is: ", i);
+    }
+    console.log("Function scope i is: ", i);
+    return i;
+}
+checkScope();
+
+function checkScope() {
+    "use strict";
+    // let i = "function scope";
+    if (true) {
+        let i = "block scope";
+        console.log("Block scope i is: ", i);
+    }
+    console.log("Function scope i is: ", i);
+    return i;
+}
+checkScope();
+
+function checkScope() {
+    "use strict";
+    var i = "function scope";
+    if (true) {
+        var i = "block scope";
+        console.log("Block scope i is: ", i);
+    }
+    console.log("Function scope i is: ", i);
+    return i;
+}
+checkScope();
+
+function checkScope() {
+    "use strict";
+    // let i = "function scope";
+    if (true) {
+        var i = "block scope";
+        console.log("Block scope i is: ", i);
+    }
+    console.log("Function scope i is: ", i);
+    return i;
+}
+checkScope();
+
+// ################## Declare a read-only variable with the const keyword
+
+function printManyTimes(str) {
+    "use strict";
+    const SENTENCE = str + " is cool!";
+
+    SENTENCE = str + " is awesome!"; // this will give an error because you
+    // cannot reassign value to a constant
+
+    for (let i = 0; i < str.length; i+=2) {
+        console.log(SENTENCE);
+    }
+}
+printManyTimes("freeCodeCamp");
 
 
 
