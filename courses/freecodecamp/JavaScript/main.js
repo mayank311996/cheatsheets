@@ -413,10 +413,76 @@ function testStrictNotEqual(val) {
 
 console.log(testStrictNotEqual(10));
 
+// ########### Comparison with the greater than operator
 
+function testGreaterThan(val) {
+    if (val > 100) {
+        return "Over 100";
+    }
+    if (val > 10) {
+        return "Over 10";
+    }
+    return "10 or under";
+}
+console.log(testGreaterThan(10));
 
+// ########### Comparison with the greater than or equal to operator
 
+function testGreaterThanOrEqual(val) {
+    if (val >= 100) {
+        return "100 or over";
+    }
+    if (val >= 10) {
+        return "10 or over";
+    }
+    return "less than 10";
+}
+console.log(testGreaterThanOrEqual(10));
 
+// ############ Comparison with the less than operator
+
+// ############ Comparison with the less than or equal to operator
+
+// ############ Comparison with the logical and operator
+
+function testLogicalAnd(val) {
+    if (val <= 50 && val >= 25) {
+        return "Yes";
+    }
+    return "No";
+}
+testLogicalAnd(10);
+
+// ########### Comparison with the logical or operator
+// if (val < 10 || val > 20)
+
+// ########### Else statement
+
+function testElse(val) {
+    var result = "";
+
+    if (val > 5) {
+        result = "Bigger than 5";
+    } else {
+        result = "5 or Smaller";
+    }
+    return result;
+}
+testElse(4);
+
+// ############ Elseif statement
+// order is really important in elseif statement
+
+function testElseIf(val) {
+    if (val > 10) {
+        return "Greater than 10";
+    } else if (val < 5) {
+        return "Smaller than 5";
+    } else {
+        return "Between 5 and 10";
+    }
+}
+testElseIf(7);
 
 
 
