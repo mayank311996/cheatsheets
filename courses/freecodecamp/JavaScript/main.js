@@ -980,6 +980,84 @@ function randomWholeNum() {
 }
 console.log(randomWholeNum());
 
+// ################### Generate random whole numbers within a range
+
+function ourRandomRange(ourMin, ourMax) {
+    return Math.floor(Math.random() * (ourMax - ourMin + 1)) + ourMin;
+}
+console.log(ourRandomRange(1, 9));
+
+// ################### Use the parseInt function
+// If it cannot convert string to int then returns NaN
+
+function convertToInteger(str) {
+    return parseInt(str);
+}
+convertToInteger("56");
+
+// ################### Use the parseInt function with a Radix
+
+function convertToInteger(str) {
+    return parseInt(str, 2); // 2 after comma to indicate that it's a binary
+    // number (string)
+}
+convertToInteger("10011");
+
+// ################### Use the conditional (ternary) operator
+// condition ? statement-if-true : statement-if-false;
+
+function checkEqual(a, b) {
+    return a === b ? true : false; // by default it returns true and false only
+    // but we just used ternary operator for explanation
+}
+checkEqual(1, 2);
+
+// #################### Use multiple conditional (ternary) operators
+
+function checkSign(num) {
+    return num > 0 ? "positive": num < 0 ? "negative" : "zero"
+}
+console.log(checkSign(0));
+
+// ##################### Differences between the var and let keywords
+// You can use var for same variables two times but not for let. It will
+// give an error
+
+let catName = "Quincy";
+let catName = "car"; // gives an error
+
+var catName = "quincy";
+var catName = "car"; // works fine
+
+let catName = "quincy";
+catName = "car"; // works fine because we are just changing the value not
+// defining variable again
+
+function catTalk() {
+    "use strict"; // catches bad practices for example if you declared a
+    // variable and forgot to assign a value. This can be placed at top of the
+    // file as well
+    catName = "Oliver";
+    quote = catName + "says Meow!";
+}
+catTalk();
+
+// ###################### Compare scopes of the var and let keywords
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
