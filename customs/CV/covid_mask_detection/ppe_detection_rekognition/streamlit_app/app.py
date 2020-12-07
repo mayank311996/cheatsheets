@@ -92,18 +92,18 @@ if uploaded_file is not None:
                     draw.line(points, fill=fill_color, width=line_width)
 
                     # Check if confidence is lower than supplied value
-                    if ppe_item['CoversBodyPart']['Confidence'] < confidence:
-                        # draw warning yellow bounding box within face mask bounding box
-                        offset = line_width + line_width
-                        points = (
-                            (left + offset, top + offset),
-                            (left + width - offset, top + offset),
-                            ((left) + (width - offset),
-                             (top - offset) + (height)),
-                            (left + offset, (top) + (height - offset)),
-                            (left + offset, top + offset)
-                        )
-                        draw.line(points, fill=fill_yellow, width=line_width)
+                    # if ppe_item['CoversBodyPart']['Confidence'] < confidence:
+                    #     # draw warning yellow bounding box within face mask bounding box
+                    #     offset = line_width + line_width
+                    #     points = (
+                    #         (left + offset, top + offset),
+                    #         (left + width - offset, top + offset),
+                    #         ((left) + (width - offset),
+                    #          (top - offset) + (height)),
+                    #         (left + offset, (top) + (height - offset)),
+                    #         (left + offset, top + offset)
+                    #     )
+                    #     draw.line(points, fill=fill_yellow, width=line_width)
 
         if found_mask == False:
             # no face mask found so draw red bounding box around body
