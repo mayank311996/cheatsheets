@@ -48,9 +48,11 @@ if uploaded_file is not None:
     plate_text = ""
     if len(LpImg):
         plate_image, binary, thre_mor = emphasize_image(LpImg)
-        cv2.imwrite('binary.jpg', thre_mor)
+        cv2.imwrite('thre_mor.jpg', thre_mor)
+        cv2.imwrite('binary.jpg', binary)
+        cv2.imwrite('plate_image.jpg', plate_image)
 
-        binary = open('binary.jpg', 'rb').read()
+        binary = open('thre_mor.jpg', 'rb').read()
         response = requests.post("https://fpw5c4sbwe.execute-api.us-east-2.amazonaws.com/dev", data=binary)
         data_dict = response.json()
         print(data_dict)
