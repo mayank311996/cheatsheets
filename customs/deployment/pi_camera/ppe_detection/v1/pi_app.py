@@ -17,7 +17,7 @@ def base64str_to_Image(base64str):
 
 
 now = datetime.now()
-dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
 
 binary = open('test.jpg', 'rb').read()
 
