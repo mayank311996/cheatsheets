@@ -4,3 +4,8 @@
 
 - https://www.sqlshack.com/calling-an-aws-lambda-function-from-another-lambda-function/
 - 
+
+### To do
+
+- Add CLI script for all resource creation 
+- Add JSON files for all IAM roles 
