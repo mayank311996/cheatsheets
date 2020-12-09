@@ -44,7 +44,7 @@ payload = json.dumps({
 #     "time": dt_string
 # }
 
-response = requests.post("https://i9t9o58074.execute-api.us-east-2.amazonaws.com/dev", data=payload)
+response = requests.post("https://zc4mbbbjzc.execute-api.us-east-2.amazonaws.com/dev", data=payload)
 # print(response)
 response_dict = response.json()
 print(response_dict)
