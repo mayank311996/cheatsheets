@@ -29,6 +29,12 @@ def lambda_handler(event, context):
         Payload=json.dumps(inputParams)
     )
 
+    response = lambda_client.invoke(
+        FunctionName='arn:aws:lambda:us-east-2:882207224999:function:pi_camera_ppe_detection_v1_L_3',
+        InvocationType='RequestResponse',
+        Payload=json.dumps(inputParams)
+    )
+
     return {
         "statusCode": 200,
         "body": json.dumps({'Status': "Successful"})
