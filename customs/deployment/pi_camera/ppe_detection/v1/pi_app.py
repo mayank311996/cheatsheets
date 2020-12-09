@@ -1,13 +1,5 @@
-import streamlit as st
 import base64
-import io
 import requests, json
-from PIL import Image, ImageDraw
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-import requests
-import random
 from datetime import datetime
 
 ##############################################################################
