@@ -104,6 +104,7 @@ def handle_insert(record):
                 (left, top + height),
                 (left, top)
             )
+            draw.line(points, fill=fill_red, width=line_width)
     image.save("/tmp/processed.jpg")
     print("Done processing image")
 
