@@ -15,11 +15,11 @@ from datetime import datetime
 
 lambda_client = boto3.client('lambda')
 
-now = datetime.now()
-dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
-
 
 def lambda_handler(event, context):
+
+    now = datetime.now()
+    dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
     
     print("Sending stuff to Lambda_2")
     event = json.loads(event['body']) 
