@@ -18,6 +18,7 @@
 ### To do
 
 - Add CLI script for all resource creation 
-- Add JSON files for all IAM roles 
+- Add JSON files for all IAM roles (Copy from IAM dashboard)
 - Remove sending date from RaspberryPi as we added that 
 in Lambda1
+- Add CLI script for all resource connections 
