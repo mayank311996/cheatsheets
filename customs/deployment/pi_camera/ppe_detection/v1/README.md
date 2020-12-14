@@ -13,7 +13,7 @@
 - https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesisvideo.html
 - https://dev.to/rohansawant/how-to-stream-video-using-aws-kinesis-video-streaming-with-docker-on-linux-14e9
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DataExport.HowItWorks.html
-
+- [To create lambda layer](https://towardsdatascience.com/introduction-to-amazon-lambda-layers-and-boto3-using-python3-39bd390add17)
 
 ### To do
 
