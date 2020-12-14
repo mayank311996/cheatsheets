@@ -14,6 +14,7 @@
 - https://dev.to/rohansawant/how-to-stream-video-using-aws-kinesis-video-streaming-with-docker-on-linux-14e9
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DataExport.HowItWorks.html
 - [To create lambda layer](https://towardsdatascience.com/introduction-to-amazon-lambda-layers-and-boto3-using-python3-39bd390add17)
+- https://stackoverflow.com/questions/63400740/python-layer-image-failing-unable-to-import-module-lambda-function-cannot-i
 
 ### To do
 
