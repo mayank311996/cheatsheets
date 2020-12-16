@@ -15,8 +15,10 @@
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DataExport.HowItWorks.html
 - [To create lambda layer](https://towardsdatascience.com/introduction-to-amazon-lambda-layers-and-boto3-using-python3-39bd390add17)
 - https://stackoverflow.com/questions/63400740/python-layer-image-failing-unable-to-import-module-lambda-function-cannot-i
+- https://stackoverflow.com/questions/45601305/get-full-path-to-files-in-s3-using-boto3-nested-keys
 
-### To do
+### To dopi_camera_ppe_detection_dynamodb
+
 
 - Add CLI script for all resource creation 
 - Add JSON files for all IAM roles (Copy from IAM dashboard)
