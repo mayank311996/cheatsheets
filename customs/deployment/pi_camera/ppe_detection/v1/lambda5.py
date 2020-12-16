@@ -8,7 +8,7 @@ s3 = boto3.resource('s3')
 def lambda_handler(event, context):
 
     print("Sending stuff to Lambda_2")
-    # event = json.loads(event['body'])
+    event = json.loads(event['body'])
 
     device_id = event['device_id']
     company_name = event['company_name']
@@ -33,7 +33,7 @@ def lambda_handler(event, context):
 
     for obj in bucket_predictions.objects.filter(Prefix=find_prefix):
         if obj.size:
-            binary = open("s3://pi-camera-ppe-detection-prediction-s3/" + obj.key, 'rb').read()
+            binary = obj.get()['Body'].read()
             base64str = bytesioObj_to_base64str(binary)
             prediction_list.append(base64str)
 
