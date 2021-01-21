@@ -143,3 +143,6 @@ dmypy.json
 /customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API_failed/torch/
 /customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API_failed/torchvision/
 /customs/CV/car_make_model/car_make_model_fastai_resnet/deployment_AWS_Lambda_API_failed/.requirements.zip
+
+# Configuration files with keys
+*.cfg
