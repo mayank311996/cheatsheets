@@ -8,3 +8,4 @@
 - https://marketstack.com/
 - https://www.alphavantage.co/documentation/
 - https://github.com/RomelTorres/alpha_vantage
+- https://github.com/PythonForForex/Alpha-Vantage-Introduction-Guide
